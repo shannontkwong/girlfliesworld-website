@@ -17,7 +17,7 @@ const ImageGridSection = () => {
   const gridItems = [
     {
       href: '/news',
-      image: '/news.png',
+      image: '/NEWS.png',
       alt: 'Latest News',
       external: true
     },
@@ -35,7 +35,7 @@ const ImageGridSection = () => {
     },
     {
       href: '/plane',
-      image: '/plane.png',
+      image: '/PLANE.png',
       alt: 'The Plane',
       external: false
     },
