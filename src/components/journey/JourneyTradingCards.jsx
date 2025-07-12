@@ -114,7 +114,7 @@ const JourneyTradingCards = () => {
       wildness: 9,
       gradient: 'linear-gradient(135deg, #E1F5FE 0%, #B3E5FC 100%)',
       borderColor: '#E1F5FE',
-      image: '/ice.webp'
+      image: '/icey.png'
     },
     {
       id: 8,
