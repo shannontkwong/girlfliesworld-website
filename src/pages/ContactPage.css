@@ -1,0 +1,122 @@
+.contact-page {
+  min-height: 100vh;
+  padding-top: 100px;
+  background: linear-gradient(to bottom, #ffffff, #FFF4E0, #EDF3FF);
+  font-family: 'Helvetica Neue', sans-serif;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.contact-container h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 40px;
+  color: #555;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.contact-card {
+  background-color: #FFF4E0;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.contact-card h2 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(to right, #f43f5e, #ec4899);
+  padding: 6px 12px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.contact-card a {
+  font-size: 1.2rem;
+  color: #d9236e;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.contact-card a:hover {
+  text-decoration: underline;
+}
+
+.phone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  gap: 12px;
+}
+
+.phone img {
+  width: 24px;
+  height: 24px;
+}
+
+.phone a {
+  font-size: 1.1rem;
+  color: #333;
+  text-decoration: none;
+}
+
+.phone a:hover {
+  text-decoration: underline;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.social-icons img {
+  width: 36px;
+  height: 36px;
+  opacity: 0.7;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  filter: grayscale(100%);
+}
+
+.social-icons a:hover img {
+  transform: scale(1.1);
+  opacity: 1;
+  filter: grayscale(0%);
+}
+
+.contact-logo {
+  width: 120px;
+  margin: 0 auto 40px;
+  display: block;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}

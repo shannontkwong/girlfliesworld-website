@@ -1,0 +1,228 @@
+/* Reset and base styles */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #ffffff;
+  color: #000;
+}
+
+/* Main container */
+.journey-page {
+  min-height: 100vh;          /* fill viewport height */
+  max-width: 1200px;          /* limit width */
+  margin: 0 auto;             /* center horizontally */
+  padding: 80px 20px 40px 20px;  /* padding top & bottom */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Content section stretches to fill space if needed */
+.route-section {
+  text-align: center;
+  padding: 0 20px;
+  flex-grow: 1;
+}
+
+/* Text styles */
+.route-description,
+.route-note {
+  font-size: 18px;
+  max-width: 960px;
+  margin: 80px auto 20px auto;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+/* Image */
+.route-map {
+  max-width: 90%;
+  margin: 80px auto;
+
+  display: block;
+  border-radius: 12px;
+}
+
+/* Title */
+.journey-section-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 60px 0 20px 0;
+  text-align: center;
+  color: #000;
+}
+
+/* Journey parts list */
+.journey-parts-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+  margin: 60px auto;
+  padding: 20px;
+  max-width: 1200px;
+  background: linear-gradient(135deg, #fefefe 0%, #f4f4f4 100%);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.square-section {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px 30px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.icon-container {
+  color: #444;
+  margin-bottom: 6px;
+}
+
+.square-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 0, 102, 0.05), transparent 60%);
+  transform: rotate(45deg);
+  z-index: 0;
+}
+
+.square-section:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+}
+
+.square-section p {
+  margin: 0;
+  z-index: 1;
+  position: relative;
+}
+
+.square-section strong {
+  font-size: 18px;
+  color: #e60039;
+}
+
+
+.square-section {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  padding: 24px 30px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+}
+
+.square-section:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* === Footer styles === */
+/* Assuming your Footer component has className="footer" */
+/* Add this in your Footer.css or global CSS */
+.footer {
+  width: 100vw;           /* full viewport width */
+  background-color: #222; /* example dark bg */
+  color: #fff;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+/* Container for cards grid */
+.journey-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  margin: 40px auto 80px;
+  max-width: 1200px;
+}
+
+/* Single card */
+.journey-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.journey-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 48px rgba(0,0,0,0.16);
+}
+
+/* Image area (replace with your image) */
+.card-image {
+  width: 100%;
+  height: 180px;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.85);
+}
+
+/* Content inside card */
+.card-content {
+  padding: 20px 24px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #e60039;
+}
+
+.description {
+  font-size: 1rem;
+  margin-bottom: 16px;
+  color: #333;
+  flex-grow: 1;
+}
+
+/* Stats area */
+.stats {
+  font-size: 0.9rem;
+  color: #222;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px 12px;
+  font-weight: 600;
+}
+
+/* Logo bottom right */
+.gfw-logo {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 48px;
+  height: 48px;
+  opacity: 0.7;
+  filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3));
+  user-select: none;
+  pointer-events: none;
+}
