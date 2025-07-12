@@ -198,7 +198,7 @@ const HeroSection = () => {
     <section style={heroStyle}>
       <div style={heroBackgroundStyle}>
         <img
-          src="blac.jpeg"
+          src="/blac.jpeg"
           alt="Shannon and her aircraft"
           style={heroBgImageStyle}
           loading="lazy"

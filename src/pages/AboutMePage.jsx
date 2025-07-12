@@ -18,7 +18,7 @@ const AboutMePage = () => {
   const galleryImages = [
     { src: '/plan.png', alt: 'Shannon Walking' },
     { src: '/fuel.jpeg', alt: 'Shannon Portrait' },
-    { src: 'hat.png', alt: 'Shannon Mode' },
+    { src: '/hat.png', alt: 'Shannon Mode' },
   ];
 
   const sectionStyle = {
@@ -249,10 +249,10 @@ const AboutMePage = () => {
       {/* About Section */}
       <section style={sectionStyle}>
         <img 
-          src="side.png" 
+          src="/side.png" 
           style={imageStyle} 
           alt="Shannon Wong" 
-          onClick={() => openModal('side.png', 'Shannon Wong')}
+          onClick={() => openModal('/side.png', 'Shannon Wong')}
         />
         <div style={textBlockStyle}>
           <h2 style={headingStyle}>
@@ -326,10 +326,10 @@ const AboutMePage = () => {
       {/* Early Life Section */}
       <section style={sectionStyle}>
         <img 
-          src="snow.png" 
+          src="/snow.png" 
           style={imageStyle} 
           alt="Shannon Portrait" 
-          onClick={() => openModal('snow.png', 'Shannon Portrait')}
+          onClick={() => openModal('/snow.png', 'Shannon Portrait')}
         />
         <div style={textBlockStyle}>
           <h3 style={headingStyle}>Overcoming <span style={highlights.red}>Adversity</span></h3>
@@ -356,20 +356,20 @@ const AboutMePage = () => {
           </p>
         </div>
         <img 
-          src="hack.png" 
+          src="/hack.png" 
           style={imageStyle} 
           alt="Shannon Mode" 
-          onClick={() => openModal('hack.png', 'Shannon Mode')}
+          onClick={() => openModal('/hack.png', 'Shannon Mode')}
         />
       </section>
 
       {/* The Mission Section */}
       <section style={sectionStyle}>
         <img 
-          src="s.jpg" 
+          src="/s.jpg" 
           style={imageStyle} 
           alt="Shannon Fun" 
-          onClick={() => openModal('s.jpg', 'Shannon Fun')}
+          onClick={() => openModal('/s.jpg', 'Shannon Fun')}
         />
         <div style={textBlockStyle}>
           <h3 style={headingStyle}>The <span style={highlights.blue}>South Pole</span> Mission</h3>

@@ -23,7 +23,7 @@ const ImageGridSection = () => {
     },
     {
       href: 'https://gfwblog.weebly.com',
-      image: 'blogs.png',
+      image: '/blogs.png',
       alt: 'Blog',
       external: true
     },
@@ -35,13 +35,13 @@ const ImageGridSection = () => {
     },
     {
       href: '/plane',
-      image: 'plane.png',
+      image: '/plane.png',
       alt: 'The Plane',
       external: false
     },
     {
       href: '/videos',
-      image: 'videos.png',
+      image: '/videos.png',
       alt: 'Videos',
       external: true
     }
