@@ -17,7 +17,7 @@ const AboutMePage = () => {
 
   const galleryImages = [
     { src: '/plan.png', alt: 'Shannon Walking' },
-    { src: '/fuel.jpeg', alt: 'Shannon Portrait' },
+    { src: '/fuel.png', alt: 'Shannon Portrait' },
     { src: '/hat.png', alt: 'Shannon Mode' },
   ];
 
