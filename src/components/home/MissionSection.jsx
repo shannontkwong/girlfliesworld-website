@@ -52,7 +52,7 @@ Through GIRLFLIESWORLD, I hope to inspire a new generation of young explorers, s
 </p>
       <h2 style={titleStyleTwo}>Our Mission</h2>
       <p style={textStyle}>
-      I’m Shannon, an 18-year-old pilot born in Hong Kong. In October 2026, I will attempt something no woman in history has ever done: to fly solo and unassisted to the South Pole in a small experimental aircraft.  
+      I’m Shannon, an 19-year-old pilot born in Hong Kong. In October 2026, I will attempt something no woman in history has ever done: to fly solo and unassisted to the South Pole in a small experimental aircraft.  
  
         <br /><br />
         On this mission, I will also circumnavigate the globe, crossing all 7 continents in a single-engine aircraft—breaking multiple Guinness World Records in the process. This isn’t just a flight—it’s a journey through some of the world’s most remote, hostile, and breathtaking regions, many of which a small SEP aircraft was never designed to reach. Very few pilots ever attempt a route this extreme. It’s aerial exploration at the edge of possibility—blending bold adventure with real-world science.        <br /><br />

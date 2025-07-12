@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const AboutMePage = () => {
   const [modalImage, setModalImage] = useState(null);
@@ -336,7 +337,7 @@ const AboutMePage = () => {
           <p>
             Raised by a single father who grew up <span style={highlights.yellow}>poor</span>, working jobs like selling shoes and waiting tables before putting himself through college at 25, Shannon faced profound challenges early in life. At just 10 years old, she was responsible for caring for her mother—preparing pills and medicine every morning—until her mother sadly passed away from <span style={highlights.purple}>breast cancer</span> that same year.
 
-            <br></br><br></br>The year brought even more hardship: Shannon was <span style={highlights.blue}>bullied at school</span>, her grandmother died of breast cancer, and a year later her grandfather passed away after a coma. Family conflicts led to more than a decade of court battles, and a tragic car accident soon after nearly left Shannon orphaned.
+            <br></br><br></br>The year brought even more hardship: Shannon was bullied at school, her grandmother died of breast cancer, and a year later her grandfather passed away after a coma. Family conflicts led to more than a decade of court battles, and a tragic car accident soon after nearly left Shannon orphaned.
 
             <br></br><br></br>Despite these overwhelming difficulties, Shannon struggled in traditional schools but found early success in <span style={highlights.green}>art</span>. Her passion and curiosity, however, ultimately pushed her toward <span style={highlights.orange}>science and flight</span>—defying the odds to carve her own path.
           </p>
@@ -389,19 +390,22 @@ const AboutMePage = () => {
             Shannon wants to inspire <span style={highlights.purple}>youth</span>—especially <span style={highlights.orange}>girls</span>—to embrace <span style={highlights.green}>science</span>, <span style={highlights.red}>exploration</span>, and <span style={highlights.yellow}>radical self-belief</span>.
           </p>
           <div style={{ marginTop: '20px' }}>
-            <button style={{
-              fontSize: isMobile ? '16px' : '18px',
-              background: 'black',
-              color: '#fff',
-              textDecoration: 'none',
-              border: 'none',
-              padding: isMobile ? '10px 20px' : '12px 25px',
-              borderRadius: '6px',
-              transition: '0.5s',
-              cursor: 'pointer'
-            }}>
-              Track the Journey
-            </button>
+          <Link to="/journey" style={{ textDecoration: 'none' }}>
+  <button style={{
+    fontSize: isMobile ? '16px' : '18px',
+    background: 'black',
+    color: '#fff',
+    textDecoration: 'none',
+    border: 'none',
+    padding: isMobile ? '10px 20px' : '12px 25px',
+    borderRadius: '6px',
+    transition: '0.5s',
+    cursor: 'pointer'
+  }}>
+    Track the Journey
+  </button>
+</Link>
+
           </div>
         </div>
         <img 
