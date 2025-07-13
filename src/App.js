@@ -16,6 +16,7 @@ import LoadingScreen from './components/layout/LoadingScreen';
 import HomePage from './pages/HomePage';
 import NewsVideosPage from './pages/NewsVideosPage';
 import VideosPage from './pages/VideosPage';
+import Blog from './pages/BlogPage';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/aboutme" element={<AboutMePage />} />
           <Route path="/news" element={<NewsVideosPage />} />
           <Route path="/videos" element={<VideosPage />} />
+          <Route path="/blog" element={<Blog />} />
 
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/journey" element={<JourneyPage />} />

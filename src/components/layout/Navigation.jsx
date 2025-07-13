@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { ChevronDown, Plane, FileText, Video, User, Menu, X } from 'lucide-react';
+import { ChevronDown, Menu, X, Sparkles } from 'lucide-react';
 
 const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -8,6 +7,7 @@ const Navigation = () => {
   const [journeyDropdown, setJourneyDropdown] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [showBlogBanner, setShowBlogBanner] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,7 +23,7 @@ const Navigation = () => {
 
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', handleResize);
-    handleResize(); // Initial check
+    handleResize();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -59,6 +59,43 @@ const Navigation = () => {
     }
   ];
 
+  const aboutMenuItems = [
+    {
+      title: 'About Shannon',
+      description: 'Learn about Shannon\'s incredible journey',
+      href: '/aboutme',
+      image: '/side.png'
+    },
+    {
+      title: 'Latest News',
+      description: 'Stay updated with the latest developments and announcements',
+      href: '/news',
+      image: '/tr.png'
+    },
+    {
+      title: 'Videos',
+      description: 'Watch exclusive behind-the-scenes content and flight preparations',
+      href: '/videos',
+      image: '/se.png'
+    }
+  ];
+
+  const journeyMenuItems = [
+    {
+      title: 'Flight Route & LIVE Tracking',
+      description: 'Explore the epic 7-continent route to the South Pole',
+      href: '/journey',
+      image: '/routes.png'
+    },
+    {
+      title: 'Shannon\'s Blog',
+      description: 'Read personal insights and updates from Shannon herself',
+      href: '/blog',
+      image: '/bl.png'
+    },
+  
+  ];
+
   const navStyle = {
     position: 'fixed',
     top: 0,
@@ -70,6 +107,27 @@ const Navigation = () => {
     borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
     transition: 'all 0.3s ease',
     padding: 0
+  };
+
+  const blogBannerStyle = {
+    position: 'fixed',
+    top: isMobile ? '80px' : '100px',
+    right: isMobile ? '10px' : '20px',
+    zIndex: 1001,
+    background: 'linear-gradient(135deg, #87CEEB, #B0E0E6)',
+    color: '#1e3a8a',
+    padding: isMobile ? '12px 16px' : '16px 20px',
+    borderRadius: '16px',
+    boxShadow: '0 8px 32px rgba(135, 206, 235, 0.4)',
+    display: showBlogBanner ? 'flex' : 'none',
+    alignItems: 'center',
+    gap: '12px',
+    maxWidth: isMobile ? '280px' : '320px',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    border: '1px solid rgba(255, 255, 255, 0.3)',
+    backdropFilter: 'blur(10px)',
+    animation: 'blogBannerSlide 0.5s ease-out, blogBannerPulse 3s ease-in-out infinite'
   };
 
   const containerStyle = {
@@ -93,7 +151,7 @@ const Navigation = () => {
     fontSize: isMobile ? '1.8rem' : '3rem',
     fontWeight: 700,
     color: '#fe019a',
-    letterSpacing: '-0.02em'
+    letterSpacing: '-0.08em'
   };
 
   const hamburgerStyle = {
@@ -111,6 +169,125 @@ const Navigation = () => {
     gap: '2rem'
   };
 
+  const itemsStyle = {
+    display: 'flex',
+    listStyle: 'none',
+    gap: '3rem',
+    alignItems: 'center',
+    margin: 0,
+    padding: 0
+  };
+
+  const linkStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+    textDecoration: 'none',
+    color: '#000',
+    fontWeight: 600,
+    fontSize: '1rem',
+    transition: 'all 0.3s ease',
+    position: 'relative',
+    padding: '1.5rem 0',
+    cursor: 'pointer'
+  };
+
+  const dropdownItemStyle = {
+    position: 'relative'
+  };
+
+  // Wide modern dropdown styles
+  const wideDropdownStyle = {
+    position: 'absolute',
+    top: '100%',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    background: '#fff',
+    borderRadius: '16px',
+    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)',
+    border: '1px solid rgba(0, 0, 0, 0.08)',
+    width: '600px',
+    padding: '2rem',
+    zIndex: 1001,
+    opacity: 0,
+    visibility: 'hidden',
+    transform: 'translateX(-50%) translateY(-20px)',
+    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+    backdropFilter: 'blur(20px)'
+  };
+
+  const wideDropdownVisibleStyle = {
+    ...wideDropdownStyle,
+    opacity: 1,
+    visibility: 'visible',
+    transform: 'translateX(-50%) translateY(0)'
+  };
+
+  const dropdownGridStyle = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(1, 1fr)',
+    gap: '1rem'
+  };
+
+  const dropdownItemCardStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '1rem',
+    padding: '1rem',
+    borderRadius: '12px',
+    textDecoration: 'none',
+    color: '#000',
+    transition: 'all 0.3s ease',
+    border: '1px solid transparent'
+  };
+
+  const dropdownImageStyle = {
+    width: '60px',
+    height: '60px',
+    borderRadius: '8px',
+    objectFit: 'cover',
+    background: '#f3f4f6',
+    flexShrink: 0
+  };
+
+  const dropdownContentStyle = {
+    flex: 1
+  };
+
+  const dropdownTitleStyle = {
+    fontSize: '1rem',
+    fontWeight: 700,
+    color: '#111827',
+    marginBottom: '0.25rem'
+  };
+
+  const dropdownDescStyle = {
+    fontSize: '0.875rem',
+    color: '#6b7280',
+    lineHeight: '1.4'
+  };
+
+  const socialSectionStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '1rem'
+  };
+
+  const socialIconStyle = {
+    width: '24px',
+    height: '24px',
+    opacity: 0.7,
+    transition: 'all 0.3s ease',
+    filter: 'grayscale(100%)'
+  };
+
+  const dividerStyle = {
+    width: '1px',
+    height: '30px',
+    background: 'rgba(0, 0, 0, 0.2)',
+    margin: '0 1rem'
+  };
+
   const mobileMenuStyle = {
     display: isMobile && mobileMenuOpen ? 'block' : 'none',
     position: 'fixed',
@@ -121,7 +298,9 @@ const Navigation = () => {
     backdropFilter: 'blur(20px)',
     borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
     padding: '1rem',
-    zIndex: 999
+    zIndex: 999,
+    maxHeight: 'calc(100vh - 70px)',
+    overflowY: 'auto'
   };
 
   const mobileMenuItemStyle = {
@@ -143,320 +322,314 @@ const Navigation = () => {
     marginTop: '1rem'
   };
 
-  const itemsStyle = {
-    display: 'flex',
-    listStyle: 'none',
-    gap: '3rem',
-    alignItems: 'center',
-    margin: 0,
-    padding: 0
-  };
-
-  const linkStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    textDecoration: 'none',
-    color: '#000',
-    fontWeight: 500,
-    fontSize: '0.95rem',
-    transition: 'all 0.3s ease',
-    position: 'relative',
-    padding: '1rem 0',
-    cursor: 'pointer'
-  };
-
-  const dropdownItemStyle = {
-    position: 'relative'
-  };
-
-  const dropdownContentStyle = {
-    position: 'absolute',
-    top: '100%',
-    left: '0',
-    background: 'rgba(255, 255, 255, 0.98)',
-    backdropFilter: 'blur(20px)',
-    borderRadius: '12px',
-    boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
-    border: '1px solid rgba(0, 0, 0, 0.1)',
-    minWidth: '220px',
-    padding: '1rem 0',
-    zIndex: 1001,
-    opacity: 0,
-    visibility: 'hidden',
-    transform: 'translateY(-10px)',
-    transition: 'all 0.3s ease'
-  };
-
-  const dropdownContentVisibleStyle = {
-    ...dropdownContentStyle,
-    opacity: 1,
-    visibility: 'visible',
-    transform: 'translateY(0)'
-  };
-
-  const dropdownLinkStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.75rem',
-    padding: '0.75rem 1.5rem',
-    textDecoration: 'none',
-    color: '#000',
-    fontSize: '0.9rem',
-    fontWeight: 500,
-    transition: 'all 0.3s ease',
-    borderLeft: '3px solid transparent'
-  };
-
-  const socialSectionStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '1rem'
-  };
-
-  const socialIconStyle = {
-    width: '24px',
-    height: '24px',
-    opacity: 0.6,
-    transition: 'all 0.3s ease',
-    filter: 'grayscale(100%)'
-  };
-
-  const dividerStyle = {
-    width: '1px',
-    height: '30px',
-    background: 'rgba(0, 0, 0, 0.2)',
-    margin: '0 1rem'
-  };
-
   return (
-    <nav style={navStyle} id="navbar">
-      <div style={containerStyle}>
-        {/* Logo */}
-        <Link style={logoStyle} to="/">
-          <span style={logoTextStyle}>GIRLFLIESWORLD</span>
-        </Link>
+    <>
+      <style>
+        {`
+          @keyframes blogBannerSlide {
+            from {
+              transform: translateX(100%);
+              opacity: 0;
+            }
+            to {
+              transform: translateX(0);
+              opacity: 1;
+            }
+          }
+          
+          @keyframes blogBannerPulse {
+            0%, 100% {
+              box-shadow: 0 8px 32px rgba(135, 206, 235, 0.4);
+            }
+            50% {
+              box-shadow: 0 8px 32px rgba(135, 206, 235, 0.6), 0 0 20px rgba(135, 206, 235, 0.4);
+            }
+          }
+        `}
+      </style>
 
-        {/* Hamburger Menu Button (Mobile) */}
-        <button 
-          style={hamburgerStyle}
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+    {/* Blog Banner */}
+<div
+  style={{
+    ...blogBannerStyle,
+    background: '#C4A574', // Changed from gradient to solid color
+    color: '#fff', // Changed text color to white for better contrast
+    boxShadow: '0 8px 32px rgba(196, 165, 116, 0.4)', // Updated shadow color to match
+  }}
+  onClick={() => window.location.href = '/blog'}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.transform = 'scale(1.05)';
+    e.currentTarget.style.boxShadow = '0 12px 40px rgba(196, 165, 116, 0.6)'; // Updated hover shadow
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.transform = 'scale(1)';
+    e.currentTarget.style.boxShadow = '0 8px 32px rgba(196, 165, 116, 0.4)'; // Reset shadow
+  }}
+>
+  <Sparkles size={20} style={{ animation: 'spin 3s linear infinite', color: '#fff' }} />
+  <div style={{
+    flex: 1,
+    fontSize: isMobile ? '14px' : '15px',
+    fontWeight: 600,
+    lineHeight: '1.3'
+  }}>
+    <strong>Shannon's Blog is Live!</strong><br />
+    Read about the incredible journey 
+  </div>
+  <button
+    style={{
+      background: 'rgba(255, 255, 255, 0.2)', // Updated button background
+      border: 'none',
+      color: '#fff', // White text for button
+      borderRadius: '50%',
+      width: '24px',
+      height: '24px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'pointer',
+      fontSize: '16px',
+      fontWeight: 'bold',
+      transition: 'all 0.2s ease'
+    }}
+    onClick={(e) => {
+      e.stopPropagation();
+      setShowBlogBanner(false);
+    }}
+    onMouseEnter={(e) => {
+      e.target.style.background = 'rgba(255, 255, 255, 0.3)'; // Updated hover state
+    }}
+    onMouseLeave={(e) => {
+      e.target.style.background = 'rgba(255, 255, 255, 0.2)'; // Reset state
+    }}
+  >
+    ×
+  </button>
+</div>
 
-        {/* Desktop Menu */}
-        <div style={desktopMenuStyle}>
-          <ul style={itemsStyle}>
-            {/* About Dropdown */}
-            <li style={dropdownItemStyle}>
-              <div 
-                style={linkStyle}
-                onMouseEnter={() => setAboutDropdown(true)}
-                onMouseLeave={() => setAboutDropdown(false)}
-              >
-                <span>About</span>
-                <ChevronDown 
-                  size={16} 
-                  style={{
-                    transition: 'transform 0.3s ease',
-                    transform: aboutDropdown ? 'rotate(180deg)' : 'rotate(0deg)'
-                  }} 
-                />
-                
+      <nav style={navStyle}>
+        <div style={containerStyle}>
+          {/* Logo */}
+          <a style={logoStyle} href="/">
+            <span style={logoTextStyle}>GIRLFLIESWORLD</span>
+          </a>
+
+          {/* Hamburger Menu Button (Mobile) */}
+          <button 
+            style={hamburgerStyle}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+
+          {/* Desktop Menu */}
+          <div style={desktopMenuStyle}>
+            <ul style={itemsStyle}>
+              {/* About Dropdown */}
+              <li style={dropdownItemStyle}>
                 <div 
-                  style={aboutDropdown ? dropdownContentVisibleStyle : dropdownContentStyle}
+                  style={linkStyle}
                   onMouseEnter={() => setAboutDropdown(true)}
                   onMouseLeave={() => setAboutDropdown(false)}
                 >
-                  <Link 
-                    to="/aboutme" 
-                    style={dropdownLinkStyle}
-                    onMouseEnter={(e) => {
-                      e.target.style.background = 'rgba(254, 1, 154, 0.05)';
-                      e.target.style.borderLeft = '3px solid #fe019a';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.background = 'transparent';
-                      e.target.style.borderLeft = '3px solid transparent';
-                    }}
-                  >
-                    <User size={16} />
-                    <span>About Me</span>
-                  </Link>
+                  <span>About</span>
+                  <ChevronDown 
+                    size={16} 
+                    style={{
+                      transition: 'transform 0.3s ease',
+                      transform: aboutDropdown ? 'rotate(180deg)' : 'rotate(0deg)'
+                    }} 
+                  />
                   
-                  <Link 
-                    to="/news" 
-                    style={dropdownLinkStyle}
-                    onMouseEnter={(e) => {
-                      e.target.style.background = 'rgba(254, 1, 154, 0.05)';
-                      e.target.style.borderLeft = '3px solid #fe019a';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.background = 'transparent';
-                      e.target.style.borderLeft = '3px solid transparent';
-                    }}
+                  <div 
+                    style={aboutDropdown ? wideDropdownVisibleStyle : wideDropdownStyle}
+                    onMouseEnter={() => setAboutDropdown(true)}
+                    onMouseLeave={() => setAboutDropdown(false)}
                   >
-                    <FileText size={16} />
-                    <span>Latest News</span>
-                  </Link>
-                  
-                  <Link 
-                    to="/videos" 
-                    style={dropdownLinkStyle}
-                    onMouseEnter={(e) => {
-                      e.target.style.background = 'rgba(254, 1, 154, 0.05)';
-                      e.target.style.borderLeft = '3px solid #fe019a';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.background = 'transparent';
-                      e.target.style.borderLeft = '3px solid transparent';
-                    }}
-                  >
-                    <Video size={16} />
-                    <span>Videos</span>
-                  </Link>
+                    <div style={dropdownGridStyle}>
+                      {aboutMenuItems.map((item, index) => (
+                        <a 
+                          key={index}
+                          href={item.href} 
+                          style={dropdownItemCardStyle}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = '#f9fafb';
+                            e.currentTarget.style.borderColor = '#e5e7eb';
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'transparent';
+                            e.currentTarget.style.borderColor = 'transparent';
+                            e.currentTarget.style.transform = 'translateY(0)';
+                          }}
+                        >
+                          <img src={item.image} alt={item.title} style={dropdownImageStyle} />
+                          <div style={dropdownContentStyle}>
+                            <div style={dropdownTitleStyle}>{item.title}</div>
+                            <div style={dropdownDescStyle}>{item.description}</div>
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </li>
+              </li>
 
-            {/* Journey Dropdown */}
-            <li style={dropdownItemStyle}>
-              <div 
-                style={linkStyle}
-                onMouseEnter={() => setJourneyDropdown(true)}
-                onMouseLeave={() => setJourneyDropdown(false)}
-              >
-                <span>My Journey</span>
-                <ChevronDown 
-                  size={16} 
-                  style={{
-                    transition: 'transform 0.3s ease',
-                    transform: journeyDropdown ? 'rotate(180deg)' : 'rotate(0deg)'
-                  }} 
-                />
-                
+              {/* Journey Dropdown */}
+              <li style={dropdownItemStyle}>
                 <div 
-                  style={journeyDropdown ? dropdownContentVisibleStyle : dropdownContentStyle}
+                  style={linkStyle}
                   onMouseEnter={() => setJourneyDropdown(true)}
                   onMouseLeave={() => setJourneyDropdown(false)}
                 >
-                  <Link 
-                    to="/journey" 
-                    style={dropdownLinkStyle}
-                    onMouseEnter={(e) => {
-                      e.target.style.background = 'rgba(254, 1, 154, 0.05)';
-                      e.target.style.borderLeft = '3px solid #fe019a';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.background = 'transparent';
-                      e.target.style.borderLeft = '3px solid transparent';
-                    }}
+                  <span>My Journey</span>
+                  <ChevronDown 
+                    size={16} 
+                    style={{
+                      transition: 'transform 0.3s ease',
+                      transform: journeyDropdown ? 'rotate(180deg)' : 'rotate(0deg)'
+                    }} 
+                  />
+                  
+                  <div 
+                    style={journeyDropdown ? wideDropdownVisibleStyle : wideDropdownStyle}
+                    onMouseEnter={() => setJourneyDropdown(true)}
+                    onMouseLeave={() => setJourneyDropdown(false)}
                   >
-                    <Plane size={16} />
-                    <span>Flight Route</span>
-                  </Link>
+                    <div style={dropdownGridStyle}>
+                      {journeyMenuItems.map((item, index) => (
+                        <a 
+                          key={index}
+                          href={item.href} 
+                          style={dropdownItemCardStyle}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = '#f9fafb';
+                            e.currentTarget.style.borderColor = '#e5e7eb';
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'transparent';
+                            e.currentTarget.style.borderColor = 'transparent';
+                            e.currentTarget.style.transform = 'translateY(0)';
+                          }}
+                        >
+                          <img src={item.image} alt={item.title} style={dropdownImageStyle} />
+                          <div style={dropdownContentStyle}>
+                            <div style={dropdownTitleStyle}>{item.title}</div>
+                            <div style={dropdownDescStyle}>{item.description}</div>
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </li>
+              </li>
 
-            <li>
-              <Link to="/contact" style={linkStyle}>
-                <span>Become a Sponsor</span>
-              </Link>
-            </li>
-          </ul>
+              <li>
+                <a href="/contact" style={linkStyle}>
+                  <span>Become a Sponsor</span>
+                </a>
+              </li>
+            </ul>
 
-          <div style={dividerStyle}></div>
+            <div style={dividerStyle}></div>
 
-          <div style={socialSectionStyle}>
+            <div style={socialSectionStyle}>
+              {socialLinks.map((link, index) => (
+                <a 
+                  key={index} 
+                  href={link.href} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <img
+                    style={socialIconStyle}
+                    src={link.icon}
+                    alt={link.alt}
+                    onMouseOver={(e) => {
+                      e.target.style.opacity = '1';
+                      e.target.style.transform = 'translateY(-2px)';
+                      e.target.style.filter = 'grayscale(0%)';
+                    }}
+                    onMouseOut={(e) => {
+                      e.target.style.opacity = '0.7';
+                      e.target.style.transform = 'translateY(0)';
+                      e.target.style.filter = 'grayscale(100%)';
+                    }}
+                  />
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <div style={mobileMenuStyle}>
+          <a 
+            href="/aboutme" 
+            style={mobileMenuItemStyle}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            About Me
+          </a>
+          <a 
+            href="/news" 
+            style={mobileMenuItemStyle}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Latest News
+          </a>
+          <a 
+            href="/videos" 
+            style={mobileMenuItemStyle}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Videos
+          </a>
+          <a 
+            href="/journey" 
+            style={mobileMenuItemStyle}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Flight Route & LIVE Tracking
+          </a>
+          <a 
+            href="/blog" 
+            style={mobileMenuItemStyle}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Blog
+          </a>
+          <a 
+            href="/contact" 
+            style={mobileMenuItemStyle}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Become a Sponsor
+          </a>
+
+          {/* Mobile Social Icons */}
+          <div style={mobileSocialStyle}>
             {socialLinks.map((link, index) => (
               <a 
                 key={index} 
                 href={link.href} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                style={{ display: 'flex', alignItems: 'center' }}
               >
                 <img
-                  style={socialIconStyle}
+                  style={{ width: '28px', height: '28px', opacity: 0.8 }}
                   src={link.icon}
                   alt={link.alt}
-                  onMouseOver={(e) => {
-                    e.target.style.opacity = '1';
-                    e.target.style.transform = 'translateY(-2px)';
-                    e.target.style.filter = 'grayscale(0%)';
-                  }}
-                  onMouseOut={(e) => {
-                    e.target.style.opacity = '0.6';
-                    e.target.style.transform = 'translateY(0)';
-                    e.target.style.filter = 'grayscale(100%)';
-                  }}
                 />
               </a>
             ))}
           </div>
         </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <div style={mobileMenuStyle}>
-        <Link 
-          to="/aboutme" 
-          style={mobileMenuItemStyle}
-          onClick={() => setMobileMenuOpen(false)}
-        >
-          About Me
-        </Link>
-        <Link 
-          to="/news" 
-          style={mobileMenuItemStyle}
-          onClick={() => setMobileMenuOpen(false)}
-        >
-          Latest News
-        </Link>
-        <Link 
-          to="/videos" 
-          style={mobileMenuItemStyle}
-          onClick={() => setMobileMenuOpen(false)}
-        >
-          Videos
-        </Link>
-        <Link 
-          to="/journey" 
-          style={mobileMenuItemStyle}
-          onClick={() => setMobileMenuOpen(false)}
-        >
-          Flight Route
-        </Link>
-        <Link 
-          to="/contact" 
-          style={mobileMenuItemStyle}
-          onClick={() => setMobileMenuOpen(false)}
-        >
-          Become a Sponsor
-        </Link>
-
-        {/* Mobile Social Icons */}
-        <div style={mobileSocialStyle}>
-          {socialLinks.map((link, index) => (
-            <a 
-              key={index} 
-              href={link.href} 
-              target="_blank" 
-              rel="noopener noreferrer"
-            >
-              <img
-                style={{ width: '28px', height: '28px', opacity: 0.8 }}
-                src={link.icon}
-                alt={link.alt}
-              />
-            </a>
-          ))}
-        </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 };
 

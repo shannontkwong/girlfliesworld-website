@@ -1,131 +1,368 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const StatsSection = () => {
-  const backgroundImageUrl = '/ice.jpg'; // Replace with your image path
+  const [currentSection, setCurrentSection] = useState(0);
+  const [imageErrors, setImageErrors] = useState({});
+  const [imageLoaded, setImageLoaded] = useState({});
 
-  const sectionStyle = {
-    position: 'relative',
-    padding: '5rem 2rem',
-    backgroundColor: '#f8fafc',
-    overflow: 'hidden',
-    color: '#111',
-    fontFamily: "'Outfit', sans-serif",
+  const handleImageError = (imagePath) => {
+    console.log('Image failed to load:', imagePath);
+    setImageErrors(prev => ({ ...prev, [imagePath]: true }));
   };
 
-  const backgroundStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    height: '100%',
-    width: '100%',
-    backgroundImage: `url(${backgroundImageUrl})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    opacity: 0.15, // Adjust to control fade
-    zIndex: 0,
-    pointerEvents: 'none', // Prevent interference with clicks
-  };
-
-  const contentWrapperStyle = {
-    position: 'relative',
-    zIndex: 1,
-  };
-
-  const sectionTitleStyle = {
-    fontSize: '2rem',
-    fontWeight: 700,
-    textAlign: 'center',
-    marginBottom: '2rem',
-    color: '#222',
-  };
-
-  const gridStyle = {
-    maxWidth: '1200px',
-    margin: '0 auto 4rem',
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-    gap: '1.5rem',
-  };
-
-  const cardStyle = {
-    backgroundColor: '#ffffffee',
-    borderRadius: '1.25rem',
-    padding: '2rem',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
-    textAlign: 'center',
-  };
-
-  const topTextStyle = {
-    fontSize: '2rem',
-    fontWeight: 600,
-    color: '#1e3a8a',
-  };
-
-  const bottomTextStyle = {
-    fontSize: '1.1rem',
-    fontWeight: 500,
-    color: '#111827',
-    marginTop: '0.3rem',
-  };
-
-  const subTextStyle = {
-    fontSize: '0.95rem',
-    fontWeight: 400,
-    color: '#6b7280',
-    marginTop: '1rem',
+  const handleImageLoad = (imagePath) => {
+    console.log('Image loaded successfully:', imagePath);
+    setImageLoaded(prev => ({ ...prev, [imagePath]: true }));
+    setImageErrors(prev => ({ ...prev, [imagePath]: false }));
   };
 
   const sections = [
     {
-      title: 'STATS',
+      title: 'ENDURANCE',
+      image: '/cd.png', // Replace with your actual image path
       stats: [
-        { titleTop: '2026', titleBottom: 'Mission Year', subtext: 'Launching the Antarctic science expedition' },
-        { titleTop: '19', titleBottom: 'Years Old', subtext: 'Solo pilot and founder' },
-        { titleTop: '1st', titleBottom: 'Woman to Fly Solo to South Pole', subtext: 'Changing what’s possible in history and STEM' },
+        { label: 'FLIGHT ENDURANCE', value: '24+', unit: 'hrs nonstop' },
+        { label: 'DISTANCE', value: '76,000', unit: 'km travelled' },
+        { label: 'POLAR COLD', value: '-50°C', unit: 'harshest environments' },
+        { label: 'CO-PILOTS', value: '0', unit: 'solo, unassisted' },
       ],
     },
     {
       title: 'EXPLORATION',
+      image: '/m.png', // Replace with your actual image path
       stats: [
-        { titleTop: '7', titleBottom: 'Continents', subtext: 'Global mission spanning all land masses' },
-        { titleTop: '50+', titleBottom: 'Nations', subtext: 'Cross-cultural journey of unity and discovery' },
-        { titleTop: '2', titleBottom: 'Extreme Latitudes', subtext: 'Scientific Expedition in Greenland & Antarctica' },
-        { titleTop: '∞', titleBottom: 'Horizons', subtext: 'Exploring the unknown to expand the known' },
+        { label: 'CONTINENTS', value: '7', unit: 'all land masses' },
+        { label: 'NATIONS', value: '50+', unit: 'cross-cultural journey' },
+        { label: 'EXTREME LATITUDES', value: '2', unit: 'Greenland & Antarctica' },
+        { label: 'HORIZONS', value: '∞', unit: 'expanding the known' },
       ],
     },
     {
-      title: 'ENDURANCE',
+      title: 'OVERVIEW',
+      image: '/prop.png', // Replace with your actual image path
       stats: [
-        { titleTop: '24+ Hrs', titleBottom: 'Flight Endurance', subtext: 'Nonstop legs over oceans and ice' },
-        { titleTop: '76,000 KM', titleBottom: 'Distance Travelled', subtext: 'Nonstop flying, limited rests' },
-        { titleTop: '-50°C', titleBottom: 'Polar Cold', subtext: 'Navigating the world’s harshest environments' },
-        { titleTop: '0', titleBottom: 'Co-Pilots', subtext: 'Solo, unassisted, and fearless' },
+        { label: 'MISSION YEAR', value: '2026', unit: '' },
+        { label: 'AGE', value: '19', unit: 'years old' },
+        { label: 'ACHIEVEMENT', value: '1st', unit: 'Woman to Fly Solo to South Pole' },
+        { label: 'IMPACT', value: 'International', unit: 'Breaking barriers in STEM' },
       ],
     },
   ];
 
-  return (
-    <section style={sectionStyle}>
-      <div style={backgroundStyle}></div>
+  const nextSection = () => {
+    setCurrentSection((prev) => (prev + 1) % sections.length);
+  };
 
-      <div style={contentWrapperStyle}>
-        {sections.map((section, idx) => (
-          <div key={idx}>
-            <h2 style={sectionTitleStyle}>{section.title}</h2>
-            <div style={gridStyle}>
-              {section.stats.map((stat, index) => (
-                <div key={index} style={cardStyle}>
-                  <div>
-                    <div style={topTextStyle}>{stat.titleTop}</div>
-                    <div style={bottomTextStyle}>{stat.titleBottom}</div>
-                  </div>
-                  <div style={subTextStyle}>{stat.subtext}</div>
+  const prevSection = () => {
+    setCurrentSection((prev) => (prev - 1 + sections.length) % sections.length);
+  };
+
+  const goToSection = (index) => {
+    setCurrentSection(index);
+  };
+
+  return (
+    <section className="stats-section" style={{
+      backgroundColor: '#0a0a0a',
+      color: '#ffffff',
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      position: 'relative',
+      overflow: 'hidden',
+      paddingTop: '4rem', // Added top padding
+    }}>
+      {/* Main Content */}
+      <div className="stats-main-content" style={{
+        width: '100%',
+        maxWidth: '1400px',
+        margin: '0 auto',
+        padding: '0 4rem',
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: '4rem',
+        alignItems: 'center',
+        minHeight: '80vh',
+      }}>
+        {/* Left Side - Stats */}
+        <div className="stats-left-content" style={{
+          paddingRight: '2rem',
+        }}>
+          {/* Title */}
+          <h1 className="stats-title" style={{
+            fontFamily: "'Impact', 'Arial Black', sans-serif",
+            fontSize: 'clamp(3rem, 6vw, 5rem)',
+            fontWeight: 900,
+            textTransform: 'uppercase',
+            lineHeight: 0.9,
+            margin: '0 0 3rem 0',
+            letterSpacing: '-0.02em',
+            color: '#ffffff',
+          }}>
+            {sections[currentSection].title}
+          </h1>
+
+          {/* Description */}
+          <p className="stats-description" style={{
+             fontSize: '0.875rem',
+             lineHeight: 1.6,
+             fontWeight:'500',
+         
+             fontWeight:'500',
+             textAlign: 'left',
+             marginBottom: '1.5rem'
+          }}>
+            {sections[currentSection].title === 'ENDURANCE' && 
+              "Extreme conditions and solo flights that test the limits of human endurance and aircraft capability in the world's most challenging environments."
+            }
+            {sections[currentSection].title === 'EXPLORATION' && 
+              "A global journey spanning continents and cultures, pushing the boundaries of what's possible in small aircraft aviation."
+            }
+            {sections[currentSection].title === 'OVERVIEW' && 
+              "Breaking barriers and setting new records in aviation history. Shannon's mission represents the pinnacle of human achievement and determination."
+            }
+          </p>
+
+          {/* Stats Table */}
+          <div style={{
+            borderTop: '1px solid #333',
+          }}>
+            {sections[currentSection].stats.map((stat, index) => (
+              <div key={index} style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '1.5rem 0',
+                borderBottom: '1px solid #333',
+              }}>
+                <div style={{
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  letterSpacing: '0.05em',
+                  color: '#ffffff',
+                  textTransform: 'uppercase',
+                }}>
+                  {stat.label}
                 </div>
-              ))}
-            </div>
+                <div style={{
+                  textAlign: 'right',
+                }}>
+                  <div style={{
+                    fontSize: '1.8rem',
+                    fontWeight: 700,
+                    color: '#ffffff',
+                    lineHeight: 1,
+                  }}>
+                    {stat.value}
+                  </div>
+                  <div style={{
+                    fontSize: '0.85rem',
+                    color: '#888',
+                    marginTop: '0.25rem',
+                  }}>
+                    {stat.unit}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
+        </div>
+
+        {/* Right Side - Image */}
+        <div className="stats-image-container" style={{
+          position: 'relative',
+          height: '70vh',
+          maxHeight: '600px',
+          overflow: 'hidden',
+          borderRadius: '8px',
+          background: imageErrors[sections[currentSection].image] 
+            ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' 
+            : 'transparent',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          {!imageErrors[sections[currentSection].image] ? (
+            <img
+              key={sections[currentSection].image} // Force re-render when image changes
+              src={sections[currentSection].image}
+              alt={sections[currentSection].title}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                filter: 'brightness(0.8) contrast(1.1)',
+                display: imageLoaded[sections[currentSection].image] ? 'block' : 'none',
+              }}
+              onError={() => handleImageError(sections[currentSection].image)}
+              onLoad={() => handleImageLoad(sections[currentSection].image)}
+            />
+          ) : (
+            <div style={{
+              color: '#ffffff',
+              fontSize: '1.2rem',
+              textAlign: 'center',
+              padding: '2rem',
+              fontWeight: 600,
+            }}>
+              {sections[currentSection].title} IMAGE
+              <br />
+              <span style={{ fontSize: '0.9rem', opacity: 0.7 }}>
+                Image not found: {sections[currentSection].image}
+              </span>
+            </div>
+          )}
+          
+          {/* Loading state */}
+          {!imageLoaded[sections[currentSection].image] && !imageErrors[sections[currentSection].image] && (
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'linear-gradient(135deg, #333 0%, #555 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#fff',
+              fontSize: '1rem',
+            }}>
+              Loading...
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Navigation Arrows */}
+      <button
+        className="stats-nav-arrow"
+        onClick={prevSection}
+        style={{
+          position: 'absolute',
+          left: '2rem',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          background: 'rgba(255, 255, 255, 0.1)',
+          border: 'none',
+          borderRadius: '50%',
+          width: '60px',
+          height: '60px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          transition: 'all 0.3s ease',
+          backdropFilter: 'blur(10px)',
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.background = 'rgba(255, 255, 255, 0.2)';
+          e.target.style.transform = 'translateY(-50%) scale(1.1)';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+          e.target.style.transform = 'translateY(-50%) scale(1)';
+        }}
+      >
+        <ChevronLeft size={24} color="#ffffff" />
+      </button>
+
+      <button
+        className="stats-nav-arrow"
+        onClick={nextSection}
+        style={{
+          position: 'absolute',
+          right: '2rem',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          background: 'rgba(255, 255, 255, 0.1)',
+          border: 'none',
+          borderRadius: '50%',
+          width: '60px',
+          height: '60px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          transition: 'all 0.3s ease',
+          backdropFilter: 'blur(10px)',
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.background = 'rgba(255, 255, 255, 0.2)';
+          e.target.style.transform = 'translateY(-50%) scale(1.1)';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+          e.target.style.transform = 'translateY(-50%) scale(1)';
+        }}
+      >
+        <ChevronRight size={24} color="#ffffff" />
+      </button>
+
+      {/* Dot Navigation */}
+      <div style={{
+        position: 'absolute',
+        bottom: '3rem',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        display: 'flex',
+        gap: '1rem',
+      }}>
+        {sections.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => goToSection(index)}
+            style={{
+              width: '12px',
+              height: '12px',
+              borderRadius: '50%',
+              border: 'none',
+              background: index === currentSection ? '#ffffff' : 'rgba(255, 255, 255, 0.3)',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+            }}
+          />
         ))}
       </div>
+
+      {/* Mobile Responsive Styles */}
+      <style jsx>{`
+        @media (max-width: 768px) {
+          /* Scope all styles to this specific stats section only */
+          .stats-section {
+            padding: 2rem 0 !important;
+          }
+          
+          .stats-section .stats-main-content {
+            grid-template-columns: 1fr !important;
+            gap: 2rem !important;
+            padding: 0 2rem !important;
+          }
+          
+          .stats-section .stats-left-content {
+            padding-right: 0 !important;
+          }
+          
+          .stats-section .stats-title {
+            font-size: clamp(2.5rem, 8vw, 4rem) !important;
+            margin-bottom: 2rem !important;
+          }
+          
+          .stats-section .stats-description {
+            margin-bottom: 2rem !important;
+          }
+          
+          .stats-section .stats-image-container {
+            height: 50vh !important;
+            max-height: 400px !important;
+          }
+          
+          .stats-section .stats-nav-arrow {
+            display: none !important;
+          }
+        }
+      `}</style>
     </section>
   );
 };

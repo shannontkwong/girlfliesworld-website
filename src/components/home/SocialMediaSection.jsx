@@ -44,9 +44,8 @@ const SocialMediaSection = () => {
   const iconStyle = {
     width: '40px',
     height: '40px',
-    opacity: 0.7,
+    opacity: 1,
     transition: 'all 0.3s ease',
-    filter: 'grayscale(100%)'
   };
 
   return (
@@ -62,12 +61,10 @@ const SocialMediaSection = () => {
               onMouseOver={(e) => {
                 e.target.style.opacity = 1;
                 e.target.style.transform = 'translateY(-3px)';
-                e.target.style.filter = 'grayscale(0%)';
               }}
               onMouseOut={(e) => {
-                e.target.style.opacity = 0.7;
+                e.target.style.opacity = 1;
                 e.target.style.transform = 'translateY(0)';
-                e.target.style.filter = 'grayscale(100%)';
               }}
             />
           </a>

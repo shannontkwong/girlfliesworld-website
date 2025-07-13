@@ -8,6 +8,7 @@ import SocialMediaSection from '../components/home/SocialMediaSection';
 import Footer from '../components/layout/Footer';
 import AnimatedBats from '../components/home/AnimatedBats';
 import QuotationSection from '../components/home/QuotationSection';
+import SupportSection from '../components/home/SupportSection';
 
 const HomePage = () => {
   useEffect(() => {
@@ -59,7 +60,7 @@ const HomePage = () => {
       <ImageGridSection />
       <MissionSection />
       <StatsSection />
-     
+     <SupportSection />
     <QuotationSection />
       <SocialMediaSection />
       <Footer />

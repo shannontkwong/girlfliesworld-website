@@ -17,97 +17,120 @@ const flightData = [
     date: '2025/12/02',
     remarks: 'TBD',
   },
+  {
+    departure: 'Nuuk (BGGH)',
+    destination: 'Iqaluit (CYFB)',
+    departureTime: '09:00 UTC',
+    arrivalTime: '13:45 UTC',
+    date: '2025/12/05',
+    remarks: 'Weather Dependent',
+  },
+  {
+    departure: 'Iqaluit (CYFB)',
+    destination: 'Yellowknife (CYZF)',
+    departureTime: '10:30 UTC',
+    arrivalTime: '15:20 UTC',
+    date: '2025/12/08',
+    remarks: 'TBD',
+  }
 ];
 
 const FlightRow = ({ flight }) => (
-  <tr className={flight.remarks === 'Delayed' ? 'delayed' : ''}>
-    <td>{flight.departure}</td>
-    <td>{flight.destination}</td>
-    <td>{flight.departureTime}</td>
-    <td>{flight.arrivalTime}</td>
-    <td>{flight.date}</td>
-    <td>{flight.remarks}</td>
+  <tr style={{ backgroundColor: flight.remarks === 'Delayed' ? '#ffe6e6' : 'transparent' }}>
+    <td style={{ padding: '0.75rem', border: '1px solid #ccc', textAlign: 'center' }}>{flight.departure}</td>
+    <td style={{ padding: '0.75rem', border: '1px solid #ccc', textAlign: 'center' }}>{flight.destination}</td>
+    <td style={{ padding: '0.75rem', border: '1px solid #ccc', textAlign: 'center' }}>{flight.departureTime}</td>
+    <td style={{ padding: '0.75rem', border: '1px solid #ccc', textAlign: 'center' }}>{flight.arrivalTime}</td>
+    <td style={{ padding: '0.75rem', border: '1px solid #ccc', textAlign: 'center' }}>{flight.date}</td>
+    <td style={{ padding: '0.75rem', border: '1px solid #ccc', textAlign: 'center' }}>{flight.remarks}</td>
   </tr>
 );
 
 const FlightSchedule = () => {
   return (
-    <>
-      <style>{`
-        .flight-schedule-container {
-          padding: 1rem;
-          max-width: 100%;
-          overflow-x: auto;
-          font-family: 'Arial', sans-serif;
-        }
-
-        .flight-schedule-container h2 {
-          margin-bottom: 1rem;
-          font-size: 1.5rem;
-          text-align: center;
-        }
-
-        .flight-schedule-table {
-          width: 100%;
-          border-collapse: collapse;
-          border: 1px solid #ccc;
-          font-size: 0.95rem;
-        }
-
-        .flight-schedule-table th,
-        .flight-schedule-table td {
-          padding: 0.75rem;
-          border: 1px solid #ccc;
-          text-align: center;
-        }
-
-        .flight-schedule-table th {
-          background-color: #f8f8f8;
-          font-weight: bold;
-        }
-
-        .flight-schedule-table tr:hover {
-          background-color: #f1f1f1;
-        }
-
-        .delayed {
-          background-color: #ffe6e6;
-          color: #cc0000;
-          font-weight: bold;
-        }
-
-        .no-flights {
-          text-align: center;
-          color: #888;
-          margin-top: 2rem;
-        }
-      `}</style>
-
-      <div className="flight-schedule-container">
-        <h2>Upcoming Flight Schedule</h2>
-        {flightData.length > 0 ? (
-          <table className="flight-schedule-table">
-            <thead>
-              <tr>
-                <th>DEPARTURE</th>
-                <th>DESTINATION</th>
-                <th>DEP TIME</th>
-                <th>ARR TIME</th>
-                <th>DATE (Y/M/D)</th>
-                <th>REMARKS</th>
-              </tr>
-            </thead>
-            <tbody>
-              {flightData.map((flight, index) => (
-                <FlightRow key={index} flight={flight} />
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p className="no-flights">No scheduled flights yet.</p>
-        )}
-      </div>
-    </>
+    <div style={{ 
+      padding: '1rem', 
+      maxWidth: '100%', 
+      overflowX: 'auto', 
+      fontFamily: 'Arial, sans-serif', 
+      marginBottom: '3rem' 
+    }}>
+      <h2 style={{ 
+        fontFamily: "'Impact', 'Arial Black', sans-serif",
+        fontSize: '2rem',
+        fontWeight: 900,
+        textTransform: 'uppercase',
+        color: '#000',
+        marginBottom: '1.5rem',
+        textAlign: 'center'
+      }}>
+        Upcoming Flight Schedule
+      </h2>
+      {flightData.length > 0 ? (
+        <table style={{ 
+          width: '100%', 
+          borderCollapse: 'collapse', 
+          border: '1px solid #ccc', 
+          fontSize: '0.95rem' 
+        }}>
+          <thead>
+            <tr>
+              <th style={{ 
+                padding: '0.75rem', 
+                border: '1px solid #ccc', 
+                backgroundColor: '#f8f8f8', 
+                fontWeight: 'bold', 
+                textAlign: 'center' 
+              }}>DEPARTURE</th>
+              <th style={{ 
+                padding: '0.75rem', 
+                border: '1px solid #ccc', 
+                backgroundColor: '#f8f8f8', 
+                fontWeight: 'bold', 
+                textAlign: 'center' 
+              }}>DESTINATION</th>
+              <th style={{ 
+                padding: '0.75rem', 
+                border: '1px solid #ccc', 
+                backgroundColor: '#f8f8f8', 
+                fontWeight: 'bold', 
+                textAlign: 'center' 
+              }}>DEP TIME</th>
+              <th style={{ 
+                padding: '0.75rem', 
+                border: '1px solid #ccc', 
+                backgroundColor: '#f8f8f8', 
+                fontWeight: 'bold', 
+                textAlign: 'center' 
+              }}>ARR TIME</th>
+              <th style={{ 
+                padding: '0.75rem', 
+                border: '1px solid #ccc', 
+                backgroundColor: '#f8f8f8', 
+                fontWeight: 'bold', 
+                textAlign: 'center' 
+              }}>DATE (Y/M/D)</th>
+              <th style={{ 
+                padding: '0.75rem', 
+                border: '1px solid #ccc', 
+                backgroundColor: '#f8f8f8', 
+                fontWeight: 'bold', 
+                textAlign: 'center' 
+              }}>REMARKS</th>
+            </tr>
+          </thead>
+          <tbody>
+            {flightData.map((flight, index) => (
+              <FlightRow key={index} flight={flight} />
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p style={{ textAlign: 'center', color: '#888', marginTop: '2rem' }}>
+          No scheduled flights yet.
+        </p>
+      )}
+    </div>
   );
 };
 
