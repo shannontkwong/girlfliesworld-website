@@ -79,7 +79,7 @@ const ImageGridSection = () => {
 
   const gridItemStyle = {
     position: 'relative',
-    height: isMobile ? '380px' : '200px',
+    height: isMobile ? '400px' : '200px',
     overflow: 'hidden',
     border: '1px solid rgba(0, 0, 0, 0.1)',
     background: '#f8f8f8',
@@ -92,6 +92,7 @@ const ImageGridSection = () => {
   const imageStyle = {
     width: '100%',
     height: '100%',
+
     objectFit: 'cover',
     transition: 'transform 0.3s ease'
   };
