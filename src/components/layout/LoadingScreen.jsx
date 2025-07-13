@@ -49,7 +49,7 @@ const LoadingScreen = () => {
     if (imagesLoaded) {
       timer = setTimeout(() => {
         setIsLoading(false);
-      }, 4000);
+      }, 800);
     }
 
     return () => {

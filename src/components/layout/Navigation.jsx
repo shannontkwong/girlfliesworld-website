@@ -208,7 +208,7 @@ const Navigation = () => {
     border: '1px solid rgba(0, 0, 0, 0.08)',
     width: '600px',
     padding: '2rem',
-    zIndex: 1001,
+    zIndex: 9999, // Increased from 1001 to 9999
     opacity: 0,
     visibility: 'hidden',
     transform: 'translateX(-50%) translateY(-20px)',
@@ -219,6 +219,8 @@ const Navigation = () => {
   const wideDropdownVisibleStyle = {
     ...wideDropdownStyle,
     opacity: 1,
+    zIndex: 9999,// Make sure this is also high
+
     visibility: 'visible',
     transform: 'translateX(-50%) translateY(0)'
   };
