@@ -332,16 +332,21 @@ const AboutMePage = () => {
           alt="Shannon Portrait" 
           onClick={() => openModal('/snow.png', 'Shannon Portrait')}
         />
-        <div style={textBlockStyle}>
-          <h3 style={headingStyle}>Overcoming <span style={highlights.red}>Adversity</span></h3>
-          <p>
-            Raised by a single father who grew up <span style={highlights.yellow}>poor</span>, working jobs like selling shoes and waiting tables before putting himself through college at 25, Shannon faced profound challenges early in life. At just 10 years old, she was responsible for caring for her mother—preparing pills and medicine every morning—until her mother sadly passed away from <span style={highlights.purple}>breast cancer</span> that same year.
+    <div style={textBlockStyle}>
+  <h3 style={headingStyle}>
+    Overcoming <span style={highlights.red}>Adversity</span>
+  </h3>
+  <p>
+    Raised by a single father who came from modest means—working jobs like selling shoes and waiting tables before putting himself through college at 25—Shannon faced profound challenges early in life. At just 10 years old, she took responsibility for caring for her sick mother, preparing medication each morning, until her mother sadly passed away from <span style={highlights.purple}>breast cancer</span> that same year.
 
-            <br></br><br></br>The year brought even more hardship: Shannon was bullied at school, her grandmother died of breast cancer, and a year later her grandfather passed away after a coma. Family conflicts led to more than a decade of court battles, and a tragic car accident soon after nearly left Shannon orphaned.
+    <br /><br />
+    The year brought even more hardship: Shannon encountered difficulties at school, her grandmother also passed away from breast cancer, and a year later her grandfather died after falling into a coma. Family conflicts led to over a decade of court battles, and a tragic car accident soon after nearly left her orphaned.
 
-            <br></br><br></br>Despite these overwhelming difficulties, Shannon struggled in traditional schools but found early success in <span style={highlights.green}>art</span>. Her passion and curiosity, however, ultimately pushed her toward <span style={highlights.orange}>science and flight</span>—defying the odds to carve her own path.
-          </p>
-        </div>
+    <br /><br />
+    Despite these overwhelming challenges, Shannon struggled in traditional schools but found early success in <span style={highlights.green}>art</span>. Her passion and curiosity, however, ultimately led her toward <span style={highlights.orange}>science and flight</span>—defying the odds to carve her own path.
+  </p>
+</div>
+
       </section>
 
       {/* Self-Taught Journey Section */}
