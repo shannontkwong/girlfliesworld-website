@@ -335,7 +335,7 @@ const HeroSection = () => {
         }}
       >
         <img
-          src="/hero.png"
+          src="/her.png"
           alt="Shannon"
           style={{
             width: '130%', // Make image larger
