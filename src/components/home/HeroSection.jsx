@@ -196,7 +196,7 @@ const HeroSection = () => {
           overflow: 'hidden',
         }}>
           <img
-            src="/hero.png"
+            src="/her.png"
             alt="Shannon"
             style={{
               width: '100%',

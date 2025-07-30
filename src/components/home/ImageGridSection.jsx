@@ -272,48 +272,85 @@ const ImageGridSection = () => {
   return (
     <section style={sectionStyle}>
       <div style={containerStyle}>
-      <div style={{
-          textAlign: 'left',
+        <div style={{
+          display: isMobile ? 'block' : 'flex',
+          alignItems: isMobile ? 'flex-start' : 'center',
+          justifyContent: 'space-between',
           margin: '0 auto',
           padding: isMobile ? '0 1rem' : '0 4rem',
           marginBottom: isMobile ? '2rem' : '3rem'
         }}>
-          <h2 style={{
-            fontFamily: 'Impact, Arial Black, sans-serif',
-            fontSize: isMobile ? 'clamp(2.5rem, 12vw, 6rem)' : '4rem',
-            color: '#000000',
-            textTransform: 'uppercase',
-            lineHeight: 0.9,
-            margin: 0,
-            marginTop: '4rem',
-            marginBottom: '1rem',
-            letterSpacing: '-0.02em'
+          {/* Left side - Title and Description */}
+          <div style={{
+            flex: isMobile ? 'none' : '1',
+            marginRight: isMobile ? '0' : '2rem'
           }}>
-            MUCH MORE<br />
-            THAN A JOURNEY
-          </h2>
-          
-          <p style={{
-            fontSize: '0.875rem',
-            lineHeight: 1.6,
-            fontWeight: '500',
-            color: '#374151',
-            textAlign: 'left',
-            marginBottom: '1.5rem'
+            <h2 style={{
+              fontFamily: 'Impact, Arial Black, sans-serif',
+              fontSize: isMobile ? 'clamp(2.5rem, 12vw, 6rem)' : '4rem',
+              color: '#000000',
+              textTransform: 'uppercase',
+              lineHeight: 0.9,
+              margin: 0,
+              marginTop: '4rem',
+              marginBottom: '1rem',
+              letterSpacing: '-0.02em'
+            }}>
+              MUCH MORE<br />
+              THAN A JOURNEY
+            </h2>
+            
+            <p style={{
+              fontSize: '0.875rem',
+              lineHeight: 1.6,
+              fontWeight: '500',
+              color: '#374151',
+              textAlign: 'left',
+              marginBottom: '1.5rem'
+            }}>
+              {isMobile ? (
+                // Mobile: natural text wrapping
+                "Follow Shannon's record-breaking aviation adventure across all seven continents, featuring exclusive content, real-time updates, and behind-the-scenes access to this historic polar expedition."
+              ) : (
+                // Desktop: manual line breaks
+                <>
+                  Follow Shannon's record-breaking aviation adventure across
+                  <br />all seven continents, featuring exclusive content, real-time
+                  <br />updates, and behind-the-scenes access to this historic
+                  <br />polar expedition.
+                </>
+              )}
+            </p>
+          </div>
+
+          {/* Right side - Logos */}
+          <div style={{
+            display: 'flex',
+            flexDirection: isMobile ? 'row' : 'row',
+            alignItems: 'center',
+            gap: isMobile ? '1rem' : '6rem',
+            marginTop: isMobile ? '2rem' : '0',
+            justifyContent: isMobile ? 'center' : 'flex-start'
           }}>
-            {isMobile ? (
-              // Mobile: natural text wrapping
-              "Follow Shannon's record-breaking aviation adventure across all seven continents, featuring exclusive content, real-time updates, and behind-the-scenes access to this historic polar expedition."
-            ) : (
-              // Desktop: manual line breaks
-              <>
-                Follow Shannon's record-breaking aviation adventure across
-                <br />all seven continents, featuring exclusive content, real-time
-                <br />updates, and behind-the-scenes access to this historic
-                <br />polar expedition.
-              </>
-            )}
-          </p>
+            <img 
+              src="/agnav.png" 
+              alt="AG Nav Logo"
+              style={{
+                height: isMobile ? '60px' : '80px',
+                width: 'auto',
+                objectFit: 'contain'
+              }}
+            />
+            <img 
+              src="/uc.png" 
+              alt="UCB Logo"
+              style={{
+                height: isMobile ? '100px' : '180px',
+                width: 'auto',
+                objectFit: 'contain'
+              }}
+            />
+          </div>
         </div>
         
         <div style={sliderContainerStyle}>
