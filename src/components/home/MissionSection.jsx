@@ -251,7 +251,7 @@ const MissionSection = () => {
               Object.assign(e.target.style, chevronButtonStyle);
             }}
             aria-label={showAllSections ? "Hide sections" : "Show more sections"}
-          >
+          > 
             <span style={{
               transform: showAllSections ? 'rotate(180deg)' : 'rotate(0deg)',
               transition: 'transform 0.3s ease',

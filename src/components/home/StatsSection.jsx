@@ -23,7 +23,8 @@ const StatsSection = () => {
       image: '/cd.png', // Replace with your actual image path
       stats: [
         { label: 'FLIGHT ENDURANCE', value: '24+', unit: 'hrs nonstop' },
-        { label: 'DISTANCE', value: '76,000', unit: 'km travelled' },
+        { label: 'LONGEST LEG', value: '4,000', unit: 'NM travelled' },
+        { label: 'TOTAL DISTANCE', value: '76,000', unit: 'km travelled' },
         { label: 'POLAR COLD', value: '-50°C', unit: 'harshest environments' },
         { label: 'CO-PILOTS', value: '0', unit: 'solo, unassisted' },
       ],

@@ -401,7 +401,7 @@ const AboutMePage = () => {
                 Born in Hong Kong and currently based in the South of France, Shannon is a British national who immigrated to France at age 15 due to Brexit and political instability in Hong Kong. She left behind her family, friends, and everything familiar to pursue her dreams.
               </p>
               <p style={paragraphStyle}>
-                Shannon is currently pursuing her dream of becoming a <span style={highlights.blue}>design engineer</span> and <span style={highlights.purple}>inventor</span> in the U.S. while preparing for her historic aviation expedition. She's taking several gap years to complete her journey, planning either to continue her studies or scale her <span style={highlights.green}>software startup</span> in the U.S.
+                Shannon is currently pursuing her dream of becoming a <span style={highlights.blue}>design engineer</span> and <span style={highlights.purple}>inventor</span> in the U.S. while preparing for her historic aviation expedition. She's taking several gap years to complete her journey, planning either to continue her studies in electrical engineering or scale her <span style={highlights.green}>software startup</span> in the U.S.
               </p>
               <p style={paragraphStyle}>
                 Fun facts about Shannon's early achievements:
@@ -455,6 +455,10 @@ const AboutMePage = () => {
               <p style={paragraphStyle}>
                 At 10, Shannon taught herself <span style={highlights.red}>ethical hacking</span>. At 15, she dove deep into <span style={highlights.orange}>electronics</span>, building her own circuits and exploring how hardware and software worked. She began flying <span style={highlights.green}>microlights</span> at 16 and later trained for her private pilot license.
               </p>
+              <p style={paragraphStyle}>
+              In her spare time, Shannon immerses herself in a wide range of subjects — from quantum mechanics, physics, product engineering, and machine learning to history, art, and design. She enjoys philosophy, science fiction, and futuristic literature, especially books with electronic or speculative themes. A fan of both classical and punk rock music, she also codes apps, watches documentaries, and, when not indoors, seeks out adrenaline through adventure sports.
+
+Shannon also has an eclectic set of hands-on skills and hobbies: she’s played piano since the age of eight, started tennis at seven, and has trained in Wing Chun martial arts.              </p>
               <p style={paragraphStyle}>
                 To prepare for her Antarctic mission, Shannon has taken a <span style={highlights.blue}>winter survival course</span> which included pulling a 50kg sled up the Norwegian mountains in -15°C weather for 8 hours a day for 1 week (equivalent to 23 miles daily) in case her engine quits over <span style={highlights.yellow}>Antarctica</span>.
               </p>
