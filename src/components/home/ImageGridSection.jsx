@@ -29,7 +29,7 @@ const ImageGridSection = () => {
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (container) {
-      const cardWidth = isMobile ? 300 : 450; // Card width + gap
+      const cardWidth = isMobile ? container.offsetWidth / 2 : 450; // Get the width of half the container or fixed desktop width
       container.scrollTo({
         left: currentIndex * cardWidth,
         behavior: 'smooth'
@@ -114,16 +114,24 @@ const ImageGridSection = () => {
 
   const scrollContainerStyle = {
     display: 'flex',
-    gap: '0px',
-    overflowX: 'hidden',
+    gap: isMobile ? '1rem' : '30px', // Adds space between the cards
+    overflowX: 'scroll', // Allows horizontal scrolling
+    scrollSnapType: isMobile ? 'x mandatory' : 'none', // Improves the mobile swiping experience
+    padding: isMobile ? '0 1rem' : '0', // Adds padding on the sides
     scrollBehavior: 'smooth',
     width: '100%',
-    justifyContent: 'center'
+    justifyContent: isMobile ? 'flex-start' : 'center', // Aligns cards to the start on mobile
+    scrollbarWidth: 'none', // Hide scrollbar for Firefox
+    '-ms-overflow-style': 'none', // Hide scrollbar for IE and Edge
+    WebkitOverflowScrolling: 'touch', // Improves scrolling on iOS devices
+    '&::-webkit-scrollbar': {
+      display: 'none' // Hide scrollbar for Chrome, Safari, and Opera
+    }
   };
 
   const cardStyle = {
     position: 'relative',
-    width: isMobile ? '50vw' : '50vw', // Each card takes exactly half the viewport width
+    minWidth: isMobile ? '80vw' : '450px', // Adjusted to show one card at a time with some padding
     height: isMobile ? '400px' : '450px',
     overflow: 'hidden',
     cursor: 'pointer',
@@ -134,7 +142,8 @@ const ImageGridSection = () => {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-end',
-    flexShrink: 0
+    flexShrink: 0,
+    scrollSnapAlign: 'start' // Aligns the start of the card to the scroll container's start
   };
 
   const overlayStyle = {
@@ -199,7 +208,7 @@ const ImageGridSection = () => {
     backgroundColor: 'white',
     border: '1px solid rgba(0, 0, 0, 0.1)',
     cursor: 'pointer',
-    display: 'flex',
+    display: isMobile ? 'none' : 'flex', // Hide buttons on mobile for a swipe-based experience
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: '20px',
@@ -263,12 +272,9 @@ const ImageGridSection = () => {
     }
   };
 
-  // Calculate visible cards (show exactly 2 cards)
-  const visibleCards = gridItems.slice(currentIndex, currentIndex + 2);
-  if (visibleCards.length < 2) {
-    visibleCards.push(...gridItems.slice(0, 2 - visibleCards.length));
-  }
-
+  // Show all cards in the scroll container
+  const visibleCards = gridItems;
+  
   return (
     <section style={sectionStyle}>
       <div style={containerStyle}>
@@ -382,7 +388,7 @@ const ImageGridSection = () => {
           >
             {visibleCards.map((item, index) => (
               <a 
-                key={`${item.title}-${currentIndex}-${index}`}
+                key={`${item.title}-${index}`}
                 href={item.href}
                 style={{ textDecoration: 'none' }}
                 {...(item.external && { target: "_blank", rel: "noopener noreferrer" })}

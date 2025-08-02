@@ -108,17 +108,19 @@ const Navigation = () => {
     transition: 'all 0.3s ease',
     padding: 0
   };
-
+  
+  // Conditionally apply styles based on device
   const blogBannerStyle = {
     position: 'fixed',
-    top: isMobile ? '80px' : '100px',
     right: isMobile ? '10px' : '20px',
+    bottom: isMobile ? '20px' : 'auto', // Moved to bottom on mobile
+    top: isMobile ? 'auto' : '100px', // Kept at top on desktop
     zIndex: 1001,
-    background: 'linear-gradient(135deg, #87CEEB, #B0E0E6)',
-    color: '#1e3a8a',
+    background: '#C4A574',
+    color: '#fff',
     padding: isMobile ? '12px 16px' : '16px 20px',
     borderRadius: '16px',
-    boxShadow: '0 8px 32px rgba(135, 206, 235, 0.4)',
+    boxShadow: '0 8px 32px rgba(196, 165, 116, 0.4)',
     display: showBlogBanner ? 'flex' : 'none',
     alignItems: 'center',
     gap: '12px',
@@ -330,21 +332,21 @@ const Navigation = () => {
         {`
           @keyframes blogBannerSlide {
             from {
-              transform: translateX(100%);
+              transform: translateY(100%);
               opacity: 0;
             }
             to {
-              transform: translateX(0);
+              transform: translateY(0);
               opacity: 1;
             }
           }
           
           @keyframes blogBannerPulse {
             0%, 100% {
-              box-shadow: 0 8px 32px rgba(135, 206, 235, 0.4);
+              box-shadow: 0 8px 32px rgba(196, 165, 116, 0.4);
             }
             50% {
-              box-shadow: 0 8px 32px rgba(135, 206, 235, 0.6), 0 0 20px rgba(135, 206, 235, 0.4);
+              box-shadow: 0 8px 32px rgba(196, 165, 116, 0.6), 0 0 20px rgba(196, 165, 116, 0.4);
             }
           }
         `}
@@ -352,12 +354,7 @@ const Navigation = () => {
 
     {/* Blog Banner */}
 <div
-  style={{
-    ...blogBannerStyle,
-    background: '#C4A574', // Changed from gradient to solid color
-    color: '#fff', // Changed text color to white for better contrast
-    boxShadow: '0 8px 32px rgba(196, 165, 116, 0.4)', // Updated shadow color to match
-  }}
+  style={blogBannerStyle}
   onClick={() => window.location.href = '/blog'}
   onMouseEnter={(e) => {
     e.currentTarget.style.transform = 'scale(1.05)';
