@@ -332,9 +332,9 @@ const ImageGridSection = () => {
           {/* Right side - Logos */}
           <div style={{
             display: 'flex',
-            flexDirection: isMobile ? 'row' : 'row',
+            flexDirection: isMobile ? 'column' : 'row',
             alignItems: 'center',
-            gap: isMobile ? '1rem' : '6rem',
+            gap: isMobile ? '1.5rem' : '6rem',
             marginTop: isMobile ? '2rem' : '0',
             justifyContent: isMobile ? 'center' : 'flex-start'
           }}>
