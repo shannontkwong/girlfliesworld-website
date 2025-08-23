@@ -347,15 +347,7 @@ const ImageGridSection = () => {
                 objectFit: 'contain'
               }}
             />
-            <img 
-              src="/uc.png" 
-              alt="UCB Logo"
-              style={{
-                height: isMobile ? '100px' : '180px',
-                width: 'auto',
-                objectFit: 'contain'
-              }}
-            />
+          
           </div>
         </div>
         
