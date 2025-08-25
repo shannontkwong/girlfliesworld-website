@@ -33,7 +33,7 @@ const ContactPage = () => {
       alt: 'Instagram'
     },
     {
-      href: 'https://www.facebook.com/profile.php?id=61554771839720',
+      href: 'https://www.facebook.com/shannontkwong/',
       icon: 'https://img.icons8.com/windows/32/facebook-f--v1.png',
       alt: 'Facebook'
     },
