@@ -2,9 +2,10 @@ import React from 'react';
 
 const PlaneInfo = () => {
   const features = [
-    '4 seater aircraft',
-    'Lycoming Engine',
-    'A fully tried and tested aircraft'
+    'A fully tried and tested aircraft 4 seater aircraft',
+    '260 HP Lycoming IO-540 Engine',
+    'Many More Modifications',
+    
   ];
 
   const containerStyle = {
@@ -93,7 +94,7 @@ const PlaneInfo = () => {
       </ul>
       
       <p style={descriptionStyle}>
-        RV-10 is an experimental kit where you build the plane from scratch. I chose this type of aircraft for my journey because it enables modifications for increased range, minimizes potential sources of drag, and can be modified for flying in cold winter conditions.
+        RV-10 is an experimental kit where you build the plane from scratch. I chose this type of aircraft for my journey because it enables modifications for increased range, minimizes potential sources of drag, and can be modified for flying in long-range cold winter conditions.
       </p>
 
       <h3 style={inspirationHeadingStyle}>Source of Inspiration: Michel Gordillo</h3>
@@ -102,47 +103,6 @@ const PlaneInfo = () => {
         My inspiration comes from Michel Gordillo, a Spanish pilot who became the first person to fly a single-engine aircraft across Antarctica and circumnavigate both poles in a homebuilt aircraft. He flew his Vans RV-8 named "Sky Polaris" for over 24+ hours continuously across Antarctica, covering 4,700 kilometers in a single flight over the South Pole.
       </p>
 
-      <h4 style={{...inspirationHeadingStyle, fontSize: '20px'}}>
-        Major Aircraft Modifications:
-      </h4>
-      
-      <ul style={modificationsListStyle}>
-        <li style={modificationItemStyle}>
-          <strong>Fuel System Overhaul:</strong> Total capacity increased for 24-hour endurance
-        </li>
-        
-        <li style={modificationItemStyle}>
-          <strong>Full Leading-Edge Wet Wing:</strong> Modified wing tanks with thicker skins to maximize fuel capacity across the full wing span
-        </li>
-        
-        <li style={modificationItemStyle}>
-          <strong>Rear Seat Auxiliary Tank:</strong> Tank installed in the back seat area, converting the aircraft from 2-seater to single-seat configuration
-        </li>
-        
-        <li style={modificationItemStyle}>
-          <strong>Jettisonable Belly Tank:</strong> Releasable external fuel tank for emergency situations and extended range
-        </li>
-        
-        <li style={modificationItemStyle}>
-          <strong>Landing Light Relocation:</strong> Moved from wing leading edge to wingtip to accommodate the wet wing fuel system
-        </li>
-        
-        <li style={modificationItemStyle}>
-          <strong>Fast Fuel Draining System:</strong> Emergency "restroom flushing" type system for rapid fuel dumping in case of emergency return or forced landing
-        </li>
-        
-        <li style={modificationItemStyle}>
-          <strong>Engine Upgrade:</strong> Superior XP-360 engine with 180 HP, featuring improved materials, closer tolerances, and roller lifters for enhanced reliability
-        </li>
-        
-        <li style={modificationItemStyle}>
-          <strong>Cold Weather Modifications:</strong> Specialized equipment including retractable skis for Antarctic landing conditions
-        </li>
-        
-        <li style={modificationItemStyle}>
-          <strong>2 Blade Constant Propeller + Tailwheel dragger</strong> To reduce in-flight drag
-        </li>
-      </ul>
 
      
     </div>
