@@ -441,7 +441,7 @@ const Navigation = () => {
               src="/o.png"
               alt="GIRLFLIESWORLD Logo"
               style={{
-                height: isMobile ? '45px' : '80px',
+                height: isMobile ? '65px' : '80px',
                 width: 'auto',
                 maxWidth: isMobile ? '100%' : '400px',
                 objectFit: 'contain',
