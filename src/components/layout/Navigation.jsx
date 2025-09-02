@@ -409,9 +409,22 @@ const Navigation = () => {
       <nav style={navStyle}>
         <div style={containerStyle}>
           {/* Logo */}
-          <a style={logoStyle} href="/">
-            <span style={logoTextStyle}>GIRLFLIESWORLD</span>
-          </a>
+          <a href="/">
+  <img
+    src="/o.png"
+    alt="GFW Logo"
+    style={{
+      height: '80px',
+      width: '400px',
+      objectFit: 'contain',
+      flexShrink: 0,
+      cursor: 'pointer'
+    }}
+ 
+  />
+</a>
+
+
 
           {/* Hamburger Menu Button (Mobile) */}
           <button 
