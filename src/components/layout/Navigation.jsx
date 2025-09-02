@@ -358,22 +358,22 @@ const Navigation = () => {
               padding: 0.5rem 0.75rem !important;
             }
             .mobile-logo {
-              height: 35px !important;
-              max-width: 65% !important;
+              height: 60px !important;
+              max-width: 70% !important;
             }
           }
 
           @media (max-width: 360px) {
             .mobile-logo {
-              height: 30px !important;
-              max-width: 60% !important;
+              height: 55px !important;
+              max-width: 65% !important;
             }
           }
 
           @media (max-width: 320px) {
             .mobile-logo {
-              height: 28px !important;
-              max-width: 55% !important;
+              height: 50px !important;
+              max-width: 60% !important;
             }
           }
         `}
@@ -441,7 +441,7 @@ const Navigation = () => {
               src="/o.png"
               alt="GIRLFLIESWORLD Logo"
               style={{
-                height: isMobile ? '65px' : '80px',
+                height: isMobile ? '45px' : '80px',
                 width: 'auto',
                 maxWidth: isMobile ? '100%' : '400px',
                 objectFit: 'contain',
