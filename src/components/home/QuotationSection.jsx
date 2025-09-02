@@ -1,12 +1,16 @@
 import React from 'react';
 
 const QuotationSection = () => {
+  const containerHeight = '80vh'; // Consistent height for both elements
+  
   return (
     <section
       style={{
         display: 'flex',
-        height: '100vh',
         width: '100%',
+        height: '100vh',
+        justifyContent: 'center',
+        alignItems: 'center', // centers the entire section vertically
       }}
     >
       {/* Quote container */}
@@ -14,23 +18,25 @@ const QuotationSection = () => {
         style={{
           backgroundColor: 'black',
           color: 'white',
-          flex: 1,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
           textAlign: 'center',
-          padding: '2rem',
+          padding: '3rem',
+          height: containerHeight, // match image height
+          minWidth: '400px', // ensure minimum width
+          flex: '0 0 auto', // don't grow or shrink
         }}
       >
         <div
           style={{
-            fontFamily: '"Permanent Marker", cursive', // replace with Lumios Marker if available
+            fontFamily: '"Permanent Marker", cursive',
             fontSize: '3rem',
             lineHeight: '1.4',
           }}
         >
-          <p style={{ margin: 0 }}>Don’t be absurd.</p>
+          <p style={{ margin: 0 }}>Don't be absurd.</p>
           <p style={{ margin: 0 }}>Be absurdly different.</p>
           <p style={{ marginTop: '1rem', fontSize: '2rem' }}>– Shannon Wong</p>
         </div>
@@ -39,22 +45,22 @@ const QuotationSection = () => {
       {/* Image container */}
       <div
         style={{
-          flex: 1,
-          overflow: 'hidden', // hide extra parts of the image
-          position: 'relative',
+          height: containerHeight, // same as quote container
+          width: 'auto', // let flex handle the width
+        flex: 1, // take up equal space with quote
+          display: 'flex',
+          alignItems: 'center',
+          overflow: 'hidden',
         }}
       >
         <img
-          src="/k.png" // replace with your image path
-          alt="Inspiring"
+          src="/j.png"
+          alt="Inspiring landscape"
           style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '120%', // make image wider than container
+            width: '100%',
             height: '100%',
             objectFit: 'cover',
-            transform: 'translateX(-20%)', // shift image left to show more right side
+            objectPosition: 'center',
           }}
         />
       </div>
