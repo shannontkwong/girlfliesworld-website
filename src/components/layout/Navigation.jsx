@@ -438,7 +438,7 @@ const Navigation = () => {
           {/* Logo - Mobile Compatible Image */}
           <a href="/" style={logoStyle}>
             <img
-              src="/o.png"
+              src="/mk.png"
               alt="GIRLFLIESWORLD Logo"
               style={{
                 height: isMobile ? '45px' : '80px',
