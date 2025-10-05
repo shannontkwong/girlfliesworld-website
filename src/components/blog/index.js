@@ -2,11 +2,12 @@
 
 // Import all your blog posts
 
-import { welcomeToMyJourney } from './a.js';
+import { allOrNothing, welcomeToMyJourney } from './a.js';
 
 // Export array of all posts (newest first)
 export const BLOG_POSTS = [
     welcomeToMyJourney, // Jan 15, 2025
+    allOrNothing,
   // Add new posts here
 ];
 
