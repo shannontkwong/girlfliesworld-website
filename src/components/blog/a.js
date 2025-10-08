@@ -48,19 +48,4 @@ export const welcomeToMyJourney = {
   };
 // src/blog/posts/all-or-nothing.js
 
-export const allOrNothing = {
-  id: 'all-or-nothing',
-  title: 'All or Nothing',
-  date: 'Oct 5, 2025',
-  summary: 'A raw look into the mindset behind surviving extremes — the cost, the pain, and the fire that drives me forward.',
-  content: `For the past six months, I’ve been sleeping four hours a night, going to bed at 6 or 7 in the morning, only to wake up and do it all again. I work 100-hour weeks with no pay. My health, my mind, my emotions — they’re all collateral. Sometimes I forget to eat. Sometimes I don’t see daylight for weeks. I haven’t taken a single day off or gone on a holiday for the past 1.5 years. And still, I keep going.
 
-My brain is wired for extremes. It’s all or nothing. That’s not ambition — it’s survival. When your life starts with loss, chaos, and no one to catch you, your system learns one rule: don’t fuck it halfway. Go all in, or don’t bother showing up.
-
-Every day I cry like a baby. Every day I want to give up. I feel like I’m experiencing more stress right now, in a single stretch of time, than most 40- or 50-year-olds ever will across their entire lives.
-
-I lost my mom at ten. My dad wasn’t there enough to be a dad. Since then, I’ve been my own parent, teacher, and fuel source. So yeah, I build things from scratch, I take risks that make people stare, and I chase goals most people think are insane — like flying solo to Antarctica. But to me, it’s familiar. My nervous system only knows high stakes.
-
-Comfort has never felt safe to me — intensity does. That’s where I come alive.
-  `
-};
