@@ -361,8 +361,7 @@ const AboutMePage = () => {
             onClick={() => openModal('/landsc.png', 'Shannon Hero')}
           />
           <p style={paragraphStyle}>
-            Shannon's journey takes her to people and places all over the globe—even if they started with a fear of flying. From overcoming profound personal challenges to preparing for one of the boldest aviation expeditions in modern history, this is the story of radical self-belief and scientific curiosity.
-          </p>
+          Shannon's journey takes her to people and places all over the globe—even those who once feared flying. From overcoming profound personal challenges to preparing for one of the boldest aviation expeditions in modern history, her mission is to inspire a new generation to think boldly, explore fearlessly, and believe deeply in themselves.          </p>
         </section>
 
         {/* Mission Section */}
@@ -371,7 +370,7 @@ const AboutMePage = () => {
           <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '2rem', alignItems: 'flex-start' }}>
             <div style={{ flex: 1 }}>
               <p style={paragraphStyle}>
-                <span style={highlights.pink}>Shannon Wong</span> is a 19-year-old aviator, explorer, and tech founder preparing to fly solo to the <span style={highlights.blue}>South Pole</span> and across all <span style={highlights.purple}>seven continents</span>. Her mission is to inspire bold thinking, scientific curiosity, and radical self-belief.
+              <span style={highlights.pink}>Shannon Wong</span> is a 19-year-old aviator, explorer, and tech founder preparing to fly solo to the <span style={highlights.blue}>South Pole</span> and across all <span style={highlights.purple}>seven continents</span>. Her mission is to inspire a new generation to think boldly, explore fearlessly, and believe deeply in themselves — encouraging young people everywhere to pursue science, discovery, and exploration.
               </p>
               <p style={paragraphStyle}>
                 In October 2026, Shannon will attempt to become the first woman to fly a small plane to the South Pole and the first woman ever to fly solo across all seven continents westbound. This expedition represents more than aviation records—it's about proving that no background, limitation, or obstacle should ever define us.
@@ -499,7 +498,8 @@ Shannon also has an eclectic set of hands-on skills and hobbies: she’s played 
             />
             <div style={{ flex: 1 }}>
               <p style={paragraphStyle}>
-                This mission isn't just about records. It's about proving that no background, limitation, or obstacle should ever define us. Shannon wants to inspire <span style={highlights.purple}>youth</span>—especially <span style={highlights.orange}>girls</span>—to embrace <span style={highlights.green}>science</span>, <span style={highlights.red}>exploration</span>, and <span style={highlights.yellow}>radical self-belief</span>.
+              This mission isn't just about records. It's about proving that no background, limitation, or obstacle should ever define us. Shannon wants to inspire <span style={highlights.purple}>youth</span>—especially <span style={highlights.orange}>girls</span>—to embrace <span style={highlights.green}>science</span>, <span style={highlights.red}>exploration</span>, and <span style={highlights.yellow}>deep self-belief</span>.
+
               </p>
               <p style={paragraphStyle}>
                 Through her journey, Shannon aims to demonstrate that with determination, curiosity, and bold thinking, anyone can push the boundaries of what's possible and inspire others to do the same.
