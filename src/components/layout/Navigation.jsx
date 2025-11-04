@@ -50,7 +50,8 @@ const Navigation = () => {
     {
       href: 'https://x.com/girlfliesworld',
       icon: 'https://img.icons8.com/ios-filled/50/twitterx--v1.png',
-      alt: 'Twitter'
+      alt: 'X (Twitter)',
+      isX: true
     },
     {
       href: 'https://www.youtube.com/channel/UCXQmU6WEELqxfk7sMPIQXXg',
@@ -101,9 +102,9 @@ const Navigation = () => {
     left: 0,
     right: 0,
     zIndex: 1000,
-    background: scrolled ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.95)',
+    background: scrolled ? 'rgba(0, 0, 0, 0.98)' : 'rgba(0, 0, 0, 0.95)',
     backdropFilter: 'blur(20px)',
-    borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
     transition: 'all 0.3s ease',
     padding: 0
   };
@@ -165,7 +166,7 @@ const Navigation = () => {
     border: 'none',
     cursor: 'pointer',
     padding: '0.5rem',
-    color: '#000',
+    color: '#fff',
     flexShrink: 0
   };
 
@@ -189,7 +190,7 @@ const Navigation = () => {
     alignItems: 'center',
     gap: '0.5rem',
     textDecoration: 'none',
-    color: '#000',
+    color: '#fff',
     fontWeight: 600,
     fontSize: '1rem',
     transition: 'all 0.3s ease',
@@ -207,10 +208,10 @@ const Navigation = () => {
     top: '100%',
     left: '50%',
     transform: 'translateX(-50%)',
-    background: '#fff',
+    background: '#000',
     borderRadius: '16px',
-    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)',
-    border: '1px solid rgba(0, 0, 0, 0.08)',
+    boxShadow: '0 20px 60px rgba(255, 255, 255, 0.15)',
+    border: '1px solid rgba(255, 255, 255, 0.08)',
     width: '600px',
     padding: '2rem',
     zIndex: 9999,
@@ -242,7 +243,7 @@ const Navigation = () => {
     padding: '1rem',
     borderRadius: '12px',
     textDecoration: 'none',
-    color: '#000',
+    color: '#fff',
     transition: 'all 0.3s ease',
     border: '1px solid transparent'
   };
@@ -263,20 +264,20 @@ const Navigation = () => {
   const dropdownTitleStyle = {
     fontSize: '1rem',
     fontWeight: 700,
-    color: '#111827',
+    color: '#fff',
     marginBottom: '0.25rem'
   };
 
   const dropdownDescStyle = {
     fontSize: '0.875rem',
-    color: '#6b7280',
+    color: '#d1d5db',
     lineHeight: '1.4'
   };
 
   const socialSectionStyle = {
     display: 'flex',
     alignItems: 'center',
-    gap: '1rem'
+    gap: '1.2rem'
   };
 
   const socialIconStyle = {
@@ -284,13 +285,13 @@ const Navigation = () => {
     height: '24px',
     opacity: 0.7,
     transition: 'all 0.3s ease',
-    filter: 'grayscale(100%)'
+    filter: 'brightness(0) invert(1)', // Makes icons white
   };
 
   const dividerStyle = {
     width: '1px',
     height: '30px',
-    background: 'rgba(0, 0, 0, 0.2)',
+    background: 'rgba(255, 255, 255, 0.2)',
     margin: '0 1rem'
   };
 
@@ -300,9 +301,9 @@ const Navigation = () => {
     top: isMobile ? '60px' : '70px',
     left: 0,
     right: 0,
-    background: 'rgba(255, 255, 255, 0.98)',
+    background: 'rgba(0, 0, 0, 0.98)',
     backdropFilter: 'blur(20px)',
-    borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
     padding: '1rem',
     zIndex: 999,
     maxHeight: isMobile ? 'calc(100vh - 60px)' : 'calc(100vh - 70px)',
@@ -313,18 +314,18 @@ const Navigation = () => {
     display: 'block',
     padding: '1rem 0',
     textDecoration: 'none',
-    color: '#000',
+    color: '#fff',
     fontSize: '1.1rem',
     fontWeight: 500,
-    borderBottom: '1px solid rgba(0, 0, 0, 0.1)'
+    borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
   };
 
   const mobileSocialStyle = {
     display: 'flex',
     justifyContent: 'center',
-    gap: '1rem',
+    gap: '1.5rem',
     padding: '1rem 0',
-    borderTop: '1px solid rgba(0, 0, 0, 0.1)',
+    borderTop: '1px solid rgba(255, 255, 255, 0.1)',
     marginTop: '1rem'
   };
 
@@ -437,8 +438,8 @@ const Navigation = () => {
         <div style={containerStyle} className="nav-container">
           {/* Logo - Mobile Compatible Image */}
           <a href="/" style={logoStyle}>
-            <img
-              src="/mk.png"
+          <img
+              src="/big.png"
               alt="GIRLFLIESWORLD Logo"
               style={{
                 height: isMobile ? '45px' : '80px',
@@ -456,24 +457,8 @@ const Navigation = () => {
                 const fallback = e.target.parentNode.querySelector('.logo-fallback');
                 if (fallback) fallback.style.display = 'block';
               }}
-            />
-            {/* Fallback text logo */}
-            <div 
-              className="logo-fallback"
-              style={{
-                display: 'none',
-                fontFamily: "'Arial Black', 'Helvetica', sans-serif",
-                fontSize: isMobile ? '1.4rem' : '2.5rem',
-                fontWeight: 900,
-                color: '#e91e8c',
-                letterSpacing: '-0.02em',
-                textTransform: 'uppercase',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              GIRLFLIESWORLD
-            </div>
-          </a>
+            /></a>
+           
 
           {/* Hamburger Menu Button (Mobile) */}
           <button 
@@ -515,8 +500,8 @@ const Navigation = () => {
                           href={item.href} 
                           style={dropdownItemCardStyle}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.background = '#f9fafb';
-                            e.currentTarget.style.borderColor = '#e5e7eb';
+                            e.currentTarget.style.background = '#111';
+                            e.currentTarget.style.borderColor = '#333';
                             e.currentTarget.style.transform = 'translateY(-2px)';
                           }}
                           onMouseLeave={(e) => {
@@ -565,8 +550,8 @@ const Navigation = () => {
                           href={item.href} 
                           style={dropdownItemCardStyle}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.background = '#f9fafb';
-                            e.currentTarget.style.borderColor = '#e5e7eb';
+                            e.currentTarget.style.background = '#111';
+                            e.currentTarget.style.borderColor = '#333';
                             e.currentTarget.style.transform = 'translateY(-2px)';
                           }}
                           onMouseLeave={(e) => {
@@ -603,7 +588,12 @@ const Navigation = () => {
                   href={link.href} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  style={{ display: 'flex', alignItems: 'center' }}
+                  style={{ 
+                    display: 'flex', 
+                    alignItems: 'center',
+                    marginLeft: link.isX ? '0.3rem' : '0', // Extra spacing for X
+                    marginRight: link.isX ? '0.3rem' : '0'
+                  }}
                 >
                   <img
                     style={socialIconStyle}
@@ -612,12 +602,12 @@ const Navigation = () => {
                     onMouseOver={(e) => {
                       e.target.style.opacity = '1';
                       e.target.style.transform = 'translateY(-2px)';
-                      e.target.style.filter = 'grayscale(0%)';
+                      e.target.style.filter = 'brightness(0) invert(1)';
                     }}
                     onMouseOut={(e) => {
                       e.target.style.opacity = '0.7';
                       e.target.style.transform = 'translateY(0)';
-                      e.target.style.filter = 'grayscale(100%)';
+                      e.target.style.filter = 'brightness(0) invert(1)';
                     }}
                   />
                 </a>
@@ -681,7 +671,12 @@ const Navigation = () => {
                 rel="noopener noreferrer"
               >
                 <img
-                  style={{ width: '28px', height: '28px', opacity: 0.8 }}
+                  style={{ 
+                    width: '28px', 
+                    height: '28px', 
+                    opacity: 0.8,
+                    filter: 'brightness(0) invert(1)' // Makes mobile icons white too
+                  }}
                   src={link.icon}
                   alt={link.alt}
                 />
