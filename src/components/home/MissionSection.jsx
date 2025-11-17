@@ -267,14 +267,17 @@ const MissionSection = () => {
         <div style={missionTextSectionStyle}>
           <h2 style={headingTitleStyleTwo}>Engines on, we have liftoff!</h2>
           <p style={textStyle}>
-            I'm Shannon, an 19-year-old pilot born in Hong Kong. In October 2026, I will attempt something no woman in history has ever done: to fly solo and unassisted to the South Pole in a small experimental aircraft.
-          </p>
-          <p style={textStyle}>
-            On this mission, I will also circumnavigate the globe, crossing all 7 continents in a single-engine aircraft—breaking multiple Guinness World Records in the process. This isn't just a flight—it's a journey through some of the world's most remote, hostile, and breathtaking regions, many of which a small SEP aircraft was never designed to reach. Very few pilots ever attempt a route this extreme. It's aerial exploration at the edge of possibility—blending bold adventure with real-world science.
-          </p>
-          <p style={textStyle}>
-            Alongside a team of researchers from the University of Colorado Boulder, I will lead an airborne scientific expedition, capturing critical data over the Antarctic and Greenland ice sheets, as well as remote desert dune systems. These low-altitude surveys will help validate satellite maps and enhance global climate models—an essential step in understanding how Earth's polar regions are changing.
-          </p>
+  I'm Shannon, a 19-year-old British-Hong-Kong aviator and the leader of the GIRLFLIESWORLD expedition. In October 2026, I will attempt something no woman in history has ever done: to fly solo and unassisted to the South Pole in a small experimental aircraft. This expedition includes a 4,500 NM, 20-hour nonstop leg—one of the longest flights ever attempted by a woman in a small single-engine propeller aircraft.
+</p>
+
+<p style={textStyle}>
+  On this mission, I will also circumnavigate the globe, crossing all 7 continents in a single-engine aircraft—breaking multiple Guinness World Records in the process. This isn't just a flight—it's a journey through some of the world's most remote, hostile, and breathtaking regions, many of which a small SEP aircraft was never designed to reach. Very few pilots ever attempt a route this extreme. It's aerial exploration at the edge of possibility—blending bold adventure with real-world science and pushing the limits of human endurance—alone in the cockpit.
+</p>
+
+<p style={textStyle}>
+  Alongside a team of researchers from the University of Colorado Boulder, I will lead an airborne scientific expedition, capturing critical data over the Antarctic and Greenland ice sheets, as well as remote desert dune systems. These low-altitude surveys will help validate satellite maps and improve global climate models—an essential step in understanding how Earth's polar regions are changing. Through this mission, I aim to inspire the next generation of scientists, explorers, and innovators, showing young people—especially girls in STEM—what’s possible when courage meets purpose.
+</p>
+
           
           {/* Journey Button */}
           <div style={journeyButtonContainerStyle}>

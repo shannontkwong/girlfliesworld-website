@@ -199,7 +199,7 @@ const HeroSection = () => {
               textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
               opacity: 0.9,
             }}>
-              in a small plane solo, unassisted
+              in a small SEP plane solo, unassisted
             </p>
 
             {/* Buttons - Mobile: Vertical Stack */}
@@ -259,7 +259,7 @@ const HeroSection = () => {
               textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
               opacity: 0.9,
             }}>
-              Aviator, explorer, artist, technologist.
+              Aviator, explorer, artist, technologist + STEAM advocate
             </p>
           </div>
         </div>
@@ -396,7 +396,7 @@ const HeroSection = () => {
             textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
             opacity: 0.9,
           }}>
-            Aviator, explorer, artist, technologist.
+              Aviator, explorer, artist, technologist + STEAM advocate
           </p>
         </div>
       </div>

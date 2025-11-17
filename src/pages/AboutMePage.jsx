@@ -397,20 +397,20 @@ const AboutMePage = () => {
             />
             <div style={{ flex: 1 }}>
               <p style={paragraphStyle}>
-                Born in Hong Kong and currently based in the South of France, Shannon is a British national who immigrated to France at age 15 due to Brexit and political instability in Hong Kong. She left behind her family, friends, and everything familiar to pursue her dreams.
+                Born in Hong Kong and currently based in the South of France, Shannon is a British national who immigrated to France at age 15 due to Brexit and political instability (violent protests) in Hong Kong. She left behind her family, friends, and everything familiar to pursue her dreams.
               </p>
               <p style={paragraphStyle}>
                 Shannon is currently pursuing her dream of becoming a <span style={highlights.blue}>design engineer</span> and <span style={highlights.purple}>inventor</span> in the U.S. while preparing for her historic aviation expedition. She's taking several gap years to complete her journey, planning either to continue her studies in electrical engineering or scale her <span style={highlights.green}>software startup</span> in the U.S.
               </p>
               <p style={paragraphStyle}>
-                Fun facts about Shannon's early achievements:
+                Fun facts about Shannon's early milestones:
               </p>
               <ul style={{ ...paragraphStyle, paddingLeft: '1.5rem' }}>
                 <li>At 10 years old, taught herself programming and hacked into her school's system</li>
                 <li>At 11, teachers recognized her as a gifted artist</li>
-                <li>At 15, became an electronics hobbyist and started building autonomous delivery drones</li>
+                <li>At 15, became an electronics hobbyist and started building autonomous fixed-wing delivery drones, a computer made from logic gates entirely from scratch, frequency counters, etc.</li>
                 <li>At 16, was introduced to aviation through microlight flying</li>
-                <li>At 18, taught herself ML/AI and launched her software startup as a solo founder</li>
+                <li>At 18, taught herself ML/AI and launched her software startup as a solo founder. It is currently raising a pre-seed round at a $10M post-money valuation.</li>
               </ul>
             </div>
           </div>
