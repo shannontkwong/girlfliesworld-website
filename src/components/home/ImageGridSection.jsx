@@ -48,7 +48,7 @@ const ImageGridSection = () => {
     },
     {
       href: '/blog',
-      image: '/bl.png',
+      image: '/l.png',
       title: 'BLOG',
       description: 'Follow Shannon\'s personal insights, preparations, and reflections throughout her historic aviation adventure and polar expedition.',
       buttonText: 'Visit Blog',
@@ -62,17 +62,10 @@ const ImageGridSection = () => {
       buttonText: 'View Route',
       external: false
     },
-    {
-      href: '/plane',
-      image: '/pl.png',
-      title: 'THE AIRCRAFT',
-      description: 'Discover the specially modified aircraft that will make this historic polar expedition and world record attempt possible.',
-      buttonText: 'Learn More',
-      external: false
-    },
+   
     {
       href: '/videos',
-      image: '/se.png',
+      image: '/b.png',
       title: 'VIDEOS',
       description: 'Watch exclusive footage, training sessions, and behind-the-scenes content from the preparation and mission.',
       buttonText: 'Watch Now',

@@ -40,7 +40,7 @@ const SupportSection = () => {
       description: 'Make a difference and join our mission through corporate partnerships and sponsorship opportunities.',
       buttonText: 'Become a partner',
       link: '/contact',
-      image: '/part.png',
+      image: '/wt.png',
     },
   ];
 

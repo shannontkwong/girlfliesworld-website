@@ -355,7 +355,7 @@ const AboutMePage = () => {
         <section id="journey" style={sectionStyle}>
           <h1 style={titleStyle}>Shannon Around the World</h1>
           <img
-            src="/landsc.png"
+            src="/sp.png"
             alt="Shannon Hero"
             style={heroImageStyle}
             onClick={() => openModal('/landsc.png', 'Shannon Hero')}

@@ -112,7 +112,7 @@ const HeroSection = () => {
           }}
         >
           <img
-            src="/cool.png"
+            src="/w.png"
             alt="Shannon"
             style={{
               width: '100%',
@@ -285,7 +285,7 @@ const HeroSection = () => {
         }}
       >
         <img
-          src="/cool.png"
+          src="/w.png"
           alt="Shannon"
           style={{
             width: '100%',
