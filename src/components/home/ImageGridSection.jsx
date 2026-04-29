@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PressLogoBar from './PressLogoBar';
 
 const quoteLines = [
   "I got intercepted by two F-18 Hornets over the Indian Ocean — during the Iran–US war — approaching a Lincoln carrier strike group. I escaped Oman two hours after it got bombed. I went viral.",
@@ -6,7 +7,7 @@ const quoteLines = [
   "I am an author of political philosophy book.",
   "Three transatlantic crossings as captain. Three seas. Two oceans.",
   "Florida to India in a PA28 — 13,000km — no autopilot.",
-  "I am 19 years old.",
+  "I just turned 20 years old.",
   "I am just getting started."
 ];
 
@@ -97,6 +98,7 @@ const ImageGridSection = () => {
         }
       `}</style>
 
+<PressLogoBar />
       {/* ══════════════════════════════════════
           1. CARD SLIDER
       ══════════════════════════════════════ */}
