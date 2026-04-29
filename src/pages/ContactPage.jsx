@@ -233,7 +233,7 @@ const ContactPage = () => {
           flexShrink: 0,
         }}>
           <img
-            src="/walk.png"
+            src="/tailwheel.png"
             alt="Shannon walking"
             style={{
               width: '100%',
@@ -461,7 +461,7 @@ const ContactPage = () => {
           background: '#f5f5f5',
         }}>
           <img
-            src="/walk.png"
+            src="/tailwheel.png"
             alt="Shannon walking"
             style={{
               width: '130%',

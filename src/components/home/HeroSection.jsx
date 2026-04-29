@@ -259,7 +259,7 @@ const HeroSection = () => {
               textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
               opacity: 0.9,
             }}>
-              Aviator, explorer, artist, technologist + STEAM advocate
+              Aviator, scientist-explorer, technologist + STEAM advocate, philosopher
             </p>
           </div>
         </div>
@@ -396,8 +396,9 @@ const HeroSection = () => {
             textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
             opacity: 0.9,
           }}>
-              Aviator, explorer, artist, technologist + STEAM advocate
+              Aviator, scientist-explorer, technologist + STEAM advocate, philosopher
           </p>
+          
         </div>
       </div>
     </section>

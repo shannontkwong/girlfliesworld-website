@@ -370,17 +370,19 @@ const AboutMePage = () => {
           <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '2rem', alignItems: 'flex-start' }}>
             <div style={{ flex: 1 }}>
               <p style={paragraphStyle}>
-              <span style={highlights.pink}>Shannon Wong</span> is a 19-year-old aviator, explorer, and tech founder preparing to fly solo to the <span style={highlights.blue}>South Pole</span> and across all <span style={highlights.purple}>seven continents</span>. Her mission is to inspire a new generation to think boldly, explore fearlessly, and believe deeply in themselves — encouraging young people everywhere to pursue science, discovery, and exploration.
+              <span style={highlights.pink}>Shannon Wong</span> is a 20-year-old aviator, explorer, and tech founder preparing to fly solo to the <span style={highlights.blue}>South Pole</span> and across all <span style={highlights.purple}>seven continents</span>. Her mission is to inspire a new generation to think boldly, explore fearlessly, and believe deeply in themselves — encouraging young people everywhere to pursue science, discovery, and exploration.
               </p>
               <p style={paragraphStyle}>
                 In October 2026, Shannon will attempt to become the first woman to fly a small plane to the South Pole and the first woman ever to fly solo across all seven continents westbound. This expedition represents more than aviation records—it's about proving that no background, limitation, or obstacle should ever define us.
+
+                Shannon has an IFR rating - tailwheel, high performance and complex endorsments.
               </p>
             </div>
             <img
-              src="/side.png"
+              src="/hi.png"
               alt="Shannon Wong"
               style={{ ...imageStyle, maxWidth: '300px', height: '250px', objectFit: 'cover' }}
-              onClick={() => openModal('/side.png', 'Shannon Wong')}
+              onClick={() => openModal('/hi.png', 'Shannon Wong')}
             />
           </div>
         </section>
@@ -397,7 +399,7 @@ const AboutMePage = () => {
             />
             <div style={{ flex: 1 }}>
               <p style={paragraphStyle}>
-                Born in Hong Kong and currently based in the South of France, Shannon is a British national who immigrated to France at age 15 due to Brexit and political instability (violent protests) in Hong Kong. She left behind her family, friends, and everything familiar to pursue her dreams.
+                Born in Hong Kong and currently based in the South of France, Shannon is a British national who fled Hong Kong at 15 — leaving behind her family, her friends, and everything familiar — as political repression tightened and the freedoms she had grown up with were systematically dismantled. She left behind her family, friends, and everything familiar to pursue her dreams.
               </p>
               <p style={paragraphStyle}>
                 Shannon is currently pursuing her dream of becoming a <span style={highlights.blue}>design engineer</span> and <span style={highlights.purple}>inventor</span> in the U.S. while preparing for her historic aviation expedition. She's taking several gap years to complete her journey, planning either to continue her studies in electrical engineering or scale her <span style={highlights.green}>software startup</span> in the U.S.
