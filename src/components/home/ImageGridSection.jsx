@@ -6,7 +6,7 @@ const quoteLines = [
   "I am an author of political philosophy book.",
   "Three transatlantic crossings as captain. Three seas. Two oceans.",
   "Florida to India in a PA28 — 13,000km — no autopilot.",
-  "I am 20 years old.",
+  "I am 19 years old.",
   "I am just getting started."
 ];
 
