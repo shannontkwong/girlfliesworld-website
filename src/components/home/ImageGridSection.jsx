@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PressLogoBar from './PressLogoBar';
+import ScienceTeaserSection from './Scienceteasersection';
 
 const quoteLines = [
   "I got intercepted by two F-18 Hornets over the Indian Ocean — during the Iran–US war — approaching a Lincoln carrier strike group. I escaped Oman two hours after it got bombed. I went viral.",
@@ -99,6 +100,7 @@ const ImageGridSection = () => {
       `}</style>
 
 <PressLogoBar />
+<ScienceTeaserSection />
       {/* ══════════════════════════════════════
           1. CARD SLIDER
       ══════════════════════════════════════ */}

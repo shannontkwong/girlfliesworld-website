@@ -571,7 +571,11 @@ const Navigation = () => {
                   </div>
                 </div>
               </li>
-           
+              <li>
+                <a href="/science" style={linkStyle}>
+                  <span>Airborne Science</span>
+                </a>
+              </li>
               <li>
                 <a href="/contact" style={linkStyle}>
                   <span>Become a Sponsor</span>
@@ -660,7 +664,13 @@ const Navigation = () => {
           >
             Become a Sponsor
           </a>
-
+          <a 
+            href="/science" 
+            style={mobileMenuItemStyle}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Airborne Science
+          </a>
           {/* Mobile Social Icons */}
           <div style={mobileSocialStyle}>
             {socialLinks.map((link, index) => (

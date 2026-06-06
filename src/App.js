@@ -17,6 +17,7 @@ import HomePage from './pages/HomePage';
 import NewsVideosPage from './pages/NewsVideosPage';
 import VideosPage from './pages/VideosPage';
 import Blog from './pages/BlogPage';
+import SciencePage from './pages/SciencePage';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/news" element={<NewsVideosPage />} />
           <Route path="/videos" element={<VideosPage />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/science" element={<SciencePage />} />
 
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/journey" element={<JourneyPage />} />

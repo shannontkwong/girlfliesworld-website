@@ -9,6 +9,7 @@ import Footer from '../components/layout/Footer';
 import AnimatedBats from '../components/home/AnimatedBats';
 import QuotationSection from '../components/home/QuotationSection';
 import SupportSection from '../components/home/SupportSection';
+import ScienceTeaserSection from '../components/home/Scienceteasersection';
 
 const HomePage = () => {
   useEffect(() => {
@@ -57,8 +58,11 @@ const HomePage = () => {
   return (
     <div style={mainContentStyle}>
       <HeroSection />
+    
       <ImageGridSection />
+      
       <MissionSection />
+     
       <StatsSection />
      <SupportSection />
     <QuotationSection />
