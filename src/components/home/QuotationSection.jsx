@@ -54,13 +54,13 @@ const QuotationSection = () => {
         }}
       >
         <img
-          src="/j.png"
+          src="/ww.png"
           alt="Inspiring landscape"
           style={{
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            objectPosition: 'center',
+            objectPosition: 'bottom center',
           }}
         />
       </div>

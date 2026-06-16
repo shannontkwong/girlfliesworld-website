@@ -112,7 +112,7 @@ const HeroSection = () => {
           }}
         >
           <img
-            src="/w.png"
+            src="/vogue.png"
             alt="Shannon"
             style={{
               width: '100%',
@@ -285,13 +285,13 @@ const HeroSection = () => {
         }}
       >
         <img
-          src="/w.png"
+          src="/vogue.png"
           alt="Shannon"
           style={{
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            objectPosition: 'left center',
+            objectPosition: 'left 30%',
             filter: 'contrast(1.1)',
           }}
         />
