@@ -291,7 +291,7 @@ const HeroSection = () => {
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            objectPosition: 'left 30%',
+            objectPosition: 'left 100%',
             filter: 'contrast(1.1)',
           }}
         />
