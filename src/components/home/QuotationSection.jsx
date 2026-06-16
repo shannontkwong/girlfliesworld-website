@@ -1,16 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const QuotationSection = () => {
-  const containerHeight = '80vh'; // Consistent height for both elements
-  
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
   return (
     <section
       style={{
         display: 'flex',
+        flexDirection: isMobile ? 'column' : 'row',
         width: '100%',
-        height: '100vh',
+        height: isMobile ? 'auto' : '100vh',
         justifyContent: 'center',
-        alignItems: 'center', // centers the entire section vertically
+        alignItems: 'center',
       }}
     >
       {/* Quote container */}
@@ -23,33 +31,32 @@ const QuotationSection = () => {
           justifyContent: 'center',
           alignItems: 'center',
           textAlign: 'center',
-          padding: '3rem',
-          height: containerHeight, // match image height
-          minWidth: '400px', // ensure minimum width
-          flex: '0 0 auto', // don't grow or shrink
+          padding: isMobile ? '2rem 1.5rem' : '3rem',
+          height: isMobile ? 'auto' : '80vh',
+          width: isMobile ? '100%' : 'auto',
+          minWidth: isMobile ? 'unset' : '400px',
+          flex: isMobile ? 'none' : '0 0 auto',
         }}
       >
         <div
           style={{
             fontFamily: '"Permanent Marker", cursive',
-            fontSize: '3rem',
+            fontSize: isMobile ? '2rem' : '3rem',
             lineHeight: '1.4',
           }}
         >
           <p style={{ margin: 0 }}>Don't be absurd.</p>
           <p style={{ margin: 0 }}>Be absurdly different.</p>
-          <p style={{ marginTop: '1rem', fontSize: '2rem' }}>– Shannon Wong</p>
+          <p style={{ marginTop: '1rem', fontSize: isMobile ? '1.4rem' : '2rem' }}>– Shannon Wong</p>
         </div>
       </div>
 
       {/* Image container */}
       <div
         style={{
-          height: containerHeight, // same as quote container
-          width: 'auto', // let flex handle the width
-        flex: 1, // take up equal space with quote
-          display: 'flex',
-          alignItems: 'center',
+          height: isMobile ? '50vh' : '80vh',
+          width: '100%',
+          flex: isMobile ? 'none' : 1,
           overflow: 'hidden',
         }}
       >
