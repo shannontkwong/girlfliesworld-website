@@ -370,12 +370,13 @@ const AboutMePage = () => {
           <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '2rem', alignItems: 'flex-start' }}>
             <div style={{ flex: 1 }}>
               <p style={paragraphStyle}>
-              <span style={highlights.pink}>Shannon Wong</span> is a 20-year-old aviator, explorer, and tech founder preparing to fly solo to the <span style={highlights.blue}>South Pole</span> and across all <span style={highlights.purple}>seven continents</span>. Her mission is to inspire a new generation to think boldly, explore fearlessly, and believe deeply in themselves — encouraging young people everywhere to pursue science, discovery, and exploration.
+              <span style={highlights.pink}>Shannon Wong</span> is a 20-year-old pilot, self-trained scientist-explorer, and tech founder preparing to fly solo to the <span style={highlights.blue}>South Pole</span> and across all <span style={highlights.purple}>seven continents</span>. Her mission is to inspire a new generation to think boldly, explore fearlessly, and believe deeply in themselves — encouraging young people everywhere to pursue science, discovery, and exploration.
               </p>
               <p style={paragraphStyle}>
-                In October 2026, Shannon will attempt to become the first woman to fly a small plane to the South Pole and the first woman ever to fly solo across all seven continents westbound. This expedition represents more than aviation records—it's about proving that no background, limitation, or obstacle should ever define us.
+                In October 2026, Shannon will attempt to become the first woman to fly a small plane to the South Pole and the first woman ever to fly solo across all seven continents westbound. This expedition represents more than aviation records—it's about proving that no background, limitation, or obstacle should ever define us. Shannon has committed years to building up a worthy science goal in aim to fill in missing scientific data gaps in the Antarctic whilst her airborne mission across the most harshest and coldest continent on Earth. 
 
-                Shannon has an IFR rating - tailwheel, high performance and complex endorsments.
+                Shannon is a Commercial Pilot, with five different ratings including: an IFR rating that allows her to fly in bad weather (IMC), multi-engine rating (she can fly twin-engine aircrafts), tailwheel, high performance (fast and powerful aircraft with a greater than 200 horsepower) and complex endorsement (aircraft with a constant speed propeller, retractable gear, flaps). Shannon finished all her licenses/ratings in roughly 4 months. She is broadly self-taught having taught herself geophysics, glaciology, aerospace engineering, radar/RF engineering in order to complete this science goal. Whilst being a self-learner, Shannon is a passionate researcher having sole-authored five different papers to Q1 peer-reviewed journals across six different fields (Physics, Cosmology, Antarctic Science, Ecology, Economics, Philosophy) - all of them addressing large open problems in the field in a original way, with no institutional affiliation (Shannon is not in college, nor does she have any degree).
+                
               </p>
             </div>
             <img
