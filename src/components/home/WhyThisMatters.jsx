@@ -141,33 +141,35 @@ const WhyThisMattersSection = () => {
 
         {/* Estes Educational Partner badge */}
         <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '0.75rem',
-          padding: '0.6rem 1.25rem 0.6rem 0.75rem',
-          border: '1px solid #e5e5e5',
-          borderRadius: '999px',
-          marginBottom: '2.5rem',
-          background: '#fafafa',
-        }}>
-          <img
-            src="/estes.png"
-            alt="Estes Rockets"
-            style={{ height: '126px', width: 'auto', objectFit: 'contain' }}
-            onError={e => { e.currentTarget.style.display = 'none'; }}
-          />
-          <span style={{
-            fontFamily: outfit,
-            fontSize: '1.35rem',
-            fontWeight: 700,
-            color: '#555',
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-          }}>
-            Estes Rockets —{' '}
-            <span style={{ color: '#D4AF37' }}>Official Education Partner</span>
-          </span>
-        </div>
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '0.75rem',
+  padding: '0.6rem 1.25rem 0.6rem 0.75rem',
+  border: '1px solid #e5e5e5',
+  borderRadius: '16px',
+  marginBottom: '2.5rem',
+  background: '#fafafa',
+  maxWidth: '100%',
+}}>
+  <img
+    src="/estes.png"
+    alt="Estes Rockets"
+    style={{ height: isMobile ? '60px' : '80px', width: 'auto', objectFit: 'contain', flexShrink: 0 }}
+    onError={e => { e.currentTarget.style.display = 'none'; }}
+  />
+  <span style={{
+    fontFamily: outfit,
+    fontSize: isMobile ? '0.7rem' : '0.9rem',
+    fontWeight: 700,
+    color: '#555',
+    letterSpacing: '0.06em',
+    textTransform: 'uppercase',
+    lineHeight: 1.5,
+  }}>
+    Estes Rockets —{' '}
+    <span style={{ color: '#D4AF37' }}>Official Education Partner</span>
+  </span>
+</div>
 
         {/* Four sections */}
         <div style={{ marginBottom: '3rem' }}>
