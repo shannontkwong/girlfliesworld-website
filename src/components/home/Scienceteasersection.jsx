@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import CredentialsStrip from './BeyondFlight';
+import WhyThisMattersSection from './WhyThisMatters';
 
 /**
  * ScienceTeaserSection
@@ -91,6 +93,44 @@ const ScienceTeaserSection = () => {
         }
       `}</style>
 
+{/* Full-width route banner */}
+<div style={{
+  width: '100%',
+  height: isMobile ? '240px' : '420px',
+  overflow: 'hidden',
+  position: 'relative',
+}}>
+  <img
+    src="/rout.png"
+    alt="GIRLFLIESWORLD global expedition route"
+    style={{
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+      objectPosition: 'center',
+      display: 'block',
+    }}
+  />
+  <div style={{
+    position: 'absolute',
+    inset: 0,
+    background: 'linear-gradient(to bottom, transparent 60%, rgba(255,255,255,0.95) 100%)',
+  }} />
+  <div style={{
+    position: 'absolute',
+    bottom: isMobile ? '1rem' : '2rem',
+    left: isMobile ? '1.25rem' : '4rem',
+  }}>
+    <span style={{
+      fontFamily: "'Outfit', sans-serif",
+      fontSize: '0.65rem',
+      letterSpacing: '0.2em',
+      textTransform: 'uppercase',
+      color: '#555',
+      fontWeight: 700,
+    }}>41 legs · 7 continents · 40,000+ nautical miles</span>
+  </div>
+</div>
       <section
         ref={ref}
         className={visible ? 'sci-visible' : ''}
@@ -128,7 +168,7 @@ const ScienceTeaserSection = () => {
                   textTransform: 'uppercase',
                   color: '#888',
                   fontWeight: 700,
-                }}>Antarctic Airborne Science</span>
+                }}>Historic Antarctic Airborne Science</span>
               </div>
 
               {/* Headline */}
@@ -142,8 +182,8 @@ const ScienceTeaserSection = () => {
                 letterSpacing: '-0.02em',
                 marginBottom: '1.75rem',
               }}>
-                The Data<br />
-                <span style={{ color: orange }}>No One</span><br />
+                Mini-IceBridge: <br />The Data
+                <span style={{ color: orange }}> No One</span><br />
                 Has Collected
               </h2>
 
@@ -202,7 +242,39 @@ The corridor targeted by the mission constitutes one of the most poorly constrai
                   </div>
                 ))}
               </div>
-
+{/* RINGS badge */}
+<div className="sci-item" style={{
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '0.75rem',
+  padding: '0.6rem 1rem',
+  border: '1px solid #e5e5e5',
+  borderRadius: '8px',
+  marginBottom: '2rem',
+  background: '#fafafa',
+}}>
+  <img
+    src="/rings.png"
+    alt="SCAR RINGS"
+    style={{
+      height: '78px',
+      width: 'auto',
+      objectFit: 'contain',
+    }}
+    onError={e => { e.currentTarget.style.display = 'none'; }}
+  />
+  <span style={{
+    fontSize: '1.00rem',
+    color: '#555',
+    fontWeight: 600,
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    lineHeight: 1.4,
+  }}>
+    Invited to present at<br />
+    <span style={{ color: '#000' }}>SCAR RINGS DML/EL Meeting</span>
+  </span>
+</div>
               {/* CTA */}
               <div className="sci-item">
                 <a href="/science" className="sci-btn">
@@ -295,7 +367,9 @@ The corridor targeted by the mission constitutes one of the most poorly constrai
 
           </div>
         </div>
+      
       </section>
+      <WhyThisMattersSection />
     </>
   );
 };

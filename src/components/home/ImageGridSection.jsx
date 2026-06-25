@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PressLogoBar from './PressLogoBar';
+import PartnersCarousel from './PartnersCarousel';
 import ScienceTeaserSection from './Scienceteasersection';
+import CredentialsStrip from './BeyondFlight';
 
 const quoteLines = [
   "I got intercepted by two F-18 Hornets over the Indian Ocean — during the Iran–US war — approaching a Lincoln carrier strike group. I escaped Oman two hours after it got bombed. I went viral.",
@@ -100,6 +102,7 @@ const ImageGridSection = () => {
       `}</style>
 
 <PressLogoBar />
+<PartnersCarousel />
 <ScienceTeaserSection />
       {/* ══════════════════════════════════════
           1. CARD SLIDER
@@ -243,6 +246,7 @@ const ImageGridSection = () => {
         </div>
       </section>
 
+      <CredentialsStrip />
       {/* ══════════════════════════════════════
           2. CREDENTIALS QUOTE
       ══════════════════════════════════════ */}

@@ -439,7 +439,7 @@ const Navigation = () => {
           {/* Logo - Mobile Compatible Image */}
           <a href="/" style={logoStyle}>
           <img
-              src="/big.png"
+              src="/dot.png"
               alt="GIRLFLIESWORLD Logo"
               style={{
                 height: isMobile ? '45px' : '80px',
@@ -577,6 +577,11 @@ const Navigation = () => {
                 </a>
               </li>
               <li>
+                <a href="/partners" style={linkStyle}>
+                  <span>Partners</span>
+                </a>
+              </li>
+              <li>
                 <a href="/contact" style={linkStyle}>
                   <span>Become a Sponsor</span>
                 </a>
@@ -664,8 +669,15 @@ const Navigation = () => {
           >
             Blog
           </a>
-          <a 
-            href="/contact" 
+          <a
+            href="/partners"
+            style={mobileMenuItemStyle}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Partners
+          </a>
+          <a
+            href="/contact"
             style={mobileMenuItemStyle}
             onClick={() => setMobileMenuOpen(false)}
           >

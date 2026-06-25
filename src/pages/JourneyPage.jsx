@@ -263,7 +263,7 @@ const JourneyPage = () => {
             <div style={{ padding: isMobile ? '0 0.5rem' : '0' }}>
               <img 
                 style={imageStyle}
-                src='/routes.png'
+                src='/rout.png'
                 alt="Shannon's Flight Route Map"
                 onMouseEnter={(e) => {
                   if (!isMobile) e.target.style.transform = 'scale(1.02)';

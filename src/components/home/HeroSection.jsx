@@ -4,7 +4,6 @@ const HeroSection = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [currentSubtitle, setCurrentSubtitle] = useState(0);
 
-  // Subtitles to cycle through - faster switching
   const subtitles = [
     'ALL 7 CONTINENTS',
     'THE SOUTH POLE',
@@ -13,27 +12,20 @@ const HeroSection = () => {
   useEffect(() => {
     const handleResize = () => {
       const mobile = window.innerWidth <= 768;
-      console.log('Window width:', window.innerWidth, 'Is mobile:', mobile);
       setIsMobile(mobile);
     };
-
-    // Initial check
     handleResize();
-    
     window.addEventListener('resize', handleResize);
-
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSubtitle((prev) => (prev + 1) % subtitles.length);
-    }, 1500); // Faster switching - 1.5 seconds
-
+    }, 1500);
     return () => clearInterval(interval);
   }, []);
 
-  // Hover hook for buttons
   const useHoverStyle = (base, hover) => {
     const [hovered, setHovered] = useState(false);
     return {
@@ -43,7 +35,6 @@ const HeroSection = () => {
     };
   };
 
-  // Button styles
   const btnPrimaryBase = {
     background: '#000',
     color: '#fff',
@@ -89,28 +80,13 @@ const HeroSection = () => {
     boxShadow: '0 4px 12px rgba(255,255,255,0.3)',
   };
 
-  // Get hover props for buttons
   const primaryHoverProps = useHoverStyle(btnPrimaryBase, btnPrimaryHover);
   const secondaryHoverProps = useHoverStyle(btnSecondaryBase, btnSecondaryHover);
 
   if (isMobile) {
     return (
-      <section
-        style={{
-          height: '100vh',
-          display: 'flex',
-          marginTop: '60px',
-        }}
-      >
-        {/* Mobile: Full width image with content overlay (same as desktop) */}
-        <div
-          style={{
-            width: '100%',
-            position: 'relative',
-            overflow: 'hidden',
-            background: '#f5f5f5',
-          }}
-        >
+      <section style={{ height: '100vh', display: 'flex', marginTop: '60px' }}>
+        <div style={{ width: '100%', position: 'relative', overflow: 'hidden', background: '#f5f5f5' }}>
           <img
             src="/vogue.png"
             alt="Shannon"
@@ -122,35 +98,26 @@ const HeroSection = () => {
               filter: 'contrast(1.1)',
             }}
           />
-          
-          {/* Black gradient overlay at bottom */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: '350px',
-              background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 70%, transparent 100%)',
-              zIndex: 1,
-            }}
-          />
-          
-          {/* Content overlay at bottom */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '2rem',
-              left: '1.5rem',
-              right: '1.5rem',
-              zIndex: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              textAlign: 'center',
-            }}
-          >
-            {/* Main title - Single line */}
+
+          {/* Bottom gradient */}
+          <div style={{
+            position: 'absolute',
+            bottom: 0, left: 0, right: 0,
+            height: '350px',
+            background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 70%, transparent 100%)',
+            zIndex: 1,
+          }} />
+
+          {/* Content */}
+          <div style={{
+            position: 'absolute',
+            bottom: '2rem', left: '1.5rem', right: '1.5rem',
+            zIndex: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+          }}>
             <h1 style={{
               fontFamily: "'Impact', 'Arial Black', sans-serif",
               fontSize: 'clamp(2.2rem, 6vw, 3rem)',
@@ -168,11 +135,7 @@ const HeroSection = () => {
               FIRST WOMAN TO FLY TO
             </h1>
 
-            {/* Animated subtitle */}
-            <div style={{
-              minHeight: '2em',
-              marginBottom: '0.5rem',
-            }}>
+            <div style={{ minHeight: '2em', marginBottom: '0.5rem' }}>
               <p style={{
                 fontFamily: "'Impact', 'Arial Black', sans-serif",
                 fontSize: 'clamp(1.5rem, 5vw, 2.2rem)',
@@ -189,7 +152,6 @@ const HeroSection = () => {
               </p>
             </div>
 
-            {/* Small text */}
             <p style={{
               fontSize: '0.9rem',
               lineHeight: 1.4,
@@ -199,10 +161,10 @@ const HeroSection = () => {
               textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
               opacity: 0.9,
             }}>
-              in a small SEP plane solo, unassisted
+              in a small plane solo, unassisted
             </p>
 
-            {/* Buttons - Mobile: Vertical Stack */}
+            {/* Buttons */}
             <div style={{
               display: 'flex',
               flexDirection: 'column',
@@ -211,7 +173,7 @@ const HeroSection = () => {
               width: '100%',
               maxWidth: '280px',
             }}>
-              <a href="#mission" style={{
+              <a href="/journey" style={{
                 background: '#000',
                 color: '#fff',
                 padding: '0.875rem 2rem',
@@ -248,8 +210,7 @@ const HeroSection = () => {
                 Meet Shannon
               </a>
             </div>
-            
-            {/* Additional description */}
+
             <p style={{
               margin: '2rem 0 0 0',
               color: '#fff',
@@ -267,23 +228,10 @@ const HeroSection = () => {
     );
   }
 
+  // Desktop
   return (
-    <section
-      style={{
-        height: '100vh',
-        display: 'flex',
-        marginTop: '80px',
-      }}
-    >
-      {/* Full width image with content overlay */}
-      <div
-        style={{
-          width: '100%',
-          position: 'relative',
-          overflow: 'hidden',
-          background: '#f5f5f5',
-        }}
-      >
+    <section style={{ height: '100vh', display: 'flex', marginTop: '80px' }}>
+      <div style={{ width: '100%', position: 'relative', overflow: 'hidden', background: '#f5f5f5' }}>
         <img
           src="/vogue.png"
           alt="Shannon"
@@ -295,34 +243,25 @@ const HeroSection = () => {
             filter: 'contrast(1.1)',
           }}
         />
-        
-        {/* Black gradient overlay at bottom */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: '300px',
-            background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 70%, transparent 100%)',
-            zIndex: 1,
-          }}
-        />
-        
-        {/* Content overlay at bottom */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '3rem',
-            left: '3rem',
-            right: '3rem',
-            zIndex: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-          }}
-        >
-          {/* Main title */}
+
+        {/* Bottom gradient */}
+        <div style={{
+          position: 'absolute',
+          bottom: 0, left: 0, right: 0,
+          height: '300px',
+          background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 70%, transparent 100%)',
+          zIndex: 1,
+        }} />
+
+        {/* Content */}
+        <div style={{
+          position: 'absolute',
+          bottom: '3rem', left: '3rem', right: '3rem',
+          zIndex: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+        }}>
           <h1 style={{
             fontFamily: "'Impact', 'Arial Black', sans-serif",
             fontSize: 'clamp(3rem, 5vw, 4rem)',
@@ -339,11 +278,7 @@ const HeroSection = () => {
             TO FLY TO
           </h1>
 
-          {/* Animated subtitle */}
-          <div style={{
-            minHeight: '2em',
-            marginBottom: '0.5rem',
-          }}>
+          <div style={{ minHeight: '2em', marginBottom: '0.5rem' }}>
             <p style={{
               fontFamily: "'Impact', 'Arial Black', sans-serif",
               fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
@@ -360,7 +295,6 @@ const HeroSection = () => {
             </p>
           </div>
 
-          {/* Small text */}
           <p style={{
             fontSize: '1rem',
             lineHeight: 1.4,
@@ -372,21 +306,16 @@ const HeroSection = () => {
             in a small plane solo, unassisted
           </p>
 
-          {/* Buttons - Desktop: Horizontal */}
-          <div style={{
-            display: 'flex',
-            gap: '1.5rem',
-            alignItems: 'center',
-          }}>
-            <a href="#mission" {...primaryHoverProps}>
+          {/* Buttons */}
+          <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+            <a href="/journey" {...primaryHoverProps}>
               Follow the Journey
             </a>
             <a href="/aboutme" {...secondaryHoverProps}>
               Meet Shannon
             </a>
           </div>
-          
-          {/* Additional description */}
+
           <p style={{
             margin: '2rem 0 0 0',
             color: '#fff',
@@ -396,9 +325,8 @@ const HeroSection = () => {
             textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
             opacity: 0.9,
           }}>
-              Aviator, scientist-explorer, technologist + STEAM advocate, philosopher
+            Aviator, scientist-explorer, technologist + STEAM advocate, philosopher
           </p>
-          
         </div>
       </div>
     </section>

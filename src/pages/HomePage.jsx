@@ -10,6 +10,8 @@ import AnimatedBats from '../components/home/AnimatedBats';
 import QuotationSection from '../components/home/QuotationSection';
 import SupportSection from '../components/home/SupportSection';
 import ScienceTeaserSection from '../components/home/Scienceteasersection';
+import BeyondTheFlightSection from '../components/home/BeyondFlight';
+import CredentialsStrip from '../components/home/BeyondFlight';
 
 const HomePage = () => {
   useEffect(() => {
@@ -59,7 +61,7 @@ const HomePage = () => {
     <div style={mainContentStyle}>
       <HeroSection />
     
-      <ImageGridSection />
+    <ImageGridSection />
       
       <MissionSection />
      

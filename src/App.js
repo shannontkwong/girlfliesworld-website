@@ -23,7 +23,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <LoadingScreen />
+  
         <Navigation />
         <Routes>
           <Route path="/" element={<HomePage />} />

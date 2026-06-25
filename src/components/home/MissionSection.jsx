@@ -210,58 +210,8 @@ const MissionSection = () => {
 
   return (
     <section style={sectionStyle} id="mission">
-<h2 style={headingTitleStyle}>Why This <span style={{color:'#FFAA00'}}>Matters</span></h2>      
-      <p style={textStyle}>
-        This mission is about more than records. It's about defying expectations—and showing that no obstacle, no background, and no limitation defines what we're capable of. Through GIRLFLIESWORLD, I hope to inspire a new generation of young explorers, scientists, engineers, and dreamers—especially young women—to challenge boundaries, think differently, and take flight toward their boldest ideas.
-      </p>
+     
 
-      {/* Four Sections - Show only first by default */}
-      <div style={{ marginTop: '2rem', marginBottom: '3rem' }}>
-        {/* Always show first section (EXPLORATION) */}
-        <p style={sectionParagraphStyle}>
-          <span style={inlineTitleStyle}>
-            {fourSections[0].title}:
-          </span>{' '}
-          <span dangerouslySetInnerHTML={{ __html: highlightKeyWords(fourSections[0].text) }} />
-        </p>
-
-        {/* Show remaining sections only when expanded */}
-        {showAllSections && (
-          <>
-            {fourSections.slice(1).map((section, index) => (
-              <p key={index + 1} style={sectionParagraphStyle}>
-                <span style={inlineTitleStyle}>
-                  {section.title}:
-                </span>{' '}
-                <span dangerouslySetInnerHTML={{ __html: highlightKeyWords(section.text) }} />
-              </p>
-            ))}
-          </>
-        )}
-
-        {/* Toggle Button */}
-        <div style={toggleButtonStyle}>
-          <button
-            style={chevronButtonStyle}
-            onClick={() => setShowAllSections(!showAllSections)}
-            onMouseEnter={(e) => {
-              Object.assign(e.target.style, chevronButtonHoverStyle);
-            }}
-            onMouseLeave={(e) => {
-              Object.assign(e.target.style, chevronButtonStyle);
-            }}
-            aria-label={showAllSections ? "Hide sections" : "Show more sections"}
-          > 
-            <span style={{
-              transform: showAllSections ? 'rotate(180deg)' : 'rotate(0deg)',
-              transition: 'transform 0.3s ease',
-              fontSize: '24px'
-            }}>
-              ⌄
-            </span>
-          </button>
-        </div>
-      </div>
 
       <div style={missionContentContainerStyle}>
         <div style={missionTextSectionStyle}>
