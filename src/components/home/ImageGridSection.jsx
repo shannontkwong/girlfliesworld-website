@@ -130,7 +130,7 @@ const ImageGridSection = () => {
                 MUCH MORE<br />THAN A JOURNEY
               </h2>
               <p style={{ fontSize: '0.875rem', lineHeight: 1.7, fontWeight: 500, color: '#374151', maxWidth: 480, margin: 0 }}>
-                Follow Shannon's record-breaking aviation adventure across all seven continents — exclusive content, real-time updates, and behind-the-scenes access to this historic polar expedition.
+                Follow Shannon's record-breaking aviation-science expedition across all seven continents — exclusive content, real-time updates, and behind-the-scenes access to this historic polar expedition.
               </p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', marginTop: isMobile ? '1.5rem' : 0 }}>
