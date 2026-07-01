@@ -37,8 +37,8 @@ const ScienceTeaserSection = () => {
   const orange = '#FFAA00';
 
   const stats = [
-    { num: '600–900', unit: 'MHz', label: 'Radar frequency' },
-    { num: '100m', unit: '', label: 'Ice penetration depth' },
+    { num: '2–8', unit: 'GHz', label: 'Radar frequency' },
+    { num: '100m', unit: '', label: 'Snow penetration depth' },
     { num: '1', unit: 'pilot', label: 'Solo operation' },
   ];
 
@@ -168,7 +168,7 @@ const ScienceTeaserSection = () => {
                   textTransform: 'uppercase',
                   color: '#888',
                   fontWeight: 700,
-                }}>Historic Antarctic Airborne Science</span>
+                }}>EARS · An Independent Antarctic Science Program</span>
               </div>
 
               {/* Headline */}
@@ -182,8 +182,7 @@ const ScienceTeaserSection = () => {
                 letterSpacing: '-0.02em',
                 marginBottom: '1.75rem',
               }}>
-                Mini-IceBridge: <br />The Data
-                <span style={{ color: orange }}> No One</span><br />
+                Mini-IceBridge: <br/>The Data<span style={{ color: orange }}> No One</span><br />
                 Has Collected
               </h2>
 
@@ -196,9 +195,25 @@ const ScienceTeaserSection = () => {
                 marginBottom: '1.5rem',
                 maxWidth: '460px',
               }}>
-                Equipped with snow-penetrating radar, precision laser altimetry, and multispectral imaging, Shannon’s aircraft will extend high-quality geophysical observations into remote Antarctic terrain that is currently beyond the practical reach of most large research aircraft. The resulting airborne dataset will be openly shared with the international Antarctic science community.
-The corridor targeted by the mission constitutes one of the most poorly constrained boundary conditions in contemporary ice-sheet models, making it a key source of uncertainty in projections of future sea-level rise. By collecting observations across this understudied region, the mission will deliver valuable constraints on ice-sheet processes and provide data where dedicated survey coverage has historically been limited.
-</p>
+                Shannon built her own Antarctic science program from scratch — no university, no space
+                agency behind her — and named it <strong>EARS</strong>, the East Antarctic Radar Survey.
+                Equipped with a snow-penetrating radar, precision laser altimetry, and multispectral
+                imaging, her aircraft will carry real scientific instruments into remote Antarctic terrain
+                that large research aircraft can't reach economically. The resulting dataset will be
+                openly shared with the international Antarctic science community.
+              </p>
+              <p className="sci-item" style={{
+                fontSize: '0.875rem',
+                lineHeight: 1.8,
+                fontWeight: 500,
+                color: '#374151',
+                marginBottom: '1.5rem',
+                maxWidth: '460px',
+              }}>
+                The corridor she's targeting is one of the most poorly understood parts of the ice sheet
+                models scientists use to project future sea-level rise. Flying across it and bringing back
+                real data helps close one of the biggest remaining gaps in that picture.
+              </p>
               {/* Quote */}
               <div className="sci-item" style={{
                 borderLeft: `3px solid ${orange}`,
@@ -210,7 +225,8 @@ The corridor targeted by the mission constitutes one of the most poorly constrai
                 lineHeight: 1.7,
                 maxWidth: '420px',
               }}>
-                "A mini-IceBridge for one profile" — Dr. Ted Scambos, CIRES / University of Colorado Boulder
+                "A mini-IceBridge for one profile" — Dr. Ted Scambos, CIRES / University of Colorado
+                Boulder, who has mentored Shannon's science for the past three years.
               </div>
 
               {/* Stats row */}
@@ -271,7 +287,7 @@ The corridor targeted by the mission constitutes one of the most poorly constrai
     textTransform: 'uppercase',
     lineHeight: 1.4,
   }}>
-    Invited to present at<br />
+    Invited as sole presenter to the<br />
     <span style={{ color: '#000' }}>SCAR RINGS DML/EL Meeting</span>
   </span>
 </div>
