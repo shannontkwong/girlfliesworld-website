@@ -46,6 +46,6 @@ export const welcomeToMyJourney = {
   
   `
   };
-// src/blog/posts/all-or-nothing.js
+
 
 

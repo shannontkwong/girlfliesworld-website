@@ -3,10 +3,16 @@
 // Import all your blog posts
 
 import { welcomeToMyJourney } from './a.js';
+import { norwayPolarTraining } from './b.js';
+import { f18Interception } from './c.js';
+import { transatlanticHypoxia } from './d.js';
 
 // Export array of all posts (newest first)
 export const BLOG_POSTS = [
     welcomeToMyJourney, // Jan 15, 2025
+    norwayPolarTraining,
+    transatlanticHypoxia,
+    f18Interception
   // Add new posts here
 ];
 

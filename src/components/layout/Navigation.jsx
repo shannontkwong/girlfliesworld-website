@@ -47,12 +47,7 @@ const Navigation = () => {
       icon: 'https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/gray-insta.svg',
       alt: 'Instagram'
     },
-    {
-      href: 'https://x.com/girlfliesworld',
-      icon: 'https://img.icons8.com/ios-filled/50/twitterx--v1.png',
-      alt: 'X (Twitter)',
-      isX: true
-    },
+   
     {
       href: 'https://www.youtube.com/channel/UCXQmU6WEELqxfk7sMPIQXXg',
       icon: 'https://img.icons8.com/sf-black-filled/64/youtube-play.png',
