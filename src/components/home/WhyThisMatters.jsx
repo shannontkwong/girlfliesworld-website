@@ -125,10 +125,45 @@ const WhyThisMattersSection = () => {
     },
   ];
 
+  const educationPartners = [
+    {
+      name: 'Estes Rockets',
+      logo: '/estes.png',
+      label: 'Estes Rockets',
+      role: 'Official Education Partner',
+    },
+    {
+      name: 'Reach the World',
+      logo: '/rtw.png',
+      label: 'Reach the World',
+      role: 'Official Education Partner',
+    },
+  ];
+
+  const partnerBadgeStyle = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '0.75rem',
+    padding: '0.6rem 1.25rem 0.6rem 0.75rem',
+    border: '1px solid #e5e5e5',
+    borderRadius: '16px',
+    background: '#fafafa',
+    maxWidth: '100%',
+  };
+
+  const partnerLabelStyle = {
+    fontFamily: outfit,
+    fontSize: isMobile ? '0.7rem' : '0.9rem',
+    fontWeight: 700,
+    color: '#555',
+    letterSpacing: '0.06em',
+    textTransform: 'uppercase',
+    lineHeight: 1.5,
+  };
+
   return (
     <section style={{ borderTop: '1px solid #eee', backgroundColor: '#fff' }}>
       <div style={sectionStyle}>
-
         {/* Heading */}
         <h2 style={headingTitleStyle}>
           Why This <span style={{ color: gold }}>Matters</span>
@@ -139,41 +174,31 @@ const WhyThisMattersSection = () => {
           This mission is about more than records. It's about defying expectations — and showing that no obstacle, no background, and no limitation defines what we're capable of. Through GIRLFLIESWORLD, I hope to inspire a new generation of young explorers, scientists, engineers, and dreamers — especially young women — to challenge boundaries, think differently, and take flight toward their boldest ideas.
         </p>
 
-        {/* Estes Educational Partner badge */}
+        {/* Education partner badges */}
         <div style={{
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '0.75rem',
-  padding: '0.6rem 1.25rem 0.6rem 0.75rem',
-  border: '1px solid #e5e5e5',
-  borderRadius: '16px',
-  marginBottom: '2.5rem',
-  background: '#fafafa',
-  maxWidth: '100%',
-}}>
-  <img
-    src="/estes.png"
-    alt="Estes Rockets"
-    style={{ height: isMobile ? '60px' : '80px', width: 'auto', objectFit: 'contain', flexShrink: 0 }}
-    onError={e => { e.currentTarget.style.display = 'none'; }}
-  />
-  <span style={{
-    fontFamily: outfit,
-    fontSize: isMobile ? '0.7rem' : '0.9rem',
-    fontWeight: 700,
-    color: '#555',
-    letterSpacing: '0.06em',
-    textTransform: 'uppercase',
-    lineHeight: 1.5,
-  }}>
-    Estes Rockets —{' '}
-    <span style={{ color: '#D4AF37' }}>Official Education Partner</span>
-  </span>
-</div>
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '1rem',
+          marginBottom: '2.5rem',
+        }}>
+          {educationPartners.map((partner) => (
+            <div key={partner.name} style={partnerBadgeStyle}>
+              <img
+                src={partner.logo}
+                alt={partner.name}
+                style={{ height: isMobile ? '60px' : '80px', width: 'auto', objectFit: 'contain', flexShrink: 0 }}
+                onError={e => { e.currentTarget.style.display = 'none'; }}
+              />
+              <span style={partnerLabelStyle}>
+                {partner.label} —{' '}
+                <span style={{ color: '#D4AF37' }}>{partner.role}</span>
+              </span>
+            </div>
+          ))}
+        </div>
 
         {/* Four sections */}
         <div style={{ marginBottom: '3rem' }}>
-
           {/* Always show first */}
           <p style={sectionParagraphStyle}>
             <span style={inlineTitleStyle}>{fourSections[0].title}: </span>
@@ -215,7 +240,6 @@ const WhyThisMattersSection = () => {
             </button>
           </div>
         </div>
-
       </div>
     </section>
   );

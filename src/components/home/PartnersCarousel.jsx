@@ -4,6 +4,7 @@ const partnerLogos = [
   { name: 'AG-NAV',                        src: '/agnav.png' },
   { name: 'Platinum Jets International',   src: '/plaj.png' },
   { name: 'Estes Rockets',                 src: '/estes.png' },
+  { name: 'Reach The World',                 src: '/rtw.png' },
   { name: 'Emergent Ventures',             src: '/ge.png' },
   { name: 'James Caird Society',           src: '/jc.png' },
   { name: 'Dick Smith AC',                 src: '/dsc.png' },

@@ -25,11 +25,11 @@ const PartnersPage = () => {
       website: "https://platinumjets.org/",
     },
     {
-      name: "Estes Rockets",
+      name: "Reach the World",
       role: "Education Partner",
-      logo: "/estes.png",
-      description: "Estes Rockets is America's most iconic model rocketry brand, inspiring generations of engineers, scientists, and explorers since 1958. Estes has partnered with GIRLFLIESWORLD to bring the Antarctic expedition into classrooms across America, giving students hands-on experience in aerospace engineering and mission planning.",
-      website: "https://www.estesrockets.com/",
+      logo: "/reachtheworld.png",
+      description: "Reach the World is a New York-based nonprofit that has connected classrooms to real-world explorers since 1998 through live virtual exchange. Their Explorer Program previously brought the 2022 Endurance22 expedition — the search for Shackleton's lost ship — to 33,000 students across 29 countries. Reach the World has partnered with GIRLFLIESWORLD to bring the seven-continent expedition into K-12 classrooms worldwide, with live cockpit check-ins and real-time science as the journey unfolds.",
+      website: "https://www.reachtheworld.org/",
     },
     {
       name: "SCAR RINGS",
