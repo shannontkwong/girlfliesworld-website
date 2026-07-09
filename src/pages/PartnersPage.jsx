@@ -32,6 +32,13 @@ const PartnersPage = () => {
       website: "https://www.reachtheworld.org/",
     },
     {
+      name: "Estes Rockets",
+role: "Education Partner",
+logo: "/estes.png",
+description: "Estes Rockets is America's most iconic model rocketry brand, inspiring generations of engineers, scientists, and explorers since 1958. Estes has partnered with GIRLFLIESWORLD to bring the Antarctic expedition into classrooms across America, giving students hands-on experience in aerospace engineering and mission planning.",
+website: "https://www.estesrockets.com/",
+    },
+    {
       name: "SCAR RINGS",
       role: "Scientific Community Engagement",
       logo: "/rings.png",
