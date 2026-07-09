@@ -27,8 +27,8 @@ const PartnersPage = () => {
     {
       name: "Reach the World",
       role: "Education Partner",
-      logo: "/reachtheworld.png",
-      description: "Reach the World is a New York-based nonprofit that has connected classrooms to real-world explorers since 1998 through live virtual exchange. Their Explorer Program previously brought the 2022 Endurance22 expedition — the search for Shackleton's lost ship — to 33,000 students across 29 countries. Reach the World has partnered with GIRLFLIESWORLD to bring the seven-continent expedition into K-12 classrooms worldwide, with live cockpit check-ins and real-time science as the journey unfolds.",
+      logo: "/rtw.png",
+      description: "Reach the World is a New York-based nonprofit that has connected classrooms to real-world explorers since 1998 through live virtual exchange. Their Explorer Program previously brought the 2022 Endurance22 expedition — the search for Shackleton's lost ship — to 33,000 students across 29 countries. Reach the World has partnered with GIRLFLIESWORLD to bring the seven-continent expedition into thousands of K-12 classrooms worldwide, with live cockpit check-ins and real-time science as the journey unfolds. As part of RTW's flagship event of the year, this will be a 3-4 month live virtual program where Shannon will dedicate her time during flights to educate and inspire thousands of kids around the world.",
       website: "https://www.reachtheworld.org/",
     },
     {
