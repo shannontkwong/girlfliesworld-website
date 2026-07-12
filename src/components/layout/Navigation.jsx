@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronDown, Menu, X, Sparkles } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ChevronDown, Menu, X, Sparkles, Mail, TrendingUp } from 'lucide-react';
+
+const SPONSOR_PERCENT = 15; // Update this single number as fundraising progresses
+const SPONSOR_EMAIL = 'contact@girlfliesworld.com';
 
 const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -8,6 +11,8 @@ const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showBlogBanner, setShowBlogBanner] = useState(true);
+  const [headerHeight, setHeaderHeight] = useState(96);
+  const [progressWidth, setProgressWidth] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,6 +35,36 @@ const Navigation = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  // Animate the sponsor progress bar in on mount
+  useEffect(() => {
+    const timer = setTimeout(() => setProgressWidth(SPONSOR_PERCENT), 400);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Measure the full fixed header (sponsor bar + nav) and broadcast its
+  // real height so other components (e.g. HeroSection) can offset correctly.
+  useEffect(() => {
+    const headerEl = document.getElementById('site-header');
+    if (!headerEl) return;
+
+    const broadcast = () => {
+      const height = headerEl.getBoundingClientRect().height;
+      setHeaderHeight(height);
+      window.dispatchEvent(new CustomEvent('site-header-resize', { detail: { height } }));
+    };
+
+    broadcast();
+
+    const ro = new ResizeObserver(broadcast);
+    ro.observe(headerEl);
+    window.addEventListener('resize', broadcast);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', broadcast);
+    };
+  }, [isMobile]);
 
   const socialLinks = [
     {
@@ -91,12 +126,94 @@ const Navigation = () => {
     },
   ];
 
-  const navStyle = {
+  // Fixed wrapper holds the sponsor bar + nav together so both scroll as one unit
+  const headerWrapperStyle = {
     position: 'fixed',
     top: 0,
     left: 0,
     right: 0,
     zIndex: 1000,
+  };
+
+  const sponsorBarStyle = {
+    width: '100%',
+    background: 'linear-gradient(90deg, #000000 0%, #1a1610 50%, #000000 100%)',
+    borderBottom: '1px solid rgba(196, 165, 116, 0.35)',
+    overflow: 'hidden',
+    position: 'relative',
+  };
+
+  const sponsorBarInnerStyle = {
+    maxWidth: '1400px',
+    margin: '0 auto',
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: isMobile ? '0.4rem 0.75rem' : '0.6rem 1.5rem',
+    padding: isMobile ? '0.45rem 1rem' : '0.5rem 2rem',
+    position: 'relative',
+    zIndex: 2,
+  };
+
+  const sponsorLabelStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.4rem',
+    color: '#fff',
+    fontSize: isMobile ? '0.7rem' : '0.8rem',
+    fontWeight: 600,
+    letterSpacing: '0.02em',
+    whiteSpace: 'nowrap',
+  };
+
+  const progressTrackStyle = {
+    width: isMobile ? '90px' : '150px',
+    height: '6px',
+    background: 'rgba(255, 255, 255, 0.15)',
+    borderRadius: '10px',
+    overflow: 'hidden',
+    position: 'relative',
+    flexShrink: 0,
+  };
+
+  const progressFillStyle = {
+    width: `${progressWidth}%`,
+    height: '100%',
+    background: 'linear-gradient(90deg, #C4A574, #E67E22)',
+    borderRadius: '10px',
+    transition: 'width 1.4s cubic-bezier(0.4, 0, 0.2, 1)',
+    position: 'relative',
+    overflow: 'hidden',
+  };
+
+  const progressPercentStyle = {
+    color: '#E67E22',
+    fontSize: isMobile ? '0.72rem' : '0.8rem',
+    fontWeight: 700,
+    whiteSpace: 'nowrap',
+  };
+
+  const sponsorDividerStyle = {
+    width: '1px',
+    height: '14px',
+    background: 'rgba(255, 255, 255, 0.2)',
+    display: isMobile ? 'none' : 'block',
+  };
+
+  const sponsorEmailStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.35rem',
+    color: '#C4A574',
+    fontSize: isMobile ? '0.7rem' : '0.8rem',
+    fontWeight: 600,
+    textDecoration: 'none',
+    whiteSpace: 'nowrap',
+    transition: 'color 0.25s ease',
+  };
+
+  const navStyle = {
     background: scrolled ? 'rgba(0, 0, 0, 0.98)' : 'rgba(0, 0, 0, 0.95)',
     backdropFilter: 'blur(20px)',
     borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
@@ -108,7 +225,7 @@ const Navigation = () => {
     position: 'fixed',
     right: isMobile ? '10px' : '20px',
     bottom: isMobile ? '20px' : 'auto',
-    top: isMobile ? 'auto' : '100px',
+    top: isMobile ? 'auto' : `${headerHeight + 20}px`,
     zIndex: 1001,
     background: '#C4A574',
     color: '#fff',
@@ -293,7 +410,7 @@ const Navigation = () => {
   const mobileMenuStyle = {
     display: isMobile && mobileMenuOpen ? 'block' : 'none',
     position: 'fixed',
-    top: isMobile ? '60px' : '70px',
+    top: `${headerHeight}px`,
     left: 0,
     right: 0,
     background: 'rgba(0, 0, 0, 0.98)',
@@ -301,7 +418,7 @@ const Navigation = () => {
     borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
     padding: '1rem',
     zIndex: 999,
-    maxHeight: isMobile ? 'calc(100vh - 60px)' : 'calc(100vh - 70px)',
+    maxHeight: `calc(100vh - ${headerHeight}px)`,
     overflowY: 'auto'
   };
 
@@ -346,6 +463,35 @@ const Navigation = () => {
             50% {
               box-shadow: 0 8px 32px rgba(196, 165, 116, 0.6), 0 0 20px rgba(196, 165, 116, 0.4);
             }
+          }
+
+          @keyframes sponsorShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(250%); }
+          }
+
+          @keyframes sponsorGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+          }
+
+          .sponsor-shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+            animation: sponsorShimmer 2.6s ease-in-out infinite;
+          }
+
+          .sponsor-icon-pulse {
+            animation: sponsorGlow 2.2s ease-in-out infinite;
+          }
+
+          .sponsor-email-link:hover {
+            color: #E67E22 !important;
           }
 
           /* Additional mobile optimizations */
@@ -429,280 +575,318 @@ const Navigation = () => {
         </button>
       </div>
 
-      <nav style={navStyle}>
-        <div style={containerStyle} className="nav-container">
-          {/* Logo - Mobile Compatible Image */}
-          <a href="/" style={logoStyle}>
-          <img
-              src="/dot.png"
-              alt="GIRLFLIESWORLD Logo"
-              style={{
-                height: isMobile ? '45px' : '80px',
-                width: 'auto',
-                maxWidth: isMobile ? '100%' : '400px',
-                objectFit: 'contain',
-                flexShrink: 0,
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}
-              className={isMobile ? 'mobile-logo' : ''}
-              onError={(e) => {
-                // Fallback if image fails to load
-                e.target.style.display = 'none';
-                const fallback = e.target.parentNode.querySelector('.logo-fallback');
-                if (fallback) fallback.style.display = 'block';
-              }}
-            /></a>
-           
+      {/* Fixed header: sponsor bar + main nav, measured together */}
+      <div id="site-header" style={headerWrapperStyle}>
 
-          {/* Hamburger Menu Button (Mobile) */}
-          <button 
-            style={hamburgerStyle}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+        {/* Sponsor / Fundraising Bar */}
+        <div style={sponsorBarStyle}>
+          <div style={sponsorBarInnerStyle}>
+            <div style={sponsorLabelStyle}>
+              <TrendingUp size={14} className="sponsor-icon-pulse" style={{ color: '#E67E22' }} />
+              <span>{isMobile ? 'Seeking Sponsors' : 'Seeking Mission Sponsors for the Flight'}</span>
+            </div>
 
-          {/* Desktop Menu */}
-          <div style={desktopMenuStyle}>
-            <ul style={itemsStyle}>
-              {/* About Dropdown */}
-              <li style={dropdownItemStyle}>
-                <div 
-                  style={linkStyle}
-                  onMouseEnter={() => setAboutDropdown(true)}
-                  onMouseLeave={() => setAboutDropdown(false)}
-                >
-                  <span>About</span>
-                  <ChevronDown 
-                    size={16} 
-                    style={{
-                      transition: 'transform 0.3s ease',
-                      transform: aboutDropdown ? 'rotate(180deg)' : 'rotate(0deg)'
-                    }} 
-                  />
-                  
+            <div style={progressTrackStyle}>
+              <div className="sponsor-shimmer" style={progressFillStyle} />
+            </div>
+
+            <span style={progressPercentStyle}>{SPONSOR_PERCENT}% Raised</span>
+
+            <div style={sponsorDividerStyle}></div>
+
+            <a
+              href={`mailto:${SPONSOR_EMAIL}`}
+              className="sponsor-email-link"
+              style={sponsorEmailStyle}
+            >
+              <Mail size={13} />
+              <span>{SPONSOR_EMAIL}</span>
+            </a>
+          </div>
+        </div>
+
+        <nav style={navStyle}>
+          <div style={containerStyle} className="nav-container">
+            {/* Logo - Mobile Compatible Image */}
+            <a href="/" style={logoStyle}>
+            <img
+                src="/dot.png"
+                alt="GIRLFLIESWORLD Logo"
+                style={{
+                  height: isMobile ? '45px' : '80px',
+                  width: 'auto',
+                  maxWidth: isMobile ? '100%' : '400px',
+                  objectFit: 'contain',
+                  flexShrink: 0,
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease'
+                }}
+                className={isMobile ? 'mobile-logo' : ''}
+                onError={(e) => {
+                  // Fallback if image fails to load
+                  e.target.style.display = 'none';
+                  const fallback = e.target.parentNode.querySelector('.logo-fallback');
+                  if (fallback) fallback.style.display = 'block';
+                }}
+              /></a>
+             
+
+            {/* Hamburger Menu Button (Mobile) */}
+            <button 
+              style={hamburgerStyle}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+
+            {/* Desktop Menu */}
+            <div style={desktopMenuStyle}>
+              <ul style={itemsStyle}>
+                {/* About Dropdown */}
+                <li style={dropdownItemStyle}>
                   <div 
-                    style={aboutDropdown ? wideDropdownVisibleStyle : wideDropdownStyle}
+                    style={linkStyle}
                     onMouseEnter={() => setAboutDropdown(true)}
                     onMouseLeave={() => setAboutDropdown(false)}
                   >
-                    <div style={dropdownGridStyle}>
-                      {aboutMenuItems.map((item, index) => (
-                        <a 
-                          key={index}
-                          href={item.href} 
-                          style={dropdownItemCardStyle}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = '#111';
-                            e.currentTarget.style.borderColor = '#333';
-                            e.currentTarget.style.transform = 'translateY(-2px)';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'transparent';
-                            e.currentTarget.style.borderColor = 'transparent';
-                            e.currentTarget.style.transform = 'translateY(0)';
-                          }}
-                        >
-                          <img src={item.image} alt={item.title} style={dropdownImageStyle} />
-                          <div style={dropdownContentStyle}>
-                            <div style={dropdownTitleStyle}>{item.title}</div>
-                            <div style={dropdownDescStyle}>{item.description}</div>
-                          </div>
-                        </a>
-                      ))}
+                    <span>About</span>
+                    <ChevronDown 
+                      size={16} 
+                      style={{
+                        transition: 'transform 0.3s ease',
+                        transform: aboutDropdown ? 'rotate(180deg)' : 'rotate(0deg)'
+                      }} 
+                    />
+                    
+                    <div 
+                      style={aboutDropdown ? wideDropdownVisibleStyle : wideDropdownStyle}
+                      onMouseEnter={() => setAboutDropdown(true)}
+                      onMouseLeave={() => setAboutDropdown(false)}
+                    >
+                      <div style={dropdownGridStyle}>
+                        {aboutMenuItems.map((item, index) => (
+                          <a 
+                            key={index}
+                            href={item.href} 
+                            style={dropdownItemCardStyle}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = '#111';
+                              e.currentTarget.style.borderColor = '#333';
+                              e.currentTarget.style.transform = 'translateY(-2px)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = 'transparent';
+                              e.currentTarget.style.borderColor = 'transparent';
+                              e.currentTarget.style.transform = 'translateY(0)';
+                            }}
+                          >
+                            <img src={item.image} alt={item.title} style={dropdownImageStyle} />
+                            <div style={dropdownContentStyle}>
+                              <div style={dropdownTitleStyle}>{item.title}</div>
+                              <div style={dropdownDescStyle}>{item.description}</div>
+                            </div>
+                          </a>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </li>
+                </li>
 
-              {/* Journey Dropdown */}
-              <li style={dropdownItemStyle}>
-                <div 
-                  style={linkStyle}
-                  onMouseEnter={() => setJourneyDropdown(true)}
-                  onMouseLeave={() => setJourneyDropdown(false)}
-                >
-                  <span>My Journey</span>
-                  <ChevronDown 
-                    size={16} 
-                    style={{
-                      transition: 'transform 0.3s ease',
-                      transform: journeyDropdown ? 'rotate(180deg)' : 'rotate(0deg)'
-                    }} 
-                  />
-                  
+                {/* Journey Dropdown */}
+                <li style={dropdownItemStyle}>
                   <div 
-                    style={journeyDropdown ? wideDropdownVisibleStyle : wideDropdownStyle}
+                    style={linkStyle}
                     onMouseEnter={() => setJourneyDropdown(true)}
                     onMouseLeave={() => setJourneyDropdown(false)}
                   >
-                    <div style={dropdownGridStyle}>
-                      {journeyMenuItems.map((item, index) => (
-                        <a 
-                          key={index}
-                          href={item.href} 
-                          style={dropdownItemCardStyle}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = '#111';
-                            e.currentTarget.style.borderColor = '#333';
-                            e.currentTarget.style.transform = 'translateY(-2px)';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'transparent';
-                            e.currentTarget.style.borderColor = 'transparent';
-                            e.currentTarget.style.transform = 'translateY(0)';
-                          }}
-                        >
-                          <img src={item.image} alt={item.title} style={dropdownImageStyle} />
-                          <div style={dropdownContentStyle}>
-                            <div style={dropdownTitleStyle}>{item.title}</div>
-                            <div style={dropdownDescStyle}>{item.description}</div>
-                          </div>
-                        </a>
-                      ))}
+                    <span>My Journey</span>
+                    <ChevronDown 
+                      size={16} 
+                      style={{
+                        transition: 'transform 0.3s ease',
+                        transform: journeyDropdown ? 'rotate(180deg)' : 'rotate(0deg)'
+                      }} 
+                    />
+                    
+                    <div 
+                      style={journeyDropdown ? wideDropdownVisibleStyle : wideDropdownStyle}
+                      onMouseEnter={() => setJourneyDropdown(true)}
+                      onMouseLeave={() => setJourneyDropdown(false)}
+                    >
+                      <div style={dropdownGridStyle}>
+                        {journeyMenuItems.map((item, index) => (
+                          <a 
+                            key={index}
+                            href={item.href} 
+                            style={dropdownItemCardStyle}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = '#111';
+                              e.currentTarget.style.borderColor = '#333';
+                              e.currentTarget.style.transform = 'translateY(-2px)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = 'transparent';
+                              e.currentTarget.style.borderColor = 'transparent';
+                              e.currentTarget.style.transform = 'translateY(0)';
+                            }}
+                          >
+                            <img src={item.image} alt={item.title} style={dropdownImageStyle} />
+                            <div style={dropdownContentStyle}>
+                              <div style={dropdownTitleStyle}>{item.title}</div>
+                              <div style={dropdownDescStyle}>{item.description}</div>
+                            </div>
+                          </a>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </li>
-              <li>
-                <a href="/science" style={linkStyle}>
-                  <span>Airborne Science</span>
-                </a>
-              </li>
-              <li>
-                <a href="/partners" style={linkStyle}>
-                  <span>Partners</span>
-                </a>
-              </li>
-              <li>
-                <a href="/contact" style={linkStyle}>
-                  <span>Become a Sponsor</span>
-                </a>
-              </li>
-            </ul>
+                </li>
+                <li>
+                  <a href="/science" style={linkStyle}>
+                    <span>Airborne Science</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="/partners" style={linkStyle}>
+                    <span>Partners</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="/contact" style={linkStyle}>
+                    <span>Become a Sponsor</span>
+                  </a>
+                </li>
+              </ul>
 
-            <div style={dividerStyle}></div>
+              <div style={dividerStyle}></div>
 
-            <div style={socialSectionStyle}>
+              <div style={socialSectionStyle}>
+                {socialLinks.map((link, index) => (
+                  <a 
+                    key={index} 
+                    href={link.href} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{ 
+                      display: 'flex', 
+                      alignItems: 'center',
+                      marginLeft: link.isX ? '0.3rem' : '0', // Extra spacing for X
+                      marginRight: link.isX ? '0.3rem' : '0'
+                    }}
+                  >
+                    <img
+                      style={socialIconStyle}
+                      src={link.icon}
+                      alt={link.alt}
+                      onMouseOver={(e) => {
+                        e.target.style.opacity = '1';
+                        e.target.style.transform = 'translateY(-2px)';
+                        e.target.style.filter = 'brightness(0) invert(1)';
+                      }}
+                      onMouseOut={(e) => {
+                        e.target.style.opacity = '0.7';
+                        e.target.style.transform = 'translateY(0)';
+                        e.target.style.filter = 'brightness(0) invert(1)';
+                      }}
+                    />
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Menu */}
+          <div style={mobileMenuStyle}>
+            <a 
+              href="/aboutme" 
+              style={mobileMenuItemStyle}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              About Me
+            </a>
+            <a 
+              href="/science" 
+              style={mobileMenuItemStyle}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Airborne Science
+            </a>
+            <a 
+              href="/news" 
+              style={mobileMenuItemStyle}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Latest News
+            </a>
+            <a 
+              href="/videos" 
+              style={mobileMenuItemStyle}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Videos
+            </a>
+            <a 
+              href="/journey" 
+              style={mobileMenuItemStyle}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Flight Route & LIVE Tracking
+            </a>
+            <a 
+              href="/blog" 
+              style={mobileMenuItemStyle}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Blog
+            </a>
+            <a
+              href="/partners"
+              style={mobileMenuItemStyle}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Partners
+            </a>
+            <a
+              href="/contact"
+              style={mobileMenuItemStyle}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Become a Sponsor
+            </a>
+            <a
+              href={`mailto:${SPONSOR_EMAIL}`}
+              style={mobileMenuItemStyle}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {SPONSOR_EMAIL}
+            </a>
+           
+            {/* Mobile Social Icons */}
+            <div style={mobileSocialStyle}>
               {socialLinks.map((link, index) => (
                 <a 
                   key={index} 
                   href={link.href} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  style={{ 
-                    display: 'flex', 
-                    alignItems: 'center',
-                    marginLeft: link.isX ? '0.3rem' : '0', // Extra spacing for X
-                    marginRight: link.isX ? '0.3rem' : '0'
-                  }}
                 >
                   <img
-                    style={socialIconStyle}
+                    style={{ 
+                      width: '28px', 
+                      height: '28px', 
+                      opacity: 0.8,
+                      filter: 'brightness(0) invert(1)' // Makes mobile icons white too
+                    }}
                     src={link.icon}
                     alt={link.alt}
-                    onMouseOver={(e) => {
-                      e.target.style.opacity = '1';
-                      e.target.style.transform = 'translateY(-2px)';
-                      e.target.style.filter = 'brightness(0) invert(1)';
-                    }}
-                    onMouseOut={(e) => {
-                      e.target.style.opacity = '0.7';
-                      e.target.style.transform = 'translateY(0)';
-                      e.target.style.filter = 'brightness(0) invert(1)';
-                    }}
                   />
                 </a>
               ))}
             </div>
           </div>
-        </div>
-
-        {/* Mobile Menu */}
-        <div style={mobileMenuStyle}>
-          <a 
-            href="/aboutme" 
-            style={mobileMenuItemStyle}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            About Me
-          </a>
-          <a 
-            href="/science" 
-            style={mobileMenuItemStyle}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Airborne Science
-          </a>
-          <a 
-            href="/news" 
-            style={mobileMenuItemStyle}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Latest News
-          </a>
-          <a 
-            href="/videos" 
-            style={mobileMenuItemStyle}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Videos
-          </a>
-          <a 
-            href="/journey" 
-            style={mobileMenuItemStyle}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Flight Route & LIVE Tracking
-          </a>
-          <a 
-            href="/blog" 
-            style={mobileMenuItemStyle}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Blog
-          </a>
-          <a
-            href="/partners"
-            style={mobileMenuItemStyle}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Partners
-          </a>
-          <a
-            href="/contact"
-            style={mobileMenuItemStyle}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Become a Sponsor
-          </a>
-         
-          {/* Mobile Social Icons */}
-          <div style={mobileSocialStyle}>
-            {socialLinks.map((link, index) => (
-              <a 
-                key={index} 
-                href={link.href} 
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                <img
-                  style={{ 
-                    width: '28px', 
-                    height: '28px', 
-                    opacity: 0.8,
-                    filter: 'brightness(0) invert(1)' // Makes mobile icons white too
-                  }}
-                  src={link.icon}
-                  alt={link.alt}
-                />
-              </a>
-            ))}
-          </div>
-        </div>
-      </nav>
+        </nav>
+      </div>
     </>
   );
 };

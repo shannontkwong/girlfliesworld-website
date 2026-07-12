@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react';
 const HeroSection = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [currentSubtitle, setCurrentSubtitle] = useState(0);
+  // Real height of the fixed header (sponsor bar + nav), read from the DOM
+  // via Navigation's ResizeObserver broadcast, so this never has to guess.
+  const [headerHeight, setHeaderHeight] = useState(140);
 
   const subtitles = [
     'ALL 7 CONTINENTS',
@@ -24,6 +27,21 @@ const HeroSection = () => {
       setCurrentSubtitle((prev) => (prev + 1) % subtitles.length);
     }, 1500);
     return () => clearInterval(interval);
+  }, []);
+
+  // Keep in sync with the actual header element's height at all times.
+  useEffect(() => {
+    const headerEl = document.getElementById('site-header');
+    if (headerEl) {
+      setHeaderHeight(headerEl.getBoundingClientRect().height);
+    }
+
+    const handleHeaderResize = (e) => {
+      setHeaderHeight(e.detail.height);
+    };
+
+    window.addEventListener('site-header-resize', handleHeaderResize);
+    return () => window.removeEventListener('site-header-resize', handleHeaderResize);
   }, []);
 
   const useHoverStyle = (base, hover) => {
@@ -85,7 +103,7 @@ const HeroSection = () => {
 
   if (isMobile) {
     return (
-      <section style={{ height: '100vh', display: 'flex', marginTop: '60px' }}>
+      <section style={{ height: '100vh', display: 'flex', marginTop: `${headerHeight}px` }}>
         <div style={{ width: '100%', position: 'relative', overflow: 'hidden', background: '#f5f5f5' }}>
           <img
             src="/vogue.png"
@@ -230,7 +248,7 @@ const HeroSection = () => {
 
   // Desktop
   return (
-    <section style={{ height: '100vh', display: 'flex', marginTop: '80px' }}>
+    <section style={{ height: '100vh', display: 'flex', marginTop: `${headerHeight}px` }}>
       <div style={{ width: '100%', position: 'relative', overflow: 'hidden', background: '#f5f5f5' }}>
         <img
           src="/vogue.png"
