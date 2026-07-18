@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Clock, Video, Newspaper, Bell } from 'lucide-react';
 
 const NewsVideosPage = () => {
+  const [headerHeight, setHeaderHeight] = useState(120);
+
+  useEffect(() => {
+    const el = document.getElementById('site-header');
+    if (el) setHeaderHeight(el.getBoundingClientRect().height);
+    const handler = (e) => setHeaderHeight(e.detail.height);
+    window.addEventListener('site-header-resize', handler);
+    return () => window.removeEventListener('site-header-resize', handler);
+  }, []);
+
   const styles = {
     container: {
       minHeight: '100vh',
@@ -10,7 +20,7 @@ const NewsVideosPage = () => {
     hero: {
       maxWidth: '64rem',
       margin: '0 auto',
-      padding: '6rem 1.5rem 4rem 1.5rem',
+      padding: `${headerHeight + 32}px 1.5rem 4rem 1.5rem`,
       textAlign: 'center'
     },
     mainTitle: {

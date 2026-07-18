@@ -123,7 +123,16 @@ const Echo = ({ children, label = 'Why it matters' }) => (
 
 const SciencePage = () => {
   const [activeTab, setActiveTab] = useState('origin');
+  const [headerHeight, setHeaderHeight] = useState(120);
   const mobileNavRef = useRef(null);
+
+  useEffect(() => {
+    const el = document.getElementById('site-header');
+    if (el) setHeaderHeight(el.getBoundingClientRect().height);
+    const handler = (e) => setHeaderHeight(e.detail.height);
+    window.addEventListener('site-header-resize', handler);
+    return () => window.removeEventListener('site-header-resize', handler);
+  }, []);
 
   const scrollTo = (id) => {
     setActiveTab(id);
@@ -161,10 +170,10 @@ const SciencePage = () => {
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .sp-mono { font-family: 'JetBrains Mono', monospace; }
+        .sp-mono { font-family: 'JetBrains Mono', 'Courier New', Consolas, monospace; }
 
         .sp-root {
-          padding-top: 80px;
+          padding-top: ${headerHeight}px;
           display: flex;
           min-height: 100vh;
           background: #fff;
@@ -176,8 +185,8 @@ const SciencePage = () => {
           background: ${GOLD};
           position: fixed;
           left: 0;
-          top: 80px;
-          height: calc(100vh - 80px);
+          top: ${headerHeight}px;
+          height: calc(100vh - ${headerHeight}px);
           padding: 2rem 0;
           overflow-y: auto;
           z-index: 20;
@@ -205,7 +214,7 @@ const SciencePage = () => {
         .sp-mobile-nav {
           display: none;
           position: fixed;
-          top: 60px;
+          top: ${headerHeight}px;
           left: 0;
           right: 0;
           z-index: 20;
@@ -305,7 +314,7 @@ const SciencePage = () => {
           border: 1px solid #000;
         }
         .sp-stat-num {
-          font-family: 'JetBrains Mono', monospace;
+          font-family: 'JetBrains Mono', 'Courier New', Consolas, monospace;
           font-size: 2.6rem;
           font-weight: 700;
           color: #000;
@@ -453,7 +462,7 @@ const SciencePage = () => {
         }
         .sp-origin-step:last-child { border-right: none; }
         .sp-origin-step-tag {
-          font-family: 'JetBrains Mono', monospace;
+          font-family: 'JetBrains Mono', 'Courier New', Consolas, monospace;
           font-size: 0.72rem;
           font-weight: 600;
           color: ${GOLD};
@@ -475,7 +484,7 @@ const SciencePage = () => {
         @media (max-width: 1024px) {
           .sp-sidebar { display: none; }
           .sp-mobile-nav { display: block; }
-          .sp-root { padding-top: 60px; }
+          .sp-root { padding-top: ${headerHeight}px; }
           .sp-main { margin-left: 0; padding-top: 46px; }
           .sp-hero { padding: 4rem 1.5rem 3rem; }
           .sp-hero-title { font-size: 3.1rem; }

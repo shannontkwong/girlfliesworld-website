@@ -9,6 +9,7 @@ const STRIPE_PAYMENT_LINK = 'https://donate.stripe.com/dRm9AV8k0bCCgiBbCEdZ601';
 
 const ContactPage = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [headerHeight, setHeaderHeight] = useState(120);
 
   useEffect(() => {
     const handleResize = () => {
@@ -19,6 +20,14 @@ const ContactPage = () => {
     handleResize(); // Initial check
 
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const el = document.getElementById('site-header');
+    if (el) setHeaderHeight(el.getBoundingClientRect().height);
+    const handler = (e) => setHeaderHeight(e.detail.height);
+    window.addEventListener('site-header-resize', handler);
+    return () => window.removeEventListener('site-header-resize', handler);
   }, []);
 
   const socialLinks = [
@@ -125,7 +134,7 @@ const ContactPage = () => {
   if (isMobile) {
     return (
       <div style={{
-        paddingTop: '60px',
+        paddingTop: `${headerHeight}px`,
         minHeight: '100vh',
         background:'black',
         display: 'flex',
@@ -358,7 +367,7 @@ const ContactPage = () => {
 
   return (
     <div style={{
-      paddingTop: '80px',
+      paddingTop: `${headerHeight}px`,
       minHeight: '100vh',
       display: 'flex',
       background:'black',
@@ -367,7 +376,7 @@ const ContactPage = () => {
       <section style={{
         flex: 1,
         display: 'flex',
-        minHeight: 'calc(100vh - 80px)',
+        minHeight: `calc(100vh - ${headerHeight}px)`,
       }}>
         {/* Left side - Blue background with content */}
         <div style={{

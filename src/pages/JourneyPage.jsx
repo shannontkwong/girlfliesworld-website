@@ -8,6 +8,7 @@ const JourneyPage = () => {
   const [activeSection, setActiveSection] = useState('route');
   const [isMobile, setIsMobile] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [headerHeight, setHeaderHeight] = useState(120);
 
   useEffect(() => {
     const handleResize = () => {
@@ -18,6 +19,14 @@ const JourneyPage = () => {
     handleResize();
 
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const el = document.getElementById('site-header');
+    if (el) setHeaderHeight(el.getBoundingClientRect().height);
+    const handler = (e) => setHeaderHeight(e.detail.height);
+    window.addEventListener('site-header-resize', handler);
+    return () => window.removeEventListener('site-header-resize', handler);
   }, []);
 
   const navigationItems = [
@@ -34,7 +43,7 @@ const JourneyPage = () => {
     setSidebarOpen(false); // Close mobile sidebar after selection
     const element = document.getElementById(sectionId);
     if (element) {
-      const offset = isMobile ? 60 : 100;
+      const offset = headerHeight + 20;
       const elementPosition = element.offsetTop - offset;
       window.scrollTo({
         top: elementPosition,
@@ -45,7 +54,7 @@ const JourneyPage = () => {
 
   // Styles
   const pageStyle = {
-    paddingTop: isMobile ? '60px' : '80px',
+    paddingTop: `${headerHeight}px`,
     display: 'flex',
     minHeight: '100vh',
     backgroundColor: '#fff'
@@ -56,11 +65,11 @@ const JourneyPage = () => {
     backgroundColor: '#51D37C',
     position: 'fixed',
     left: isMobile ? (sidebarOpen ? '0' : '-280px') : '0',
-    top: isMobile ? '60px' : '80px',
-    height: 'calc(100vh - 80px)',
+    top: `${headerHeight}px`,
+    height: `calc(100vh - ${headerHeight}px)`,
     padding: '2rem 0',
     overflowY: 'auto',
-    zIndex: 1000,
+    zIndex: 800,
     transition: 'left 0.3s ease',
     boxShadow: isMobile ? '2px 0 10px rgba(0,0,0,0.1)' : 'none'
   };
@@ -72,22 +81,22 @@ const JourneyPage = () => {
     width: '100%',
     height: '100%',
     backgroundColor: 'rgba(0,0,0,0.5)',
-    zIndex: 999,
+    zIndex: 799,
     display: isMobile && sidebarOpen ? 'block' : 'none'
   };
 
   const mobileMenuButtonStyle = {
     position: 'fixed',
-    top: isMobile ? '70px' : '90px',
+    top: `${headerHeight + 10}px`,
     left: '1rem',
-    zIndex: 1001,
+    zIndex: 900,
     backgroundColor: '#51D37C',
     color: '#fff',
     border: 'none',
     borderRadius: '50%',
-    width: '50px',
-    height: '50px',
-    fontSize: '1.2rem',
+    width: '44px',
+    height: '44px',
+    fontSize: '1.1rem',
     cursor: 'pointer',
     display: isMobile ? 'flex' : 'none',
     alignItems: 'center',
@@ -99,7 +108,7 @@ const JourneyPage = () => {
   const mainContentStyle = {
     marginLeft: isMobile ? '0' : '280px',
     flex: 1,
-    padding: isMobile ? '1rem' : '2rem 3rem',
+    padding: isMobile ? '1rem 1rem 1rem 4.5rem' : '2rem 3rem',
     backgroundColor: '#fff',
     width: isMobile ? '100%' : 'calc(100% - 280px)'
   };

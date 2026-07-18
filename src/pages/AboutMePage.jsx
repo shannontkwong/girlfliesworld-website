@@ -116,6 +116,7 @@ const AboutMePage = () => {
   const [activeSection, setActiveSection] = useState('journey');
   const [modalImage, setModalImage] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [headerHeight, setHeaderHeight] = useState(120);
 
   useEffect(() => {
     const handleResize = () => {
@@ -126,6 +127,41 @@ const AboutMePage = () => {
     handleResize();
 
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // FIX: the header's real height can change after this component mounts
+  // (the funding banner rendering/wrapping, fonts loading, viewport resize, etc.).
+  // A one-time getBoundingClientRect() + a custom event that may never fire left
+  // headerHeight stuck at the stale initial value of 120, so the sidebar/main
+  // content started too high and the top nav item got clipped behind the header.
+  // A ResizeObserver keeps headerHeight in sync with the header's actual size
+  // at all times, so the layout below it never overlaps.
+  useEffect(() => {
+    const el = document.getElementById('site-header');
+    if (!el) return;
+
+    const updateHeight = () => {
+      const height = el.getBoundingClientRect().height;
+      setHeaderHeight(Math.ceil(height));
+    };
+
+    // Measure immediately, and again after the current paint in case images
+    // or the funding banner haven't finished laying out yet.
+    updateHeight();
+    const raf = requestAnimationFrame(updateHeight);
+
+    const resizeObserver = new ResizeObserver(updateHeight);
+    resizeObserver.observe(el);
+
+    // Keep supporting the custom event too, in case other parts of the app rely on it.
+    const handler = (e) => setHeaderHeight(e.detail.height);
+    window.addEventListener('site-header-resize', handler);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      resizeObserver.disconnect();
+      window.removeEventListener('site-header-resize', handler);
+    };
   }, []);
 
   const navigationItems = [
@@ -142,7 +178,7 @@ const AboutMePage = () => {
     setActiveSection(sectionId);
     const element = document.getElementById(sectionId);
     if (element) {
-      const offset = 100; // Account for navbar
+      const offset = headerHeight + 20;
       const elementPosition = element.offsetTop - offset;
       window.scrollTo({
         top: elementPosition,
@@ -161,7 +197,7 @@ const AboutMePage = () => {
 
   // Styles
   const pageStyle = {
-    paddingTop: isMobile ? '60px' : '80px',
+    paddingTop: `${headerHeight}px`,
     display: 'flex',
     minHeight: '100vh',
     backgroundColor: '#fff'
@@ -172,8 +208,8 @@ const AboutMePage = () => {
     backgroundColor: '#C4A574',
     position: 'fixed',
     left: 0,
-    top: isMobile ? '60px' : '80px',
-    height: 'calc(100vh - 80px)',
+    top: `${headerHeight}px`,
+    height: `calc(100vh - ${headerHeight}px)`,
     padding: '2rem 0',
     overflowY: 'auto',
     zIndex: 10,
@@ -460,7 +496,7 @@ const AboutMePage = () => {
               <p style={paragraphStyle}>
               In her spare time, Shannon immerses herself in a wide range of subjects — from quantum mechanics, physics, product engineering, and machine learning to history, art, and design. She enjoys philosophy, science fiction, and futuristic literature, especially books with electronic or speculative themes. A fan of both classical and punk rock music, she also codes apps, watches documentaries, and, when not indoors, seeks out adrenaline through adventure sports.
 
-Shannon also has an eclectic set of hands-on skills and hobbies: she’s played piano since the age of eight, started tennis at seven, and has trained in Wing Chun martial arts.              </p>
+Shannon also has an eclectic set of hands-on skills and hobbies: she's played piano since the age of eight, started tennis at seven, and has trained in Wing Chun martial arts.              </p>
               <p style={paragraphStyle}>
                 To prepare for her Antarctic mission, Shannon has taken a <span style={highlights.blue}>winter survival course</span> which included pulling a 50kg sled up the Norwegian mountains in -15°C weather for 8 hours a day for 1 week (equivalent to 23 miles daily) in case her engine quits over <span style={highlights.yellow}>Antarctica</span>.
               </p>

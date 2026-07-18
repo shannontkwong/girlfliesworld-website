@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Footer from '../components/layout/Footer';
 
 const TeamPage = () => {
+  const [headerHeight, setHeaderHeight] = useState(120);
+
+  useEffect(() => {
+    const el = document.getElementById('site-header');
+    if (el) setHeaderHeight(el.getBoundingClientRect().height);
+    const handler = (e) => setHeaderHeight(e.detail.height);
+    window.addEventListener('site-header-resize', handler);
+    return () => window.removeEventListener('site-header-resize', handler);
+  }, []);
   const teamMembers = [
     {
       name: 'Ted Scambos',
@@ -68,7 +77,7 @@ const TeamPage = () => {
     <div style={{
       fontFamily: 'Arial, sans-serif',
       minHeight: '100vh',
-      paddingTop: '80px'
+      paddingTop: `${headerHeight}px`
     }}>
       {/* Header Section */}
       <div style={{

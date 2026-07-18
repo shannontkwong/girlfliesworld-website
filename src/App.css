@@ -21,9 +21,9 @@
   --gfw-near-black: #0a0a0a;
 
   /* Typography */
-  --font-display: 'Impact', 'Arial Black', sans-serif;
-  --font-body: 'Space Grotesk', sans-serif;
-  --font-accent: 'Outfit', sans-serif;
+  --font-display: 'Impact', 'Arial Black', 'Arial Bold', Arial, sans-serif;
+  --font-body: 'Space Grotesk', 'Segoe UI', Roboto, 'Noto Sans', Arial, sans-serif;
+  --font-accent: 'Outfit', 'Segoe UI', Roboto, Arial, sans-serif;
 
   /* Brand spacing */
   --section-pad-desktop: 4rem;
@@ -55,7 +55,7 @@
 }
 
 body {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Space Grotesk', 'Segoe UI', Roboto, 'Noto Sans', Arial, sans-serif;
   background: var(--white);
   color: var(--black);
   overflow-x: hidden;

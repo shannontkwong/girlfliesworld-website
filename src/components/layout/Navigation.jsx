@@ -148,6 +148,8 @@ const Navigation = () => {
     background: '#000000',
     overflow: 'hidden',
     position: 'relative',
+    maxHeight: scrolled ? '0' : '120px',
+    transition: 'max-height 0.3s ease',
   };
 
   const sponsorBarInnerStyle = {
@@ -222,7 +224,7 @@ const Navigation = () => {
     transition: 'all 0.3s ease',
     border: '1px solid rgba(255, 255, 255, 0.3)',
     backdropFilter: 'blur(10px)',
-    animation: 'fundBannerSlide 0.5s ease-out, fundBannerPulse 3s ease-in-out infinite'
+    animation: 'fundBannerSlide 0.5s ease-out'
   };
 
   const containerStyle = {
@@ -232,7 +234,8 @@ const Navigation = () => {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: isMobile ? '0.5rem 1rem' : '0rem 2rem',
-    minHeight: isMobile ? '60px' : '80px'
+    minHeight: isMobile ? '60px' : (scrolled ? '56px' : '80px'),
+    transition: 'min-height 0.3s ease'
   };
 
   // Mobile-optimized logo styles
@@ -403,11 +406,10 @@ const Navigation = () => {
     top: `${headerHeight}px`,
     left: 0,
     right: 0,
-    background: 'rgba(0, 0, 0, 0.98)',
-    backdropFilter: 'blur(20px)',
+    background: '#0a0a0a',
     borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
     padding: '1rem',
-    zIndex: 999,
+    zIndex: 1001,
     maxHeight: `calc(100vh - ${headerHeight}px)`,
     overflowY: 'auto'
   };
@@ -611,7 +613,7 @@ const Navigation = () => {
                 src="/dot.png"
                 alt="GIRLFLIESWORLD Logo"
                 style={{
-                  height: isMobile ? '45px' : '80px',
+                  height: isMobile ? '45px' : (scrolled ? '48px' : '80px'),
                   width: 'auto',
                   maxWidth: isMobile ? '100%' : '400px',
                   objectFit: 'contain',

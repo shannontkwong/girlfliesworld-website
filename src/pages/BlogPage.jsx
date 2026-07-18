@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DiscussionEmbed } from 'disqus-react';
 import { BLOG_POSTS } from '../components/blog';
 
 const CleanBlog = () => {
   const [selectedPost, setSelectedPost] = useState(null);
+  const [headerHeight, setHeaderHeight] = useState(120);
+
+  useEffect(() => {
+    const el = document.getElementById('site-header');
+    if (el) setHeaderHeight(el.getBoundingClientRect().height);
+    const handler = (e) => setHeaderHeight(e.detail.height);
+    window.addEventListener('site-header-resize', handler);
+    return () => window.removeEventListener('site-header-resize', handler);
+  }, []);
 
   const styles = {
     container: {
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
       maxWidth: '800px',
       margin: '0 auto',
-      padding: '120px 40px 40px 40px',
+      padding: `${headerHeight + 20}px 40px 40px 40px`,
       backgroundColor: 'white',
       color: '#333',
       lineHeight: '1.5',
