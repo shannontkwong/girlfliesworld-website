@@ -16,8 +16,8 @@ const WhyThisMattersSection = () => {
   const outfit = `'Outfit', sans-serif`;
 
   const sectionStyle = {
-    padding: isMobile ? '3rem 1.25rem 4rem' : '5rem 6rem 6rem',
-    maxWidth: '1200px',
+    padding: isMobile ? '3rem 1.25rem 4rem' : '5rem 4rem 6rem',
+    maxWidth: '1400px',
     margin: '0 auto',
   };
 

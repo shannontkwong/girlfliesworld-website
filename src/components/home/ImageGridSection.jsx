@@ -221,6 +221,7 @@ const ImageGridSection = () => {
                         backgroundColor: 'rgba(255,255,255,0.92)', color: '#000',
                         fontWeight: 700, fontSize: isMobile ? '0.8rem' : '0.95rem',
                         borderRadius: 50, backdropFilter: 'blur(10px)',
+                        WebkitBackdropFilter: 'blur(10px)',
                         border: '1px solid rgba(255,255,255,0.25)'
                       }}>
                         {item.buttonText} <span>→</span>

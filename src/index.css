@@ -7,6 +7,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Remove blue tap-highlight flash on Android */
+a, button, [role="button"] {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Dynamic viewport height — avoids Android URL-bar overlap */
+.hero-full-height {
+  height: 100vh;
+  height: 100dvh;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

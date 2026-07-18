@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
+// ⚠️ Keep this in sync with the same constant in Navigation.jsx and ContactPage.jsx
+const STRIPE_PAYMENT_LINK = 'https://donate.stripe.com/dRm9AV8k0bCCgiBbCEdZ601';
+
 const HeroSection = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [currentSubtitle, setCurrentSubtitle] = useState(0);
@@ -98,21 +101,50 @@ const HeroSection = () => {
     boxShadow: '0 4px 12px rgba(255,255,255,0.3)',
   };
 
+  // "Help Fund the Mission" — visually distinct (gradient), sits alongside the other two
+  const btnFundBase = {
+    background: 'linear-gradient(135deg, #E67E22, #C4A574)',
+    color: '#fff',
+    padding: isMobile ? '0.875rem 2rem' : '1rem 2.5rem',
+    textDecoration: 'none',
+    fontWeight: 700,
+    fontSize: isMobile ? '0.875rem' : '1rem',
+    border: '2px solid transparent',
+    borderRadius: '50px',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    userSelect: 'none',
+    display: 'inline-block',
+    textAlign: 'center',
+  };
+
+  const btnFundHover = {
+    transform: 'translateY(-2px)',
+    boxShadow: '0 4px 16px rgba(230,126,34,0.5)',
+  };
+
   const primaryHoverProps = useHoverStyle(btnPrimaryBase, btnPrimaryHover);
   const secondaryHoverProps = useHoverStyle(btnSecondaryBase, btnSecondaryHover);
+  const fundHoverProps = useHoverStyle(btnFundBase, btnFundHover);
+  const fundHoverPropsMobile = useHoverStyle(
+    { ...btnFundBase, width: '100%' },
+    btnFundHover
+  );
 
   if (isMobile) {
     return (
-      <section style={{ height: '100vh', display: 'flex', marginTop: `${headerHeight}px` }}>
+      <section className="hero-full-height" style={{ display: 'flex', marginTop: `${headerHeight}px` }}>
         <div style={{ width: '100%', position: 'relative', overflow: 'hidden', background: '#f5f5f5' }}>
+          {/* Mobile-only hero image — a dedicated asset/crop rather than
+              reusing the desktop image, since the framing needs differ. */}
           <img
-            src="/vogue.png"
-            alt="Shannon"
+            src="/cockpit.png"
+            alt="Shannon in the cockpit"
             style={{
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              objectPosition: '-360px center',
+              objectPosition: 'right center',
               filter: 'contrast(1.1)',
             }}
           />
@@ -191,6 +223,14 @@ const HeroSection = () => {
               width: '100%',
               maxWidth: '280px',
             }}>
+              <a
+                href={STRIPE_PAYMENT_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                {...fundHoverPropsMobile}
+              >
+                ❤️ Help Fund the Mission
+              </a>
               <a href="/journey" style={{
                 background: '#000',
                 color: '#fff',
@@ -248,7 +288,7 @@ const HeroSection = () => {
 
   // Desktop
   return (
-    <section style={{ height: '100vh', display: 'flex', marginTop: `${headerHeight}px` }}>
+    <section className="hero-full-height" style={{ display: 'flex', marginTop: `${headerHeight}px` }}>
       <div style={{ width: '100%', position: 'relative', overflow: 'hidden', background: '#f5f5f5' }}>
         <img
           src="/vogue.png"
@@ -325,7 +365,15 @@ const HeroSection = () => {
           </p>
 
           {/* Buttons */}
-          <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            <a
+              href={STRIPE_PAYMENT_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              {...fundHoverProps}
+            >
+              ❤️ Help Fund the Mission
+            </a>
             <a href="/journey" {...primaryHoverProps}>
               Follow the Journey
             </a>

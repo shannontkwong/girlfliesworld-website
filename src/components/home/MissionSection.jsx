@@ -16,8 +16,8 @@ const MissionSection = () => {
   }, []);
 
   const sectionStyle = {
-    padding: isMobile ? '2rem 1rem 4rem 1rem' : '2rem 6rem 6rem 6rem',
-    maxWidth: '1200px',
+    padding: isMobile ? '2rem 1.25rem 4rem' : '2rem 4rem 6rem',
+    maxWidth: '1400px',
     margin: '0 auto',
   };
 
@@ -210,8 +210,19 @@ const MissionSection = () => {
 
   return (
     <section style={sectionStyle} id="mission">
-     
 
+      {/* Section eyebrow */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem' }}>
+        <div style={{ width: 32, height: 2, background: '#E67E22', flexShrink: 0 }} />
+        <span style={{
+          fontFamily: "'Space Grotesk', sans-serif",
+          fontSize: '0.65rem',
+          fontWeight: 700,
+          letterSpacing: '0.22em',
+          textTransform: 'uppercase',
+          color: '#888',
+        }}>The Mission · GIRLFLIESWORLD 2026</span>
+      </div>
 
       <div style={missionContentContainerStyle}>
         <div style={missionTextSectionStyle}>

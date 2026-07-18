@@ -56,7 +56,7 @@ const SupportSection = () => {
 
   const sectionStyle = {
     backgroundColor: '#ffffff',
-    padding: '5rem 2rem',
+    padding: isMobile ? '5rem 1.25rem' : '5rem 4rem',
     minHeight: '80vh',
     display: 'flex',
     alignItems: 'center',
@@ -177,6 +177,18 @@ const SupportSection = () => {
       <div style={containerStyle}>
         {/* Left Side - Text Content */}
         <div style={leftSideStyle}>
+          {/* Section eyebrow */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+            <div style={{ width: 32, height: 2, background: '#E67E22', flexShrink: 0 }} />
+            <span style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: '0.65rem',
+              fontWeight: 700,
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: '#888',
+            }}>Get Involved</span>
+          </div>
           <h1 style={headingStyle}>
             SUPPORT GREATNESS
           </h1>

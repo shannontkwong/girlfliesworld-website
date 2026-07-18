@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronDown, Menu, X, Sparkles, Mail, TrendingUp } from 'lucide-react';
+import { ChevronDown, Menu, X, Heart } from 'lucide-react';
 
 const SPONSOR_PERCENT = 15; // Update this single number as fundraising progresses
 const SPONSOR_EMAIL = 'contact@girlfliesworld.com';
+
+// ⚠️ Paste your Stripe Payment Link URL here (Stripe Dashboard → Payment Links → New)
+// e.g. 'https://buy.stripe.com/xxxxxxxxxxxx'
+const STRIPE_PAYMENT_LINK = 'https://donate.stripe.com/5kQ9AV43K7mm8Q95egdZ600?prefilled_email=contact%40girlfliesworld.com&locale=en';
 
 const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -10,7 +14,7 @@ const Navigation = () => {
   const [journeyDropdown, setJourneyDropdown] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [showBlogBanner, setShowBlogBanner] = useState(true);
+  const [showFundBanner, setShowFundBanner] = useState(true);
   const [headerHeight, setHeaderHeight] = useState(96);
   const [progressWidth, setProgressWidth] = useState(0);
 
@@ -68,21 +72,23 @@ const Navigation = () => {
 
   const socialLinks = [
     {
+      href: 'https://x.com/realshannonwong',
+      icon: 'https://img.icons8.com/ios-filled/50/twitterx--v1.png',
+      alt: 'X (Twitter)',
+      isX: true
+    },
+    {
       href: 'https://www.facebook.com/shannontkwong/',
       icon: 'https://img.icons8.com/windows/32/facebook-f--v1.png',
       alt: 'Facebook'
     },
-    {
-      href: 'https://www.linkedin.com/company/girlfliesworld',
-      icon: 'https://img.icons8.com/ios-filled/50/linkedin.png',
-      alt: 'LinkedIn'
-    },
+   
     {
       href: 'https://www.instagram.com/girlfliesworld/',
       icon: 'https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/gray-insta.svg',
       alt: 'Instagram'
     },
-   
+
     {
       href: 'https://www.youtube.com/channel/UCXQmU6WEELqxfk7sMPIQXXg',
       icon: 'https://img.icons8.com/sf-black-filled/64/youtube-play.png',
@@ -135,10 +141,11 @@ const Navigation = () => {
     zIndex: 1000,
   };
 
+  // Clean single-row bar, styled after the reference: solid color, bold inline
+  // phrase, one pill CTA on the right. No progress bar, no shimmer, no clutter.
   const sponsorBarStyle = {
     width: '100%',
-    background: 'linear-gradient(90deg, #000000 0%, #1a1610 50%, #000000 100%)',
-    borderBottom: '1px solid rgba(196, 165, 116, 0.35)',
+    background: '#000000',
     overflow: 'hidden',
     position: 'relative',
   };
@@ -150,67 +157,41 @@ const Navigation = () => {
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: isMobile ? '0.4rem 0.75rem' : '0.6rem 1.5rem',
-    padding: isMobile ? '0.45rem 1rem' : '0.5rem 2rem',
+    gap: isMobile ? '0.6rem' : '1.25rem',
+    padding: isMobile ? '0.65rem 1rem' : '0.7rem 2rem',
     position: 'relative',
     zIndex: 2,
   };
 
   const sponsorLabelStyle = {
-    display: 'flex',
+    color: '#fff',
+    fontSize: isMobile ? '0.8rem' : '0.9rem',
+    fontWeight: 400,
+    letterSpacing: '0.01em',
+    textAlign: 'center',
+  };
+
+  const sponsorLabelBoldStyle = {
+    fontWeight: 700,
+    color: '#E67E22',
+  };
+
+  // Pill CTA button — solid, high-contrast, matches the reference's white
+  // "Support the project →" button
+  const sponsorCtaStyle = {
+    display: 'inline-flex',
     alignItems: 'center',
     gap: '0.4rem',
-    color: '#fff',
-    fontSize: isMobile ? '0.7rem' : '0.8rem',
-    fontWeight: 600,
-    letterSpacing: '0.02em',
-    whiteSpace: 'nowrap',
-  };
-
-  const progressTrackStyle = {
-    width: isMobile ? '90px' : '150px',
-    height: '6px',
-    background: 'rgba(255, 255, 255, 0.15)',
-    borderRadius: '10px',
-    overflow: 'hidden',
-    position: 'relative',
-    flexShrink: 0,
-  };
-
-  const progressFillStyle = {
-    width: `${progressWidth}%`,
-    height: '100%',
-    background: 'linear-gradient(90deg, #C4A574, #E67E22)',
-    borderRadius: '10px',
-    transition: 'width 1.4s cubic-bezier(0.4, 0, 0.2, 1)',
-    position: 'relative',
-    overflow: 'hidden',
-  };
-
-  const progressPercentStyle = {
-    color: '#E67E22',
-    fontSize: isMobile ? '0.72rem' : '0.8rem',
+    background: '#fff',
+    color: '#000',
+    fontSize: isMobile ? '0.78rem' : '0.85rem',
     fontWeight: 700,
-    whiteSpace: 'nowrap',
-  };
-
-  const sponsorDividerStyle = {
-    width: '1px',
-    height: '14px',
-    background: 'rgba(255, 255, 255, 0.2)',
-    display: isMobile ? 'none' : 'block',
-  };
-
-  const sponsorEmailStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.35rem',
-    color: '#C4A574',
-    fontSize: isMobile ? '0.7rem' : '0.8rem',
-    fontWeight: 600,
+    padding: isMobile ? '0.45rem 1rem' : '0.5rem 1.3rem',
+    borderRadius: '50px',
     textDecoration: 'none',
     whiteSpace: 'nowrap',
-    transition: 'color 0.25s ease',
+    transition: 'all 0.2s ease',
+    flexShrink: 0,
   };
 
   const navStyle = {
@@ -220,19 +201,20 @@ const Navigation = () => {
     transition: 'all 0.3s ease',
     padding: 0
   };
-  
-  const blogBannerStyle = {
+
+  // Fund banner (replaces old "Blog is Live" banner) — links straight to Stripe
+  const fundBannerStyle = {
     position: 'fixed',
     right: isMobile ? '10px' : '20px',
     bottom: isMobile ? '20px' : 'auto',
     top: isMobile ? 'auto' : `${headerHeight + 20}px`,
     zIndex: 1001,
-    background: '#C4A574',
+    background: 'linear-gradient(135deg, #E67E22, #C4A574)',
     color: '#fff',
     padding: isMobile ? '12px 16px' : '16px 20px',
     borderRadius: '16px',
-    boxShadow: '0 8px 32px rgba(196, 165, 116, 0.4)',
-    display: showBlogBanner ? 'flex' : 'none',
+    boxShadow: '0 8px 32px rgba(230, 126, 34, 0.45)',
+    display: showFundBanner ? 'flex' : 'none',
     alignItems: 'center',
     gap: '12px',
     maxWidth: isMobile ? '280px' : '320px',
@@ -240,7 +222,7 @@ const Navigation = () => {
     transition: 'all 0.3s ease',
     border: '1px solid rgba(255, 255, 255, 0.3)',
     backdropFilter: 'blur(10px)',
-    animation: 'blogBannerSlide 0.5s ease-out, blogBannerPulse 3s ease-in-out infinite'
+    animation: 'fundBannerSlide 0.5s ease-out, fundBannerPulse 3s ease-in-out infinite'
   };
 
   const containerStyle = {
@@ -261,15 +243,6 @@ const Navigation = () => {
     transition: 'transform 0.3s ease',
     flexShrink: 0,
     maxWidth: isMobile ? '70%' : 'none'
-  };
-
-  const logoImageStyle = {
-    height: isMobile ? '50px' : '80px',
-    width: 'auto',
-    maxWidth: isMobile ? '240px' : '400px',
-    objectFit: 'contain',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease'
   };
 
   const hamburgerStyle = {
@@ -309,6 +282,23 @@ const Navigation = () => {
     position: 'relative',
     padding: '1.5rem 0',
     cursor: 'pointer'
+  };
+
+  // Help Fund pill button, shown inline in the desktop nav
+  const fundNavButtonStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+    textDecoration: 'none',
+    color: '#fff',
+    fontWeight: 700,
+    fontSize: '0.9rem',
+    background: 'linear-gradient(135deg, #E67E22, #C4A574)',
+    padding: '0.65rem 1.4rem',
+    borderRadius: '50px',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    whiteSpace: 'nowrap',
   };
 
   const dropdownItemStyle = {
@@ -432,6 +422,35 @@ const Navigation = () => {
     borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
   };
 
+  const mobileFundItemStyle = {
+    ...mobileMenuItemStyle,
+    color: '#E67E22',
+    fontWeight: 700,
+  };
+
+  // Section header inside mobile menu — mirrors a desktop dropdown's parent
+  // label ("About", "My Journey") so the same top-level titles appear on both.
+  const mobileSectionHeaderStyle = {
+    display: 'block',
+    padding: '1rem 0 0.5rem 0',
+    color: '#fff',
+    fontSize: '1.1rem',
+    fontWeight: 700,
+    letterSpacing: '0.01em',
+  };
+
+  // Sub-item nested under a mobile section header — matches the items that
+  // live inside the equivalent desktop dropdown.
+  const mobileSubItemStyle = {
+    display: 'block',
+    padding: '0.65rem 0 0.65rem 1rem',
+    textDecoration: 'none',
+    color: 'rgba(255, 255, 255, 0.75)',
+    fontSize: '1rem',
+    fontWeight: 500,
+    borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+  };
+
   const mobileSocialStyle = {
     display: 'flex',
     justifyContent: 'center',
@@ -445,7 +464,7 @@ const Navigation = () => {
     <>
       <style>
         {`
-          @keyframes blogBannerSlide {
+          @keyframes fundBannerSlide {
             from {
               transform: translateY(100%);
               opacity: 0;
@@ -455,19 +474,14 @@ const Navigation = () => {
               opacity: 1;
             }
           }
-          
-          @keyframes blogBannerPulse {
+
+          @keyframes fundBannerPulse {
             0%, 100% {
-              box-shadow: 0 8px 32px rgba(196, 165, 116, 0.4);
+              box-shadow: 0 8px 32px rgba(230, 126, 34, 0.45);
             }
             50% {
-              box-shadow: 0 8px 32px rgba(196, 165, 116, 0.6), 0 0 20px rgba(196, 165, 116, 0.4);
+              box-shadow: 0 8px 32px rgba(230, 126, 34, 0.7), 0 0 20px rgba(196, 165, 116, 0.5);
             }
-          }
-
-          @keyframes sponsorShimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(250%); }
           }
 
           @keyframes sponsorGlow {
@@ -475,23 +489,15 @@ const Navigation = () => {
             50% { opacity: 1; }
           }
 
-          .sponsor-shimmer::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 40%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
-            animation: sponsorShimmer 2.6s ease-in-out infinite;
+          .sponsor-cta-btn:hover {
+            background: #E67E22 !important;
+            color: #fff !important;
+            transform: translateY(-1px);
           }
 
-          .sponsor-icon-pulse {
-            animation: sponsorGlow 2.2s ease-in-out infinite;
-          }
-
-          .sponsor-email-link:hover {
-            color: #E67E22 !important;
+          .fund-nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 126, 34, 0.5);
           }
 
           /* Additional mobile optimizations */
@@ -521,28 +527,28 @@ const Navigation = () => {
         `}
       </style>
 
-      {/* Blog Banner */}
+      {/* Floating "Help Fund the Mission" banner — links straight to Stripe */}
       <div
-        style={blogBannerStyle}
-        onClick={() => window.location.href = '/blog'}
+        style={fundBannerStyle}
+        onClick={() => window.open(STRIPE_PAYMENT_LINK, '_blank', 'noopener,noreferrer')}
         onMouseEnter={(e) => {
           e.currentTarget.style.transform = 'scale(1.05)';
-          e.currentTarget.style.boxShadow = '0 12px 40px rgba(196, 165, 116, 0.6)';
+          e.currentTarget.style.boxShadow = '0 12px 40px rgba(230, 126, 34, 0.7)';
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.transform = 'scale(1)';
-          e.currentTarget.style.boxShadow = '0 8px 32px rgba(196, 165, 116, 0.4)';
+          e.currentTarget.style.boxShadow = '0 8px 32px rgba(230, 126, 34, 0.45)';
         }}
       >
-        <Sparkles size={20} style={{ animation: 'spin 3s linear infinite', color: '#fff' }} />
+        <Heart size={20} fill="#fff" style={{ animation: 'sponsorGlow 2.2s ease-in-out infinite' }} />
         <div style={{
           flex: 1,
           fontSize: isMobile ? '14px' : '15px',
           fontWeight: 600,
           lineHeight: '1.3'
         }}>
-          <strong>Shannon's Blog is Live!</strong><br />
-          Read about the incredible journey 
+          <strong>Help Fund the Mission</strong><br />
+          Every contribution gets us closer to the Pole
         </div>
         <button
           style={{
@@ -562,7 +568,7 @@ const Navigation = () => {
           }}
           onClick={(e) => {
             e.stopPropagation();
-            setShowBlogBanner(false);
+            setShowFundBanner(false);
           }}
           onMouseEnter={(e) => {
             e.target.style.background = 'rgba(255, 255, 255, 0.3)';
@@ -578,29 +584,21 @@ const Navigation = () => {
       {/* Fixed header: sponsor bar + main nav, measured together */}
       <div id="site-header" style={headerWrapperStyle}>
 
-        {/* Sponsor / Fundraising Bar */}
+        {/* Sponsor / Fundraising Bar — clean single row, no progress bar clutter */}
         <div style={sponsorBarStyle}>
           <div style={sponsorBarInnerStyle}>
             <div style={sponsorLabelStyle}>
-              <TrendingUp size={14} className="sponsor-icon-pulse" style={{ color: '#E67E22' }} />
-              <span>{isMobile ? 'Seeking Sponsors' : 'Seeking Mission Sponsors for the Flight'}</span>
+              GIRLFLIESWORLD is <span style={sponsorLabelBoldStyle}>{SPONSOR_PERCENT}% funded</span> and actively seeking mission sponsors.
             </div>
-
-            <div style={progressTrackStyle}>
-              <div className="sponsor-shimmer" style={progressFillStyle} />
-            </div>
-
-            <span style={progressPercentStyle}>{SPONSOR_PERCENT}% Raised</span>
-
-            <div style={sponsorDividerStyle}></div>
 
             <a
-              href={`mailto:${SPONSOR_EMAIL}`}
-              className="sponsor-email-link"
-              style={sponsorEmailStyle}
+              href={STRIPE_PAYMENT_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sponsor-cta-btn"
+              style={sponsorCtaStyle}
             >
-              <Mail size={13} />
-              <span>{SPONSOR_EMAIL}</span>
+              Fund the flight →
             </a>
           </div>
         </div>
@@ -629,10 +627,10 @@ const Navigation = () => {
                   if (fallback) fallback.style.display = 'block';
                 }}
               /></a>
-             
+
 
             {/* Hamburger Menu Button (Mobile) */}
-            <button 
+            <button
               style={hamburgerStyle}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle menu"
@@ -645,30 +643,30 @@ const Navigation = () => {
               <ul style={itemsStyle}>
                 {/* About Dropdown */}
                 <li style={dropdownItemStyle}>
-                  <div 
+                  <div
                     style={linkStyle}
                     onMouseEnter={() => setAboutDropdown(true)}
                     onMouseLeave={() => setAboutDropdown(false)}
                   >
                     <span>About</span>
-                    <ChevronDown 
-                      size={16} 
+                    <ChevronDown
+                      size={16}
                       style={{
                         transition: 'transform 0.3s ease',
                         transform: aboutDropdown ? 'rotate(180deg)' : 'rotate(0deg)'
-                      }} 
+                      }}
                     />
-                    
-                    <div 
+
+                    <div
                       style={aboutDropdown ? wideDropdownVisibleStyle : wideDropdownStyle}
                       onMouseEnter={() => setAboutDropdown(true)}
                       onMouseLeave={() => setAboutDropdown(false)}
                     >
                       <div style={dropdownGridStyle}>
                         {aboutMenuItems.map((item, index) => (
-                          <a 
+                          <a
                             key={index}
-                            href={item.href} 
+                            href={item.href}
                             style={dropdownItemCardStyle}
                             onMouseEnter={(e) => {
                               e.currentTarget.style.background = '#111';
@@ -695,30 +693,30 @@ const Navigation = () => {
 
                 {/* Journey Dropdown */}
                 <li style={dropdownItemStyle}>
-                  <div 
+                  <div
                     style={linkStyle}
                     onMouseEnter={() => setJourneyDropdown(true)}
                     onMouseLeave={() => setJourneyDropdown(false)}
                   >
                     <span>My Journey</span>
-                    <ChevronDown 
-                      size={16} 
+                    <ChevronDown
+                      size={16}
                       style={{
                         transition: 'transform 0.3s ease',
                         transform: journeyDropdown ? 'rotate(180deg)' : 'rotate(0deg)'
-                      }} 
+                      }}
                     />
-                    
-                    <div 
+
+                    <div
                       style={journeyDropdown ? wideDropdownVisibleStyle : wideDropdownStyle}
                       onMouseEnter={() => setJourneyDropdown(true)}
                       onMouseLeave={() => setJourneyDropdown(false)}
                     >
                       <div style={dropdownGridStyle}>
                         {journeyMenuItems.map((item, index) => (
-                          <a 
+                          <a
                             key={index}
-                            href={item.href} 
+                            href={item.href}
                             style={dropdownItemCardStyle}
                             onMouseEnter={(e) => {
                               e.currentTarget.style.background = '#111';
@@ -754,7 +752,20 @@ const Navigation = () => {
                 </li>
                 <li>
                   <a href="/contact" style={linkStyle}>
-                    <span>Become a Sponsor</span>
+                    <span>Sponsor</span>
+                  </a>
+                </li>
+                {/* Help Fund the Mission — inline nav pill, links to Stripe */}
+                <li>
+                  <a
+                    href={STRIPE_PAYMENT_LINK}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="fund-nav-btn"
+                    style={fundNavButtonStyle}
+                  >
+                    <Heart size={15} fill="#fff" />
+                    <span>Help Fund</span>
                   </a>
                 </li>
               </ul>
@@ -763,13 +774,13 @@ const Navigation = () => {
 
               <div style={socialSectionStyle}>
                 {socialLinks.map((link, index) => (
-                  <a 
-                    key={index} 
-                    href={link.href} 
-                    target="_blank" 
+                  <a
+                    key={index}
+                    href={link.href}
+                    target="_blank"
                     rel="noopener noreferrer"
-                    style={{ 
-                      display: 'flex', 
+                    style={{
+                      display: 'flex',
                       alignItems: 'center',
                       marginLeft: link.isX ? '0.3rem' : '0', // Extra spacing for X
                       marginRight: link.isX ? '0.3rem' : '0'
@@ -796,49 +807,54 @@ const Navigation = () => {
             </div>
           </div>
 
-          {/* Mobile Menu */}
+          {/* Mobile Menu — mirrors the desktop nav's exact top-level titles and
+              grouping (About → sub-items, My Journey → sub-items, then the
+              flat items), instead of a differently-worded flat list. */}
           <div style={mobileMenuStyle}>
-            <a 
-              href="/aboutme" 
-              style={mobileMenuItemStyle}
+            {/* Help Fund — same label as the desktop nav pill, styled to stand out */}
+            <a
+              href={STRIPE_PAYMENT_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={mobileFundItemStyle}
               onClick={() => setMobileMenuOpen(false)}
             >
-              About Me
+              ❤️ Help Fund
             </a>
-            <a 
-              href="/science" 
+
+            {/* About — mirrors the desktop "About" dropdown and its items */}
+            <span style={mobileSectionHeaderStyle}>About</span>
+            {aboutMenuItems.map((item, index) => (
+              <a
+                key={index}
+                href={item.href}
+                style={mobileSubItemStyle}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {item.title}
+              </a>
+            ))}
+
+            {/* My Journey — mirrors the desktop "My Journey" dropdown and its items */}
+            <span style={mobileSectionHeaderStyle}>My Journey</span>
+            {journeyMenuItems.map((item, index) => (
+              <a
+                key={index}
+                href={item.href}
+                style={mobileSubItemStyle}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {item.title}
+              </a>
+            ))}
+
+            {/* Remaining top-level items — same labels as the desktop nav */}
+            <a
+              href="/science"
               style={mobileMenuItemStyle}
               onClick={() => setMobileMenuOpen(false)}
             >
               Airborne Science
-            </a>
-            <a 
-              href="/news" 
-              style={mobileMenuItemStyle}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Latest News
-            </a>
-            <a 
-              href="/videos" 
-              style={mobileMenuItemStyle}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Videos
-            </a>
-            <a 
-              href="/journey" 
-              style={mobileMenuItemStyle}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Flight Route & LIVE Tracking
-            </a>
-            <a 
-              href="/blog" 
-              style={mobileMenuItemStyle}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Blog
             </a>
             <a
               href="/partners"
@@ -852,7 +868,7 @@ const Navigation = () => {
               style={mobileMenuItemStyle}
               onClick={() => setMobileMenuOpen(false)}
             >
-              Become a Sponsor
+              Contact
             </a>
             <a
               href={`mailto:${SPONSOR_EMAIL}`}
@@ -861,20 +877,20 @@ const Navigation = () => {
             >
               {SPONSOR_EMAIL}
             </a>
-           
+
             {/* Mobile Social Icons */}
             <div style={mobileSocialStyle}>
               {socialLinks.map((link, index) => (
-                <a 
-                  key={index} 
-                  href={link.href} 
-                  target="_blank" 
+                <a
+                  key={index}
+                  href={link.href}
+                  target="_blank"
                   rel="noopener noreferrer"
                 >
                   <img
-                    style={{ 
-                      width: '28px', 
-                      height: '28px', 
+                    style={{
+                      width: '28px',
+                      height: '28px',
                       opacity: 0.8,
                       filter: 'brightness(0) invert(1)' // Makes mobile icons white too
                     }}

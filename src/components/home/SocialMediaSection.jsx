@@ -30,7 +30,7 @@ const SocialMediaSection = () => {
   ];
 
   const sectionStyle = {
-    padding: '4rem 2rem',
+    padding: '4rem 1.25rem',
     textAlign: 'center',
   };
 

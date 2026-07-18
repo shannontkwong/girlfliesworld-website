@@ -9,10 +9,49 @@
 }
 
 :root {
+  /* Core palette */
   --black: #000000;
   --white: #ffffff;
   --gray-light: #f8f8f8;
   --gray-medium: #666666;
+
+  /* Brand system */
+  --gfw-orange: #E67E22;
+  --gfw-gold: #D4AF37;
+  --gfw-near-black: #0a0a0a;
+
+  /* Typography */
+  --font-display: 'Impact', 'Arial Black', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+  --font-accent: 'Outfit', sans-serif;
+
+  /* Brand spacing */
+  --section-pad-desktop: 4rem;
+  --section-pad-mobile: 1.25rem;
+}
+
+/* Brand eyebrow — reusable label above section headings */
+.gfw-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.gfw-eyebrow::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 2px;
+  background: var(--gfw-orange);
+  flex-shrink: 0;
+}
+.gfw-eyebrow span {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #888;
 }
 
 body {

@@ -1,6 +1,7 @@
 // src/pages/HomePage.jsx
 import React, { useEffect } from 'react';
 import HeroSection from '../components/home/HeroSection';
+import MissionTicker from '../components/home/MissionTicker';
 import StatsSection from '../components/home/StatsSection';
 import ImageGridSection from '../components/home/ImageGridSection';
 import MissionSection from '../components/home/MissionSection';
@@ -60,7 +61,7 @@ const HomePage = () => {
   return (
     <div style={mainContentStyle}>
       <HeroSection />
-    
+   
     <ImageGridSection />
       
       <MissionSection />

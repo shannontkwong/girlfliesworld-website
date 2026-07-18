@@ -256,6 +256,7 @@ const StatsSection = () => {
           cursor: 'pointer',
           transition: 'all 0.3s ease',
           backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
         }}
         onMouseEnter={(e) => {
           e.target.style.background = 'rgba(255, 255, 255, 0.2)';
@@ -288,6 +289,7 @@ const StatsSection = () => {
           cursor: 'pointer',
           transition: 'all 0.3s ease',
           backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
         }}
         onMouseEnter={(e) => {
           e.target.style.background = 'rgba(255, 255, 255, 0.2)';
@@ -338,7 +340,7 @@ const StatsSection = () => {
           .stats-section .stats-main-content {
             grid-template-columns: 1fr !important;
             gap: 2rem !important;
-            padding: 0 2rem !important;
+            padding: 0 1.25rem !important;
           }
           
           .stats-section .stats-left-content {
