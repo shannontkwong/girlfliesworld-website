@@ -6,7 +6,7 @@ const SPONSOR_EMAIL = 'contact@girlfliesworld.com';
 
 // ⚠️ Paste your Stripe Payment Link URL here (Stripe Dashboard → Payment Links → New)
 // e.g. 'https://buy.stripe.com/xxxxxxxxxxxx'
-const STRIPE_PAYMENT_LINK = 'https://donate.stripe.com/5kQ9AV43K7mm8Q95egdZ600?prefilled_email=contact%40girlfliesworld.com&locale=en';
+const STRIPE_PAYMENT_LINK = 'https://donate.stripe.com/dRm9AV8k0bCCgiBbCEdZ601';
 
 const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
