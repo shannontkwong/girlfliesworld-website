@@ -18,6 +18,7 @@ import NewsVideosPage from './pages/NewsVideosPage';
 import VideosPage from './pages/VideosPage';
 import Blog from './pages/BlogPage';
 import SciencePage from './pages/SciencePage';
+import DonatePage from './pages/DonatePage';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="/team" element={<TeamPage />} />
           <Route path="/plane" element={<PlanePage />} />
           <Route path="/partners" element={<PartnersPage />} />
+          <Route path="/donate" element={<DonatePage />} />
         </Routes>
       </div>
     </Router>

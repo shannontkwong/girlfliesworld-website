@@ -52,11 +52,12 @@ const Navigation = () => {
     const headerEl = document.getElementById('site-header');
     if (!headerEl) return;
 
-    const broadcast = () => {
-      const height = headerEl.getBoundingClientRect().height;
-      setHeaderHeight(height);
-      window.dispatchEvent(new CustomEvent('site-header-resize', { detail: { height } }));
-    };
+   const broadcast = () => {
+  const height = headerEl.getBoundingClientRect().height;
+  setHeaderHeight(height);
+  document.documentElement.style.setProperty('--header-height', `${height}px`); // ← add this line
+  window.dispatchEvent(new CustomEvent('site-header-resize', { detail: { height } }));
+};
 
     broadcast();
 
@@ -757,12 +758,10 @@ const Navigation = () => {
                     <span>Sponsor</span>
                   </a>
                 </li>
-                {/* Help Fund the Mission — inline nav pill, links to Stripe */}
+                {/* Help Fund the Mission — inline nav pill, opens the donate page */}
                 <li>
                   <a
-                    href={STRIPE_PAYMENT_LINK}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="/donate"
                     className="fund-nav-btn"
                     style={fundNavButtonStyle}
                   >
@@ -815,9 +814,7 @@ const Navigation = () => {
           <div style={mobileMenuStyle}>
             {/* Help Fund — same label as the desktop nav pill, styled to stand out */}
             <a
-              href={STRIPE_PAYMENT_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/donate"
               style={mobileFundItemStyle}
               onClick={() => setMobileMenuOpen(false)}
             >
