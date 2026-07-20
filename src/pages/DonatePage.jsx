@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Heart } from 'lucide-react';
 import DonateModal from '../components/DonateModal';
 
-const GOAL_CENTS = 10000000; // $100,000 — real fundraising target
+const GOAL_CENTS = 60000000; // $600,000 — real fundraising target
 
 // One-off manual fix for donations made before the metadata/custom-field
 // approach was finalized in the backend. Find the real Checkout Session ID
@@ -54,6 +54,7 @@ const DonatePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [progressWidth, setProgressWidth] = useState(0);
   const [headerHeight, setHeaderHeight] = useState(120);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -92,6 +93,11 @@ const DonatePage = () => {
           setSummary({ ...data, donors });
           setError(null);
           setLoading(false);
+          setTimeout(() => {
+            if (!cancelled) {
+              setProgressWidth(Math.min((data.totalCents / GOAL_CENTS) * 100, 100));
+            }
+          }, 300);
         }
       } catch (err) {
         console.error('Failed to load donation summary:', err);
@@ -208,8 +214,29 @@ const DonatePage = () => {
 
               <DonateCTAButton onClick={() => setModalOpen(true)} />
 
-              <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.78rem', margin: '1.25rem 0 0 0', fontFamily: 'var(--font-body)' }}>
-                Secure checkout by Stripe. One-time, any amount. Goal: {formatUSD(GOAL_CENTS)} ({pct.toFixed(1)}% funded).
+              <div style={{ marginTop: '1.75rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.6rem' }}>
+                  <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem', fontFamily: 'var(--font-body)' }}>
+                    Goal: {formatUSD(GOAL_CENTS)}
+                  </span>
+                  <span style={{ color: '#E67E22', fontWeight: 700, fontSize: '0.95rem', fontFamily: 'var(--font-body)' }}>
+                    {pct.toFixed(1)}%
+                  </span>
+                </div>
+                <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: '999px', height: '10px', overflow: 'hidden' }}>
+                  <div style={{
+                    height: '100%',
+                    width: `${progressWidth}%`,
+                    background: 'linear-gradient(90deg, #E67E22, #f39c12)',
+                    borderRadius: '999px',
+                    transition: 'width 1s ease',
+                    boxShadow: '0 0 12px rgba(230,126,34,0.5)',
+                  }} />
+                </div>
+              </div>
+
+              <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.78rem', margin: '1rem 0 0 0', fontFamily: 'var(--font-body)' }}>
+                Secure checkout by Stripe. One-time, any amount.
               </p>
             </div>
 
