@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-// ⚠️ Keep this in sync with the same constant in Navigation.jsx and ContactPage.jsx
-const STRIPE_PAYMENT_LINK = 'https://donate.stripe.com/dRm9AV8k0bCCgiBbCEdZ601';
-
 const HeroSection = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [currentSubtitle, setCurrentSubtitle] = useState(0);
@@ -223,10 +220,11 @@ const HeroSection = () => {
               width: '100%',
               maxWidth: '280px',
             }}>
+              {/* Routes to the donate page (story + live progress + supporters)
+                  rather than straight to Stripe — cold hero traffic converts
+                  better after seeing the case first. */}
               <a
-                href={STRIPE_PAYMENT_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/donate"
                 {...fundHoverPropsMobile}
               >
                 ❤️ Help Fund the Mission
@@ -366,10 +364,10 @@ const HeroSection = () => {
 
           {/* Buttons */}
           <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            {/* Routes to the donate page rather than straight to Stripe —
+                same reasoning as the mobile version above. */}
             <a
-              href={STRIPE_PAYMENT_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/donate"
               {...fundHoverProps}
             >
               ❤️ Help Fund the Mission

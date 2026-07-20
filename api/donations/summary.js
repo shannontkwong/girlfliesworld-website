@@ -3,6 +3,21 @@ const Stripe = require('stripe');
 const CACHE_TTL_MS = 30_000;
 let cache = { data: null, expiresAt: 0 };
 
+// Real donations received OUTSIDE Stripe (wire transfer, check, etc.) that
+// should still count toward the total and appear in the supporters list.
+// Add an entry here only for a donation that actually happened — this is
+// not a way to inflate the displayed total artificially.
+const MANUAL_DONATIONS = [
+  {
+    id: 'manual-1',
+    name: null, // donor asked to remain anonymous
+    message: null,
+    amountCents: 5_000_000, // $50,000 — received via wire transfer
+    currency: 'usd',
+    createdAt: Math.floor(Date.now() / 1000), // update to the actual date received
+  },
+];
+
 // Custom-field key fallbacks for donations made via the old Buy Button flow.
 const NAME_KEYS = ['full_name', 'public_display_name', 'name'];
 const MESSAGE_KEYS = ['message', 'your_message', 'note'];
@@ -42,8 +57,10 @@ async function fetchDonationSummary() {
     starting_after = page.has_more ? page.data.at(-1).id : undefined;
   } while (starting_after);
 
-  // Embedded Checkout sessions aren't tied to a payment_link, so pull recent
-  // sessions generally and merge in any paid ones that have our metadata key.
+  // Embedded Checkout sessions (created via /api/create-checkout-session)
+  // aren't tied to a payment_link, so they don't show up in the list above —
+  // pull recent sessions generally and merge in any paid ones not already
+  // included, de-duplicated by session ID.
   const generalPage = await stripe.checkout.sessions.list({ limit: 100 });
   const seenIds = new Set(sessions.map((s) => s.id));
   for (const s of generalPage.data) {
@@ -58,22 +75,29 @@ async function fetchDonationSummary() {
   let totalCents = 0;
   const donors = paid.map((s) => {
     totalCents += s.amount_total ?? 0;
+
     return {
       id: s.id,
-      name: readDonorName(s),
-      message: readDonorMessage(s),
+      name: readDonorName(s), // null -> frontend shows "Anonymous"
+      message: readDonorMessage(s), // null -> frontend shows nothing
       amountCents: s.amount_total ?? 0,
       currency: s.currency,
       createdAt: s.created,
     };
   });
 
+  // Fold in real donations recorded manually (see MANUAL_DONATIONS above).
+  for (const manual of MANUAL_DONATIONS) {
+    totalCents += manual.amountCents;
+    donors.push(manual);
+  }
+
   donors.sort((a, b) => b.createdAt - a.createdAt);
 
   return {
     totalCents,
     currency: paid[0]?.currency ?? 'usd',
-    donationCount: paid.length,
+    donationCount: paid.length + MANUAL_DONATIONS.length,
     updatedAt: new Date().toISOString(),
     donors,
   };
