@@ -1,3 +1,4 @@
+// api/create-checkout-session.js
 const Stripe = require('stripe');
 
 module.exports = async function handler(req, res) {
@@ -10,15 +11,6 @@ module.exports = async function handler(req, res) {
 
   try {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2024-06-20' });
-    const { amountCents, name, message } = req.body || {};
-
-    const amount = Number(amountCents);
-    if (!Number.isInteger(amount) || amount < 100) {
-      return res.status(400).json({ error: 'Enter an amount of at least $1.' });
-    }
-    if (amount > 100_000_000) {
-      return res.status(400).json({ error: 'Amount is too large.' });
-    }
 
     const session = await stripe.checkout.sessions.create({
       ui_mode: 'embedded',
@@ -28,15 +20,26 @@ module.exports = async function handler(req, res) {
           price_data: {
             currency: 'usd',
             product_data: { name: 'Donation to GIRLFLIESWORLD' },
-            unit_amount: amount,
+            unit_amount: 2500, // $25 default shown initially — the donor can change it below
+            custom_unit_amount: { enabled: true, minimum: 100 }, // lets them type any amount, min $1
           },
           quantity: 1,
         },
       ],
-      metadata: {
-        public_display_name: (name || '').trim().slice(0, 100),
-        message: (message || '').trim().slice(0, 300),
-      },
+      custom_fields: [
+        {
+          key: 'full_name',
+          label: { type: 'custom', custom: 'Your name (optional)' },
+          type: 'text',
+          optional: true,
+        },
+        {
+          key: 'message',
+          label: { type: 'custom', custom: 'Leave a message (optional)' },
+          type: 'text',
+          optional: true,
+        },
+      ],
       return_url: `${process.env.ALLOWED_ORIGIN || ''}/donate?session_id={CHECKOUT_SESSION_ID}`,
     });
 
