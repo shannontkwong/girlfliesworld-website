@@ -75,18 +75,18 @@ const DonateModal = ({ open, onClose }) => {
     >
       <div
         style={{
-          background: '#0a0a0a',
-          border: '1px solid rgba(255,255,255,0.12)',
+          background: '#fff',
+          border: '1px solid rgba(0,0,0,0.08)',
           borderRadius: '20px',
           width: '100%',
           maxWidth: '520px',
           maxHeight: '90vh',
-          overflowY: 'auto',
-          padding: error ? '2rem' : '0.5rem',
+          overflow: 'hidden', // clips the embedded checkout's own white content to these rounded corners
           position: 'relative',
           fontFamily: 'var(--font-body)',
-          color: '#fff',
+          color: '#000',
           minHeight: '480px',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -97,7 +97,7 @@ const DonateModal = ({ open, onClose }) => {
             position: 'absolute',
             top: '1rem',
             right: '1rem',
-            background: 'rgba(255,255,255,0.12)',
+            background: 'rgba(0,0,0,0.06)',
             border: 'none',
             borderRadius: '50%',
             width: '32px',
@@ -106,7 +106,7 @@ const DonateModal = ({ open, onClose }) => {
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
-            color: '#fff',
+            color: '#000',
             zIndex: 10,
           }}
         >
@@ -114,8 +114,8 @@ const DonateModal = ({ open, onClose }) => {
         </button>
 
         {error ? (
-          <div style={{ paddingTop: '3rem', textAlign: 'center' }}>
-            <p style={{ color: '#E67E22', marginBottom: '1rem' }}>{error}</p>
+          <div style={{ paddingTop: '3rem', paddingBottom: '2rem', textAlign: 'center' }}>
+            <p style={{ color: '#c0392b', marginBottom: '1rem', padding: '0 1.5rem' }}>{error}</p>
             <button
               onClick={onClose}
               style={{
@@ -133,7 +133,7 @@ const DonateModal = ({ open, onClose }) => {
             </button>
           </div>
         ) : (
-          <div ref={containerRef} style={{ minHeight: '480px' }} />
+          <div ref={containerRef} style={{ minHeight: '480px', maxHeight: '90vh', overflowY: 'auto' }} />
         )}
       </div>
     </div>
