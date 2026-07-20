@@ -20,14 +20,6 @@ function formatUSD(cents) {
   }).format(cents / 100);
 }
 
-function timeAgo(unixSecs) {
-  const diff = Math.floor(Date.now() / 1000) - unixSecs;
-  if (diff < 60) return 'just now';
-  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-  return `${Math.floor(diff / 86400)}d ago`;
-}
-
 function DonateCTAButton({ onClick }) {
   return (
     <button
@@ -62,7 +54,6 @@ const DonatePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [progressWidth, setProgressWidth] = useState(0);
   const [headerHeight, setHeaderHeight] = useState(120);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -101,11 +92,6 @@ const DonatePage = () => {
           setSummary({ ...data, donors });
           setError(null);
           setLoading(false);
-          setTimeout(() => {
-            if (!cancelled) {
-              setProgressWidth(Math.min((data.totalCents / GOAL_CENTS) * 100, 100));
-            }
-          }, 300);
         }
       } catch (err) {
         console.error('Failed to load donation summary:', err);
@@ -165,7 +151,7 @@ const DonatePage = () => {
           and more accurate sea-level projections — all while mapping
           megadunes and ice features rarely surveyed.
           <br /><br />
-          Currently 15% funded. We need to raise USD $600K.
+          Currently 15% funded.
           This mission will also advance frontier aviation and have global
           educational impact, with partners bringing STEM, science,
           engineering, and aviation education to classrooms worldwide.
@@ -192,121 +178,81 @@ const DonatePage = () => {
         )}
 
         {!loading && !error && summary && (
-          <>
-            {/* Big numbers */}
-            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : '1fr 1fr 1fr', gap: '1.5rem', marginBottom: '3rem' }}>
-              <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', padding: '1.5rem', textAlign: 'center' }}>
-                <div style={{ fontFamily: 'var(--font-display)', fontSize: isMobile ? '1.8rem' : '2.4rem', fontWeight: 900, color: '#E67E22' }}>
-                  {formatUSD(summary.totalCents)}
-                </div>
-                <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', marginTop: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontFamily: 'var(--font-body)' }}>Raised</div>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : '1.3fr 1fr',
+            background: 'rgba(255,255,255,0.03)',
+            border: '1px solid rgba(255,255,255,0.1)',
+            borderRadius: '24px',
+            overflow: 'hidden',
+          }}>
+            {/* Left: raised so far + CTA */}
+            <div style={{
+              padding: isMobile ? '2rem' : '2.75rem',
+              borderBottom: isMobile ? '1px solid rgba(255,255,255,0.08)' : 'none',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#E67E22', display: 'inline-block' }} />
+                <span style={{ color: '#E67E22', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', fontFamily: 'var(--font-body)' }}>
+                  Raised so far
+                </span>
               </div>
-              <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', padding: '1.5rem', textAlign: 'center' }}>
-                <div style={{ fontFamily: 'var(--font-display)', fontSize: isMobile ? '1.8rem' : '2.4rem', fontWeight: 900 }}>
-                  {formatUSD(GOAL_CENTS)}
-                </div>
-                <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', marginTop: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontFamily: 'var(--font-body)' }}>Goal</div>
+
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: isMobile ? '3rem' : '4rem', fontWeight: 900, color: '#fff', lineHeight: 1, marginBottom: '0.5rem' }}>
+                {formatUSD(summary.totalCents)}
               </div>
-              <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', padding: '1.5rem', textAlign: 'center', gridColumn: isMobile ? 'span 2' : 'auto' }}>
-                <div style={{ fontFamily: 'var(--font-display)', fontSize: isMobile ? '1.8rem' : '2.4rem', fontWeight: 900 }}>
-                  {summary.donationCount}
-                </div>
-                <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', marginTop: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontFamily: 'var(--font-body)' }}>Supporters</div>
-              </div>
+
+              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem', margin: '0 0 2rem 0', fontFamily: 'var(--font-body)' }}>
+                {summary.donationCount} donation{summary.donationCount === 1 ? '' : 's'} · updated {new Date(summary.updatedAt).toISOString().slice(0, 10)}
+              </p>
+
+              <DonateCTAButton onClick={() => setModalOpen(true)} />
+
+              <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.78rem', margin: '1.25rem 0 0 0', fontFamily: 'var(--font-body)' }}>
+                Secure checkout by Stripe. One-time, any amount. Goal: {formatUSD(GOAL_CENTS)} ({pct.toFixed(1)}% funded).
+              </p>
             </div>
 
-            {/* Progress bar */}
-            <div style={{ marginBottom: '4rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem', fontFamily: 'var(--font-body)' }}>Mission funding progress</span>
-                <span style={{ color: '#E67E22', fontWeight: 700, fontSize: '0.95rem', fontFamily: 'var(--font-body)' }}>{pct.toFixed(1)}%</span>
+            {/* Right: supporters */}
+            <div style={{
+              padding: isMobile ? '2rem' : '2.75rem',
+              borderLeft: isMobile ? 'none' : '1px solid rgba(255,255,255,0.08)',
+            }}>
+              <div style={{ color: '#E67E22', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '1.25rem', fontFamily: 'var(--font-body)' }}>
+                Supporters
               </div>
-              <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: '999px', height: '10px', overflow: 'hidden' }}>
-                <div style={{
-                  height: '100%',
-                  width: `${progressWidth}%`,
-                  background: 'linear-gradient(90deg, #E67E22, #f39c12)',
-                  borderRadius: '999px',
-                  transition: 'width 1s ease',
-                  boxShadow: '0 0 12px rgba(230,126,34,0.5)',
-                }} />
-              </div>
-            </div>
-
-            {/* Donor list */}
-            <div>
-              <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.6rem', fontWeight: 900, textTransform: 'uppercase', marginBottom: '1.5rem', letterSpacing: '-0.01em' }}>
-                Recent Supporters
-              </h2>
 
               {summary.donors.length === 0 ? (
-                <div style={{ color: 'rgba(255,255,255,0.4)', textAlign: 'center', padding: '2rem', fontFamily: 'var(--font-body)' }}>
+                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.9rem', fontFamily: 'var(--font-body)' }}>
                   Be the first to support the mission.
-                </div>
+                </p>
               ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxHeight: isMobile ? 'none' : '320px', overflowY: isMobile ? 'visible' : 'auto' }}>
                   {summary.donors.slice(0, 20).map((donor) => (
-                    <div
-                      key={donor.id}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        justifyContent: 'space-between',
-                        background: 'rgba(255,255,255,0.03)',
-                        border: '1px solid rgba(255,255,255,0.07)',
-                        borderRadius: '12px',
-                        padding: '1rem 1.25rem',
-                        gap: '1rem',
-                      }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.85rem', minWidth: 0 }}>
-                        <div style={{
-                          width: '36px',
-                          height: '36px',
-                          borderRadius: '50%',
-                          background: 'rgba(230,126,34,0.15)',
-                          border: '1px solid rgba(230,126,34,0.3)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '0.85rem',
-                          fontWeight: 700,
-                          color: '#E67E22',
-                          flexShrink: 0,
-                          fontFamily: 'var(--font-body)',
-                        }}>
-                          {donor.name ? donor.name[0].toUpperCase() : '?'}
-                        </div>
-                        <div style={{ minWidth: 0 }}>
-                          <div style={{ fontWeight: 600, fontSize: '0.95rem', fontFamily: 'var(--font-body)' }}>
-                            {donor.name || 'Anonymous'}
-                          </div>
-                          <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.78rem', marginTop: '0.15rem', fontFamily: 'var(--font-body)' }}>
-                            {timeAgo(donor.createdAt)}
-                          </div>
-                          {donor.message && (
-                            <div style={{
-                              color: 'rgba(255,255,255,0.75)',
-                              fontSize: '0.88rem',
-                              marginTop: '0.4rem',
-                              fontFamily: 'var(--font-body)',
-                              fontStyle: 'italic',
-                              wordBreak: 'break-word',
-                            }}>
-                              "{donor.message}"
-                            </div>
-                          )}
-                        </div>
+                    <div key={donor.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.07)', paddingBottom: '0.75rem' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '1rem' }}>
+                        <span style={{ color: '#fff', fontSize: '0.95rem', fontFamily: 'var(--font-body)' }}>
+                          {donor.name || 'Anonymous'}
+                        </span>
+                        <span style={{ color: '#E67E22', fontSize: '0.95rem', fontWeight: 700, whiteSpace: 'nowrap', fontFamily: 'var(--font-body)' }}>
+                          {formatUSD(donor.amountCents)}
+                        </span>
                       </div>
-                      <div style={{ fontWeight: 700, color: '#E67E22', fontSize: '1rem', flexShrink: 0, fontFamily: 'var(--font-body)' }}>
-                        {formatUSD(donor.amountCents)}
-                      </div>
+                      {donor.message && (
+                        <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.82rem', marginTop: '0.3rem', fontStyle: 'italic', fontFamily: 'var(--font-body)' }}>
+                          "{donor.message}"
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
               )}
+
+              <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.75rem', lineHeight: 1.5, margin: '1.25rem 0 0 0', fontFamily: 'var(--font-body)' }}>
+                Names appear only for donors who choose to add one at checkout; everyone else shows as Anonymous.
+              </p>
             </div>
-          </>
+          </div>
         )}
       </div>
 
