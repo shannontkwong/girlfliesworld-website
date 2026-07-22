@@ -234,8 +234,6 @@ const HeroSection = () => {
         .gfw-sound-btn {
           position: absolute;
           z-index: 3;
-          bottom: 1.25rem;
-          right: 1.25rem;
           width: 40px;
           height: 40px;
           border-radius: 50%;
@@ -379,8 +377,7 @@ const HeroSection = () => {
           maxWidth: '620px',
           margin: isMobile ? '0 auto 0.9rem' : '0 0 0.9rem 0',
         }}>
-          One pilot. One aircraft. Seven continents. An airborne radar survey across a sector of
-          Antarctica no space agency has ever covered.
+          One pilot. One aircraft. Seven continents. South Pole. The largest single pilot science airborne survey.
         </p>
 
         <p style={{
@@ -393,7 +390,7 @@ const HeroSection = () => {
           color: 'rgba(245,242,235,0.5)',
           margin: '0 0 2rem 0',
         }}>
-          En route &middot; first solo flight to the south pole by a woman &middot; 90.0000&deg; S
+          En route &middot; first solo flight to the south pole & seven continents by a woman &middot; 90.0000&deg; S
         </p>
 
         <div style={{
@@ -411,6 +408,50 @@ const HeroSection = () => {
             Explore the Science
           </a>
         </div>
+
+        {/* Press logos — mobile version. Placed in normal flow right
+            after the CTAs (not absolutely positioned like the desktop
+            version below) so it doesn't fight the headline/buttons for
+            the same limited bottom-of-viewport space on a phone. */}
+        {isMobile && (
+          <div style={{ ...revealStyle(0.6), marginTop: '2rem', textAlign: 'center' }}>
+            <p style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: '0.6rem',
+              fontWeight: 700,
+              letterSpacing: '0.24em',
+              textTransform: 'uppercase',
+              color: 'rgba(245,242,235,0.4)',
+              margin: '0 0 0.75rem 0',
+            }}>
+              As Featured In
+            </p>
+            <div style={{ display: 'flex', gap: '1.1rem', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {PRESS_ITEMS.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={`Read the ${item.name} article`}
+                  className="gfw-press-link"
+                >
+                  {!logoError[item.name] ? (
+                    <img
+                      src={`https://www.google.com/s2/favicons?domain=${item.domain}&sz=128`}
+                      alt={item.name}
+                      className="gfw-press-logo"
+                      style={{ height: '26px', maxWidth: '84px' }}
+                      onError={() => setLogoError((p) => ({ ...p, [item.name]: true }))}
+                    />
+                  ) : (
+                    <span className="gfw-press-fallback" style={{ fontSize: '0.85rem' }}>{item.name}</span>
+                  )}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ── "As Featured In" — bottom-right, real logos, stacked above the
@@ -498,6 +539,9 @@ const HeroSection = () => {
           className="gfw-sound-btn"
           onClick={toggleSound}
           aria-label={soundOn ? 'Mute video' : 'Unmute video'}
+          style={isMobile
+            ? { top: '1.25rem', right: '1.25rem' }
+            : { bottom: '1.25rem', right: '1.25rem' }}
         >
           <SoundIcon active={soundOn} reduced={reduced} />
         </button>
