@@ -1,115 +1,165 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+/**
+ * Footer — layout rhythm matches the reference (logo + circular social
+ * icons on one row, a link row, tagline + copyright on the bottom row)
+ * but stays black per instruction, using /az.png as the logo instead of
+ * the reference's maroon/pattern treatment or the old /si.png mark.
+ *
+ * Social links reuse the same real URLs already used on ContactPage.jsx
+ * (LinkedIn, X/Twitter, Instagram, Facebook, YouTube) rather than
+ * inventing new ones.
+ */
+
+const INK_BLACK = '#000000';
+const PINK = 'rgb(255, 30, 154)';
+
+const SOCIAL_LINKS = [
+  { href: 'https://x.com/girlfliesworld', icon: 'https://img.icons8.com/ios-filled/50/twitterx--v1.png', alt: 'X (Twitter)' },
+  { href: 'https://www.facebook.com/shannontkwong/', icon: 'https://img.icons8.com/windows/32/facebook-f--v1.png', alt: 'Facebook' },
+  { href: 'https://www.instagram.com/girlfliesworld/', icon: 'https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/gray-insta.svg', alt: 'Instagram' },
+  { href: 'https://www.youtube.com/channel/UCXQmU6WEELqxfk7sMPIQXXg', icon: 'https://img.icons8.com/sf-black-filled/64/youtube-play.png', alt: 'YouTube' },
+];
+
+const LINK_ROW = [
+  { to: '/aboutme', label: 'About Me' },
+  { to: '/journey', label: 'My Journey' },
+  { to: '/team', label: 'Team' },
+    { to: '/science', label: 'Science' },
+
+  { to: '/contact', label: 'Contact' },
+  { to: '/aboutme', label: 'The Record Attempt' },
+  { to: '/sponsors', label: 'Become a Sponsor' },
+  { to: '/blog', label: 'Blog' },
+];
+
 const Footer = () => {
   const footerStyle = {
-    background: '#000000',
+    background: INK_BLACK,
     color: '#ffffff',
-    padding: '4rem 2rem 2rem',
-    marginTop: '4rem'
+    padding: '3.5rem 2rem 2rem',
+    marginTop: '4rem',
   };
 
-  const footerRowStyle = {
-    maxWidth: '1200px',
-    margin: '0 auto',
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '3rem',
-    alignItems: 'start'
-  };
+  const wrapStyle = { maxWidth: '1200px', margin: '0 auto' };
 
-  const footerColStyle = { 
-    color: '#ffffff' 
-  };
-
-  const logoColStyle = {
+  const topRowStyle = {
     display: 'flex',
-    flexDirection: 'column',
+    flexWrap: 'wrap',
     alignItems: 'center',
-    textAlign: 'center'
+    justifyContent: 'space-between',
+    gap: '1.5rem',
+    paddingBottom: '2.5rem',
+    borderBottom: '1px solid rgba(255,255,255,0.15)',
   };
 
-  const h4Style = {
-    fontSize: '1.2rem',
-    fontWeight: 600,
-    marginBottom: '1.5rem',
-    color: 'rgb(255, 30, 154)'
+  const logoStyle = { maxWidth: '200px', height: 'auto', display: 'block' };
+
+  const socialRowStyle = { display: 'flex', alignItems: 'center', gap: '0.85rem' };
+
+  const socialCircleStyle = {
+    width: '40px',
+    height: '40px',
+    borderRadius: '50%',
+    border: '1px solid rgba(255,255,255,0.25)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'border-color 0.25s ease, background 0.25s ease',
   };
 
-  const linksStyle = { 
-    listStyle: 'none', 
-    padding: 0 
-  };
+  const socialIconStyle = { width: '18px', height: '18px', filter: 'brightness(0) invert(1)', opacity: 0.85 };
 
-  const linkItemStyle = { 
-    marginBottom: '0.8rem' 
+  const linkRowStyle = {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '0.75rem 2rem',
+    padding: '2rem 0',
+    borderBottom: '1px solid rgba(255,255,255,0.15)',
   };
 
   const linkStyle = {
     color: 'rgba(255, 255, 255, 0.8)',
     textDecoration: 'none',
-    transition: 'color 0.3s ease'
+    fontSize: '0.92rem',
+    transition: 'color 0.3s ease',
   };
 
-  const logoStyle = {
-    maxWidth: '200px',
-    height: 'auto',
-    marginBottom: '1rem'
+  const bottomRowStyle = {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: '1rem',
+    paddingTop: '2rem',
   };
 
   const missionTextStyle = {
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: 'rgba(255, 255, 255, 0.75)',
     fontSize: '0.95rem',
     lineHeight: '1.6',
-    maxWidth: '300px'
+    maxWidth: '440px',
+    margin: 0,
   };
 
-  const footerBottomStyle = {
-    textAlign: 'center',
-    paddingTop: '2rem',
-    marginTop: '2rem',
-    borderTop: '1px solid rgba(255, 255, 255, 0.2)',
-    opacity: 0.7
+  const copyrightStyle = {
+    color: 'rgba(255, 255, 255, 0.5)',
+    fontSize: '0.85rem',
+    margin: 0,
   };
 
   return (
     <footer style={footerStyle}>
-      <div style={footerRowStyle}>
-        <div style={footerColStyle}>
-          <h4 style={h4Style}>Info</h4>
-          <ul style={linksStyle}>
-            <li style={linkItemStyle}><Link to="/aboutme" style={linkStyle}>About Me</Link></li>
-            <li style={linkItemStyle}><Link to="/journey" style={linkStyle}>My Journey</Link></li>
-            <li style={linkItemStyle}><Link to="/team" style={linkStyle}>Team</Link></li>
-            <li style={linkItemStyle}><Link to="/contact" style={linkStyle}>Contact</Link></li>
-          </ul>
+      <div style={wrapStyle}>
+
+        {/* Logo + social icons */}
+        <div style={topRowStyle}>
+          <Link to="/">
+            <img src="/coin.png" alt="GIRLFLIESWORLD Logo" style={logoStyle} />
+          </Link>
+          <div style={socialRowStyle}>
+            {SOCIAL_LINKS.map((s) => (
+              <a
+                key={s.alt}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={s.alt}
+                style={socialCircleStyle}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.6)'; e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)'; e.currentTarget.style.background = 'transparent'; }}
+              >
+                <img src={s.icon} alt="" style={socialIconStyle} />
+              </a>
+            ))}
+          </div>
         </div>
 
-        <div style={footerColStyle}>
-          <h4 style={h4Style}>Explore</h4>
-          <ul style={linksStyle}>
-            <li style={linkItemStyle}><Link to="/plane" style={linkStyle}>The Plane</Link></li>
-            <li style={linkItemStyle}><Link to="/aboutme" style={linkStyle}>The Record Attempt</Link></li>
-            <li style={linkItemStyle}><Link to="/sponsors" style={linkStyle}>Become a Sponsor</Link></li>
-            <li style={linkItemStyle}><Link to="/blog" style={linkStyle}>Blog</Link></li>
-          </ul>
+        {/* Site links */}
+        <div style={linkRowStyle}>
+          {LINK_ROW.map((item, i) => (
+            <Link
+              key={i}
+              to={item.to}
+              style={linkStyle}
+              onMouseEnter={(e) => { e.currentTarget.style.color = PINK; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(255,255,255,0.8)'; }}
+            >
+              {item.label}
+            </Link>
+          ))}
         </div>
 
-        <div style={logoColStyle}>
-          <img 
-            src='/si.png' 
-            alt="GIRLFLIESWORLD Logo" 
-            style={logoStyle}
-          />
+        {/* Tagline + copyright */}
+        <div style={bottomRowStyle}>
           <p style={missionTextStyle}>
-            First woman to fly solo to all 7 continents and the South Pole. 
-            Inspiring the next generation of aviators and explorers.
+            
+            Inspiring the next generation of explorers, scientists and young curious minds to challenge the status quo.
           </p>
+          <p style={copyrightStyle}>&copy; 2025 GIRLFLIESWORLD. All rights reserved.</p>
         </div>
-      </div>
 
-      <div style={footerBottomStyle}>
-        <p>&copy; 2025 GIRLFLIESWORLD. All rights reserved.</p>
       </div>
     </footer>
   );

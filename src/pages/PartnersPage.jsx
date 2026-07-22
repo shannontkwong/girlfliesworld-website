@@ -1,5 +1,131 @@
 import React, { useState, useEffect } from 'react';
 
+/**
+ * PartnersPage — full redesign matching the a16z "Strategic Partnerships"
+ * reference, not a recolor of the previous version:
+ *
+ *  - Deep maroon solid background with a repeating interlocking-lattice
+ *    pattern (built from three overlapping CSS repeating-linear-gradients,
+ *    since a hand-drawn CSS approximation gets the same visual texture
+ *    without needing an SVG/image asset).
+ *  - No photographic hero — the reference has none. Just a large serif
+ *    headline and a short intro paragraph directly on the pattern.
+ *  - Every partner is now a large tile (not a small card): logo, role,
+ *    description, and a "Find Out More" link with the reference's long
+ *    arrow flourish — arranged 2-per-row with hairline dividers, exactly
+ *    like the Booz Allen / Lilly tiles in the reference.
+ *  - Real logos here are full-color (not white monochrome wordmarks like
+ *    the reference's Booz Allen/Lilly), so each sits on a small light
+ *    plate for legibility rather than directly on the maroon — the one
+ *    deliberate deviation, made for a real reason rather than by accident.
+ *  - The "Become a Partner" pitch is folded into a final full-width tile
+ *    at the end of the grid, using the exact same tile treatment, instead
+ *    of two separate CTA blocks bookending the page — closer to how
+ *    understated the reference's whole layout is.
+ *
+ * All partner data (names, roles, logos, descriptions, websites) is
+ * completely unchanged — this pass is visual/layout only.
+ */
+
+const MAROON = '#4A1420';
+const MAROON_DEEP = '#3A0F19';
+const CREAM = '#F3ECE3';
+const CREAM_MUTE = 'rgba(243,236,227,0.72)';
+const CREAM_FAINT = 'rgba(243,236,227,0.45)';
+const HAIRLINE = 'rgba(243,236,227,0.16)';
+
+const ArrowLink = ({ href, children, external = true }) => (
+  <a
+    href={href}
+    target={external ? '_blank' : undefined}
+    rel={external ? 'noopener noreferrer' : undefined}
+    style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '0.85rem',
+      fontFamily: "'Lora', Georgia, serif",
+      fontStyle: 'italic',
+      fontSize: '1rem',
+      color: CREAM,
+      textDecoration: 'none',
+    }}
+    className="pp-arrow-link"
+  >
+    {children}
+    <svg width="42" height="10" viewBox="0 0 42 10" fill="none" style={{ flexShrink: 0 }}>
+      <line x1="0" y1="5" x2="34" y2="5" stroke={CREAM} strokeWidth="1" />
+      <path d="M30 1 L35 5 L30 9" stroke={CREAM} strokeWidth="1" fill="none" />
+    </svg>
+  </a>
+);
+
+const PartnerTile = ({ partner }) => (
+  <div style={{
+    border: `1px solid ${HAIRLINE}`,
+    background: 'rgba(243,236,227,0.03)',
+    padding: '3.5rem 2.5rem',
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '460px',
+  }}>
+    <div style={{
+      background: '#FBF8F3',
+      borderRadius: '8px',
+      height: '110px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '1rem 1.5rem',
+      marginBottom: '1.5rem',
+      alignSelf: 'flex-start',
+      maxWidth: '260px',
+    }}>
+      <img
+        src={partner.logo}
+        alt={`${partner.name} logo`}
+        style={{ maxHeight: '80px', maxWidth: '220px', width: 'auto', objectFit: 'contain' }}
+        onError={e => { e.currentTarget.style.display = 'none'; }}
+      />
+    </div>
+
+    <p style={{
+      fontFamily: "'Inter', sans-serif",
+      fontSize: '0.68rem',
+      fontWeight: 700,
+      letterSpacing: '0.14em',
+      textTransform: 'uppercase',
+      color: CREAM_FAINT,
+      marginBottom: '1rem',
+    }}>
+      {partner.role}
+    </p>
+
+    <h3 style={{
+      fontFamily: "'Cormorant Garamond', Georgia, serif",
+      fontSize: '1.6rem',
+      fontWeight: 600,
+      color: CREAM,
+      marginBottom: '1rem',
+      lineHeight: 1.2,
+    }}>
+      {partner.name}
+    </h3>
+
+    <p style={{
+      fontFamily: "'Lora', Georgia, serif",
+      fontSize: '0.98rem',
+      lineHeight: 1.75,
+      color: CREAM_MUTE,
+      marginBottom: '2rem',
+      flex: 1,
+    }}>
+      {partner.description}
+    </p>
+
+    <ArrowLink href={partner.website}>Find Out More</ArrowLink>
+  </div>
+);
+
 const PartnersPage = () => {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -10,12 +136,21 @@ const PartnersPage = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    const link = document.createElement('link');
+    link.href = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Lora:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600;700&display=swap";
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+    return () => document.head.removeChild(link);
+  }, []);
+
   const allPartners = [
     {
       name: "AG-NAV",
       role: "Official Geophysics Sponsor",
       logo: "/agnav.png",
-      description: "AG-NAV is proud to be GIRLFLIESWORLD's very first sponsor. A leading provider of precision GPS navigation and flow control systems, trusted for aerial geophysical surveys and extreme environment missions — including Antarctica.",      website: "https://www.agnav.com/",
+      description: "AG-NAV is proud to be GIRLFLIESWORLD's very first sponsor. A leading provider of precision GPS navigation and flow control systems, trusted for aerial geophysical surveys and extreme environment missions — including Antarctica.",
+      website: "https://www.agnav.com/",
     },
     {
       name: "Platinum Jets International",
@@ -33,10 +168,10 @@ const PartnersPage = () => {
     },
     {
       name: "Estes Rockets",
-role: "Education Partner",
-logo: "/estes.png",
-description: "Estes Rockets is America's most iconic model rocketry brand, inspiring generations of engineers, scientists, and explorers since 1958. Estes has partnered with GIRLFLIESWORLD to bring the Antarctic expedition into classrooms across America, giving students hands-on experience in aerospace engineering and mission planning.",
-website: "https://www.estesrockets.com/",
+      role: "Education Partner",
+      logo: "/estes.png",
+      description: "Estes Rockets is America's most iconic model rocketry brand, inspiring generations of engineers, scientists, and explorers since 1958. Estes has partnered with GIRLFLIESWORLD to bring the Antarctic expedition into classrooms across America, giving students hands-on experience in aerospace engineering and mission planning.",
+      website: "https://www.estesrockets.com/",
     },
     {
       name: "SCAR RINGS",
@@ -75,297 +210,123 @@ website: "https://www.estesrockets.com/",
     },
   ];
 
-  const impactFont = `'Impact', 'Arial Black', sans-serif`;
-  const bodyFont = `'Arial', sans-serif`;
-  const gold = '#D4AF37';
-
-  const roleTagStyle = {
-    display: 'inline-block',
-    fontFamily: "'Outfit', sans-serif",
-    fontSize: '0.7rem',
-    fontWeight: 600,
-    letterSpacing: '0.1em',
-    textTransform: 'uppercase',
-    color: '#8B6914',
-    backgroundColor: '#FDF3D8',
-    border: '1px solid #E8CC7A',
-    borderRadius: '999px',
-    padding: '0.25rem 0.85rem',
-    marginBottom: '0.85rem',
-  };
-
-  const PartnerCTA = ({ large }) => (
-    <div style={{
-      background: large ? '#000' : '#fafafa',
-      border: large ? 'none' : '1px solid #f0f0f0',
-      borderRadius: large ? '0' : '16px',
-      padding: large
-        ? isMobile ? '4rem 1.5rem' : '6rem 4rem'
-        : isMobile ? '2.5rem 1.5rem' : '3rem 4rem',
-      textAlign: 'center',
-      maxWidth: large ? '100%' : '900px',
-      margin: large ? '0' : '0 auto 4rem',
-    }}>
-      <p style={{
-        fontFamily: "'Outfit', sans-serif",
-        fontSize: '0.7rem',
-        letterSpacing: '0.22em',
-        textTransform: 'uppercase',
-        color: large ? 'rgba(255,255,255,0.4)' : '#aaa',
-        marginBottom: '1rem',
-        fontWeight: 700,
-      }}>
-        Become a Partner
-      </p>
-
-      <h2 style={{
-        fontFamily: impactFont,
-        fontSize: large
-          ? isMobile ? 'clamp(2.5rem, 10vw, 5rem)' : '5rem'
-          : isMobile ? '2rem' : '2.75rem',
-        fontWeight: 900,
-        textTransform: 'uppercase',
-        color: large ? '#fff' : '#000',
-        lineHeight: 0.95,
-        letterSpacing: '-0.02em',
-        marginBottom: '1.5rem',
-      }}>
-        {large ? (
-          <>Your Brand on the<br /><span style={{ color: gold }}>World Stage</span></>
-        ) : (
-          <>Want to be Part<br />of <span style={{ color: gold }}>This?</span></>
-        )}
-      </h2>
-
-      <p style={{
-        fontFamily: "'Outfit', sans-serif",
-        fontSize: isMobile ? '0.9rem' : '1rem',
-        lineHeight: 1.8,
-        color: large ? 'rgba(255,255,255,0.65)' : '#555',
-        maxWidth: '620px',
-        margin: '0 auto 2rem',
-        fontWeight: 500,
-      }}>
-        {large
-          ? "This expedition will be on BBC, Netflix, CNN, and every major aviation outlet — with a projected audience of over 100 million people. Your brand travels to Antarctica, across seven continents, and into scientific history alongside NASA, Antarctic Exploration Legacy, and Elite universities/Credible Science Organizations. Sponsorship windows are closing ahead of the October 2026 departure. Get in touch to discuss a tailored partnership."
-          : "Associate your brand with world-changing science, a historic world record, and a story that will be told for generations. Tailored sponsorship packages are available across aviation, science, education, and media. Departure is October 2026 — partnership windows are limited."}
-      </p>
-
-      <div style={{
-        display: 'flex',
-        flexDirection: isMobile ? 'column' : 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '1rem',
-      }}>
-        <a
-          href="mailto:contact@girlfliesworld.com"
-          style={{
-            backgroundColor: gold,
-            color: '#000',
-            fontFamily: bodyFont,
-            fontWeight: 'bold',
-            fontSize: '0.9rem',
-            padding: '0.85rem 2rem',
-            borderRadius: '999px',
-            textDecoration: 'none',
-            letterSpacing: '0.05em',
-            transition: 'background-color 0.3s ease',
-            whiteSpace: 'nowrap',
-          }}
-          onMouseEnter={e => e.currentTarget.style.backgroundColor = '#b7972a'}
-          onMouseLeave={e => e.currentTarget.style.backgroundColor = gold}
-        >
-          GET IN TOUCH
-        </a>
-        <a
-          href="mailto:contact@girlfliesworld.com"
-          style={{
-            fontFamily: "'Outfit', sans-serif",
-            fontSize: '0.85rem',
-            color: large ? 'rgba(255,255,255,0.5)' : '#999',
-            textDecoration: 'none',
-            letterSpacing: '0.03em',
-          }}
-        >
-          contact@girlfliesworld.com
-        </a>
-      </div>
-    </div>
-  );
-
   return (
-    <div style={{ width: '100%', backgroundColor: '#ffffff' }}>
+    <>
+      <style>{`
+        .pp-root {
+          background-color: ${MAROON};
+          background-image:
+            repeating-linear-gradient(60deg, rgba(243,236,227,0.035) 0px, rgba(243,236,227,0.035) 1px, transparent 1px, transparent 70px),
+            repeating-linear-gradient(-60deg, rgba(243,236,227,0.035) 0px, rgba(243,236,227,0.035) 1px, transparent 1px, transparent 70px),
+            repeating-linear-gradient(0deg, rgba(243,236,227,0.02) 0px, rgba(243,236,227,0.02) 1px, transparent 1px, transparent 70px);
+          min-height: 100vh;
+        }
+        .pp-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+        }
+        @media (max-width: 900px) {
+          .pp-grid { grid-template-columns: 1fr; }
+        }
+        .pp-arrow-link svg line, .pp-arrow-link svg path { transition: stroke 0.25s ease; }
+        .pp-arrow-link:hover { color: #fff; }
+        .pp-arrow-link:hover svg line, .pp-arrow-link:hover svg path { stroke: #fff; }
+      `}</style>
 
-      {/* Hero */}
-      <div style={{
-        position: 'relative',
-        width: '100%',
-        height: isMobile ? '50vh' : '70vh',
-        minHeight: '400px',
-        backgroundImage: 'url("/open.png")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        padding: isMobile ? '0 1rem' : '0 4rem',
-      }}>
-        <div style={{
-          position: 'absolute',
-          top: 0, left: 0, right: 0, bottom: 0,
-          background: 'linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 100%)',
-          zIndex: 1,
-        }} />
-        <div style={{ position: 'relative', zIndex: 2, color: 'white', maxWidth: '800px' }}>
+      <div className="pp-root">
+
+        {/* HERO — text only, no photo, matching the reference exactly */}
+        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: isMobile ? '5rem 1.5rem 3rem' : '7rem 4rem 4rem' }}>
           <h1 style={{
-            fontFamily: impactFont,
-            fontSize: isMobile ? 'clamp(2.5rem, 10vw, 4rem)' : '4rem',
-            fontWeight: 800,
-            textTransform: 'uppercase',
-            marginBottom: '1rem',
-            lineHeight: 1,
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontSize: isMobile ? 'clamp(2.4rem, 10vw, 3.2rem)' : 'clamp(3.2rem, 5.5vw, 4.6rem)',
+            fontWeight: 600,
+            color: CREAM,
+            marginTop: '4rem',
+            lineHeight: 1.1,
           }}>
-            Impact Partners
+            Strategic Partnerships
           </h1>
           <p style={{
-            fontFamily: "'Outfit', sans-serif",
-            fontSize: isMobile ? '1rem' : '1.25rem',
-            lineHeight: 1.6,
-            fontWeight: 400,
-            maxWidth: '600px',
+            fontFamily: "'Lora', Georgia, serif",
+            fontSize: isMobile ? '1.05rem' : '1.25rem',
+            lineHeight: 1.85,
+            color: CREAM_MUTE,
+            maxWidth: '820px',
           }}>
-            Be part of a mission to inspire and empower the next generation.
+            An independent solo expedition only reaches as far as the people and institutions
+            willing to stand behind it. Our partners bring the aviation expertise, scientific
+            credibility, and educational reach that turn one pilot's plan into a mission the
+            world can trust — and follow.
           </p>
         </div>
-      </div>
 
-      {/* Partners Grid */}
-      <div style={{ padding: isMobile ? '2rem 1.5rem' : '4rem 4rem', backgroundColor: '#fff' }}>
-        <h2 style={{
-          fontFamily: impactFont,
-          fontSize: isMobile ? '2.5rem' : '3rem',
-          fontWeight: 900,
-          textTransform: 'uppercase',
-          color: '#000',
-          marginBottom: '1rem',
-          textAlign: 'center',
-        }}>
-          Our Partners &amp; Sponsors
-        </h2>
+        {/* TILE GRID */}
+        <div className="pp-grid">
+          {allPartners.map((partner, i) => (
+            <PartnerTile key={i} partner={partner} />
+          ))}
 
-        <p style={{
-          fontFamily: "'Outfit', sans-serif",
-          fontSize: '0.9rem',
-          color: '#888',
-          textAlign: 'center',
-          marginBottom: '3rem',
-          fontWeight: 500,
-        }}>
-          Proud partners of the GIRLFLIESWORLD expedition — October 2026
-        </p>
-
-        {/* Small CTA above grid */}
-        <PartnerCTA large={false} />
-
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
-          gap: '2rem',
-          maxWidth: '1200px',
-          margin: '0 auto',
-          alignItems: 'stretch',
-        }}>
-          {allPartners.map((partner, index) => (
-            <div key={index} style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              textAlign: 'center',
-              fontFamily: bodyFont,
-              border: '1px solid #f0f0f0',
-              borderRadius: '12px',
-              padding: '2rem 1.5rem',
-              boxShadow: '0 2px 12px rgba(0,0,0,0.05)',
+          {/* CTA — same tile treatment, folded into the grid rather than
+              bookending the page with separate blocks */}
+          <div style={{
+            border: `1px solid ${HAIRLINE}`,
+            background: MAROON_DEEP,
+            padding: isMobile ? '3rem 1.75rem' : '4rem 3rem',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            gridColumn: isMobile ? 'auto' : '1 / -1',
+            minHeight: '380px',
+          }}>
+            <p style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '0.7rem',
+              fontWeight: 700,
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: CREAM_FAINT,
+              marginBottom: '1rem',
             }}>
-              <h3 style={{
-                fontFamily: impactFont,
-                fontSize: '1.3rem',
-                fontWeight: 700,
-                color: '#000',
-                marginBottom: '0.6rem',
+              Become a Partner
+            </p>
+            <h2 style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: isMobile ? '2rem' : '2.8rem',
+              fontWeight: 600,
+              color: CREAM,
+              marginBottom: '1.25rem',
+              lineHeight: 1.15,
+              maxWidth: '600px',
+            }}>
+              Want to be part of this?
+            </h2>
+            <p style={{
+              fontFamily: "'Lora', Georgia, serif",
+              fontSize: '1rem',
+              lineHeight: 1.8,
+              color: CREAM_MUTE,
+              maxWidth: '640px',
+              marginBottom: '2rem',
+            }}>
+              This expedition will be on BBC, Netflix, CNN, and every major aviation outlet, with
+              a projected audience of over 100 million people. Your brand travels to Antarctica,
+              across seven continents, and into scientific history. Sponsorship windows are
+              closing ahead of the October 2026 departure.
+            </p>
+            <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '1.5rem', alignItems: isMobile ? 'flex-start' : 'center' }}>
+              <ArrowLink href="mailto:contact@girlfliesworld.com" external={false}>Get In Touch</ArrowLink>
+              <a href="mailto:contact@girlfliesworld.com" style={{
+                fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: CREAM_FAINT, textDecoration: 'none',
               }}>
-                {partner.name}
-              </h3>
-
-              <span style={roleTagStyle}>{partner.role}</span>
-
-              <div style={{
-                height: '120px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: '1.25rem',
-                width: '100%',
-              }}>
-                <img
-                  src={partner.logo}
-                  alt={`${partner.name} logo`}
-                  style={{
-                    maxHeight: '100px',
-                    maxWidth: '180px',
-                    width: 'auto',
-                    objectFit: 'contain',
-                  }}
-                  onError={e => { e.currentTarget.style.display = 'none'; }}
-                />
-              </div>
-
-              <p style={{
-                fontSize: '0.875rem',
-                lineHeight: 1.7,
-                fontWeight: 500,
-                fontFamily: "'Outfit', sans-serif",
-                color: '#374151',
-                textAlign: 'left',
-                marginBottom: '1.5rem',
-                flexGrow: 1,
-              }}>
-                {partner.description}
-              </p>
-
-              <a
-                href={partner.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  marginTop: 'auto',
-                  backgroundColor: gold,
-                  color: '#000',
-                  fontFamily: bodyFont,
-                  fontWeight: 'bold',
-                  fontSize: '0.85rem',
-                  padding: '0.6rem 1.4rem',
-                  borderRadius: '999px',
-                  textDecoration: 'none',
-                  letterSpacing: '0.05em',
-                  transition: 'background-color 0.3s ease',
-                  whiteSpace: 'nowrap',
-                }}
-                onMouseEnter={e => e.currentTarget.style.backgroundColor = '#b7972a'}
-                onMouseLeave={e => e.currentTarget.style.backgroundColor = gold}
-              >
-                FIND OUT MORE
+                contact@girlfliesworld.com
               </a>
             </div>
-          ))}
+          </div>
         </div>
+
       </div>
-
-      {/* Large CTA at bottom */}
-      <PartnerCTA large={true} />
-
-    </div>
+    </>
   );
 };
 

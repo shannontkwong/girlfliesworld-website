@@ -1,279 +1,166 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+
+const INK = '#111111';
+const PAPER = '#F5F2EB';
+const MUTE = '#5b5748';
 
 const MissionSection = () => {
-  const [showAllSections, setShowAllSections] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const sectionRef = useRef(null);
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener('resize', handleResize);
-    handleResize(); // Initial check
-
+    handleResize();
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const sectionStyle = {
-    padding: isMobile ? '2rem 1.25rem 4rem' : '2rem 4rem 6rem',
-    maxWidth: '1400px',
-    margin: '0 auto',
-  };
+  useEffect(() => {
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+    return () => document.head.removeChild(link);
+  }, []);
 
-  const titleStyle = {
-    fontSize: isMobile ? '2rem' : '2.5rem',
-    fontWeight: 700,
-    textAlign: 'center',
-    marginBottom: '3rem',
-    fontFamily: "'Outfit', sans-serif",
-    marginTop: '0rem',
-    color: '#000000',
-    letterSpacing: '-0.02em'
-  };
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.15 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
 
-  const textStyle = {
-    fontSize: '0.875rem',
-    lineHeight: 1.6,
-    fontWeight:'500',
-
-    color: '#374151',
-    fontWeight:'500',
-    textAlign: 'left',
-    marginBottom: '1.5rem'
-  };
-
-  const sectionParagraphStyle = {
-    fontSize: '0.875rem',
-    lineHeight: 1.6,
-    fontWeight:'500',
-
-    color: '#374151',
-    textAlign: 'left',
-    marginBottom: '2rem'
-  };
-
-  const inlineTitleStyle = {
-    fontFamily: 'Impact, Arial Black, sans-serif',
-    fontSize: '1rem',
-    fontWeight: 900,
-    color: '#000000',
-    textTransform: 'uppercase',
-    letterSpacing: '0.05em'
-  };
-
-  const headingTitleStyle = {
-    fontFamily: 'Impact, Arial Black, sans-serif',
-    fontSize: isMobile ? '3rem' : '6rem',
-    fontWeight: 900,
-    color: '#000000',
-    textTransform: 'uppercase',
-    textAlign: 'left',
-    marginBottom: '3rem'
-  };
-
-  const headingTitleStyleTwo = {
-    fontFamily: 'Impact, Arial Black, sans-serif',
-    fontSize: isMobile ? '2.5rem' : '4rem',
-    fontWeight: 900,
-    color: '#000000',
-    textTransform: 'uppercase',
-    textAlign: isMobile ? 'center' : 'right',
-    marginBottom: '3rem'
-  };
-
-  const toggleButtonStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    marginBottom: '2rem'
-  };
-
-  const chevronButtonStyle = {
-    width: '50px',
-    height: '50px',
-    borderRadius: '50%',
-    border: '2px solid #C4A678',
-    backgroundColor: 'white',
-    color: '#C4A678',
-    fontSize: '20px',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    transition: 'all 0.3s ease',
-    boxShadow: '0 2px 8px rgba(196, 166, 120, 0.2)'
-  };
-
-  const missionContentContainerStyle = {
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: isMobile ? '2rem' : '3rem',
-    marginBottom: '3rem',
-    flexDirection: isMobile ? 'column' : 'row'
-  };
-  
-  const missionTextSectionStyle = {
-    flex: 1,
-    order: isMobile ? 2 : 1
-  };
-  
-  const roundImageStyle = {
-    width: isMobile ? '300px' : '400px',
-    height: isMobile ? '300px' : '400px',
-    borderRadius: '0%',
-    objectFit: 'cover',
-    flexShrink: 0,
-    transform: 'rotate(5deg)',
-    transition: 'transform 0.3s ease',
-    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
-    border: '4px solid #C4A678',
-    margin: isMobile ? '0 auto' : '0'
-  };
-  
-  const imageContainerStyle = {
-    flexShrink: 0,
-    order: isMobile ? 1 : 2,
-    display: 'flex',
-    justifyContent: isMobile ? 'center' : 'flex-start'
-  };
-
-  const journeyButtonStyle = {
-    display: 'inline-flex',
-    alignItems: 'right',
-    justifyContent: 'right',
-    gap: '8px',
-    padding: isMobile ? '12px 24px' : '16px 32px',
-    color: 'black',
-    backgroundColor: '#FF5500', // Orange color from the second image
-
-    textDecoration: 'none',
-    fontWeight: 600,
-    fontSize: isMobile ? '0.9rem' : '1rem',
-    borderRadius: '50px',
-    border: 'none',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    boxShadow: '0 4px 12px rgba(197, 90, 71, 0.3)',
-    fontFamily: "'Outfit', sans-serif",
-    marginTop: '1.5rem',
-    marginBottom: '1rem'
-  };
-
-  const journeyButtonContainerStyle = {
-    textAlign: isMobile ? 'center' : 'left',
-    marginTop: '2rem'
-  };
-  
-  const chevronButtonHoverStyle = {
-    backgroundColor: '#C4A678',
-    color: 'white',
-    transform: 'scale(1.1)'
-  };
-
-  // Function to highlight key words
-  const highlightKeyWords = (text) => {
-    const keyWords = [
-      'transformative', 'young', 'daring', 'boundaries', 'possible', 'Kennedy', 'courage', 'bold',
-      'polar regions', 'climate research', 'urgent', 'environmental change', 'scientists', 'satellite',
-      'young people', 'dreams', 'passion', 'extraordinary', 'courage', 'catalyst',
-      'educational philosophy', 'sciences', 'liberal arts', 'humanities', 'curiosity', 'determination'
-    ];
-
-    let highlightedText = text;
-    
-    keyWords.forEach(word => {
-      const regex = new RegExp(`\\b(${word})\\b`, 'gi');
-      highlightedText = highlightedText.replace(regex, `<span style="color: #C4A678; font-weight: 600;">$1</span>`);
-    });
-
-    return highlightedText;
-  };
-
-  const fourSections = [
+  const PARAGRAPHS = [
     {
-      title: 'EXPLORATION',
-      text: 'Every flight into the unknown pushes the boundaries of what\'s possible. As President Kennedy once said, "When we were young, we weren\'t sure whether we could climb over the wall, so we threw our hats over first—then we knew we had to follow." History shows us that transformative change often comes from the young and daring—a young monk who began the Protestant Reformation, a young general who extended an empire from Macedonia to the borders of the earth, a young Italian explorer who discovered the New World, and a 32-year-old Thomas Jefferson who proclaimed that all men are created equal. "Give me a place to stand," said Archimedes, "and I will move the world." Today, that place to stand is in the cockpit of a small aircraft, proving that the greatest adventures aren\'t reserved for a select few, but for anyone bold enough to throw their hat over the wall first.'
+      dropCap: true,
+      text: "I\u2019m Shannon, a 20-year-old British\u2013Hong Kong aviator and the mission commander of the GIRLFLIESWORLD expedition. In October 2026, I will fly a solo airborne science expedition across all seven continents in a Diamond DA62 twin-engine aircraft \u2014 carrying radar, laser altimetry, and multispectral imaging over a sector of East Antarctica that no space agency has ever surveyed from the air. En route, I will attempt something no woman in history has ever done: to fly solo and unassisted to the South Pole.",
     },
     {
-      title: 'CLIMATE SCIENCE',
-      text: 'The polar regions hold the keys to our planet\'s future, yet they remain among the most challenging places to study. By flying precision scientific instruments over Antarctica and Greenland\'s rapidly changing ice sheets, we\'re gathering critical atmospheric and glacial data that satellites alone cannot capture. This isn\'t just adventure—it\'s urgent climate research happening at the frontlines of environmental change. Every data point collected from these remote regions could help scientists better understand ice sheet dynamics, sea level rise, and atmospheric patterns that affect weather systems worldwide. When exploration meets science, we don\'t just push personal boundaries—we advance human knowledge at the moment when our planet needs it most.'
+      text: "Working with researchers at the University of Colorado Boulder (CIRES) and the University of Kansas (CReSIS), I will lead low-altitude surveys over the Antarctic ice sheet that help validate satellite maps and improve the global climate models behind sea-level projections. All of the data is delivered open access, in the same format NASA\u2019s Operation IceBridge used \u2014 immediately usable by the scientists who need it most.",
     },
     {
-      title: 'YOUTH EMPOWERMENT',
-      text: 'Too many young people are told to wait their turn, to be realistic, to follow conventional paths. But history\'s greatest achievements came from those who refused to accept age as a barrier to greatness. When a young person attempts what no woman has ever done, it sends a powerful message to every dreamer watching: your age is not your limitation—your courage is your catalyst. This mission proves that passion, preparation, and persistence matter more than years of experience. We\'re not just breaking aviation records; we\'re breaking the myth that youth must wait for permission to pursue the extraordinary. Your dreams aren\'t too big, you\'re not too young, and the world needs what only you can contribute.'
+      text: "The flying itself sits at the edge of what a small aircraft can do: interior Antarctic legs of up to 16 hours nonstop, solo, over some of the most remote, hostile, and breathtaking terrain on Earth, with nowhere to divert. Very few pilots ever attempt a route this extreme \u2014 and that is exactly why this dataset does not exist yet. Through this mission, I aim to show the next generation of scientists, explorers, and innovators \u2014 especially girls in STEM \u2014 what\u2019s possible when courage meets purpose.",
     },
-    {
-      title: 'EDUCATIONAL REFORM',
-      text: 'Traditional education too often separates science from storytelling, adventure from academia, theory from practice. But the most pressing challenges we face—from climate change to space exploration—require both analytical thinking and creative problem-solving, both technical precision and bold imagination. This expedition embodies the educational philosophy I believe in: blending the sciences with liberal arts and humanities. Real learning happens when curiosity meets courage, when theoretical knowledge transforms into lived experience, when the classroom extends to the cockpit and beyond. One person\'s journey across seven continents can teach us more about geography, meteorology, human resilience, and the power of determination than any textbook alone. This is education in action—proving that the most profound lessons are learned not by sitting still, but by daring to move forward into the unknown.'
-    }
   ];
 
   return (
-    <section style={sectionStyle} id="mission">
+    <section
+      ref={sectionRef}
+      className={visible ? 'mission-visible' : ''}
+      style={{ background: PAPER, padding: isMobile ? '3.5rem 1.5rem' : '6rem 4rem' }}
+      id="mission"
+    >
+      <style>{`
+        .mission-fade { opacity: 0; transform: translateY(22px); transition: opacity 0.9s cubic-bezier(0.4,0,0.2,1), transform 0.9s cubic-bezier(0.4,0,0.2,1); }
+        .mission-visible .mission-fade { opacity: 1; transform: translateY(0); }
+        .mission-visible .mission-fade:nth-child(1) { transition-delay: 0.05s; }
+        .mission-visible .mission-fade:nth-child(2) { transition-delay: 0.15s; }
+        .mission-visible .mission-fade:nth-child(3) { transition-delay: 0.25s; }
+        .mission-visible .mission-fade:nth-child(4) { transition-delay: 0.35s; }
+        .mission-visible .mission-fade:nth-child(5) { transition-delay: 0.42s; }
+        .mission-btn:hover { background: ${INK}; color: #fff; }
+        .mission-img:hover { transform: scale(1.02); }
+      `}</style>
 
-      {/* Section eyebrow */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem' }}>
-        <div style={{ width: 32, height: 2, background: '#E67E22', flexShrink: 0 }} />
-        <span style={{
-          fontFamily: "'Space Grotesk', sans-serif",
-          fontSize: '0.65rem',
-          fontWeight: 700,
-          letterSpacing: '0.22em',
-          textTransform: 'uppercase',
-          color: '#888',
-        }}>The Mission · GIRLFLIESWORLD 2026</span>
-      </div>
+      {/* ── Narrow centered column, matching BoundariesSection ── */}
+      <div style={{ maxWidth: '740px', margin: '0 auto', textAlign: 'center' }}>
 
-      <div style={missionContentContainerStyle}>
-        <div style={missionTextSectionStyle}>
-          <h2 style={headingTitleStyleTwo}>Engines on, we have liftoff!</h2>
-          <p style={textStyle}>
-  I'm Shannon, a 19-year-old British-Hong-Kong aviator and the leader of the GIRLFLIESWORLD expedition. In October 2026, I will attempt something no woman in history has ever done: to fly solo and unassisted to the South Pole in a small experimental aircraft. This expedition includes a 4,500 NM, 20-hour nonstop leg—one of the longest flights ever attempted by a woman in a small single-engine propeller aircraft.
-</p>
-
-<p style={textStyle}>
-  On this mission, I will also circumnavigate the globe, crossing all 7 continents in a single-engine aircraft—breaking multiple Guinness World Records in the process. This isn't just a flight—it's a journey through some of the world's most remote, hostile, and breathtaking regions, many of which a small SEP aircraft was never designed to reach. Very few pilots ever attempt a route this extreme. It's aerial exploration at the edge of possibility—blending bold adventure with real-world science and pushing the limits of human endurance—alone in the cockpit.
-</p>
-
-<p style={textStyle}>
-  Alongside a team of researchers from the University of Colorado Boulder, I will lead an airborne scientific expedition, capturing critical data over the Antarctic and Greenland ice sheets, as well as remote desert dune systems. These low-altitude surveys will help validate satellite maps and improve global climate models—an essential step in understanding how Earth's polar regions are changing. Through this mission, I aim to inspire the next generation of scientists, explorers, and innovators, showing young people—especially girls in STEM—what’s possible when courage meets purpose.
-</p>
-
-          
-          {/* Journey Button */}
-          <div style={journeyButtonContainerStyle}>
-            <a 
-              href="/journey" 
-              style={journeyButtonStyle}
-              onMouseEnter={(e) => {
-                e.target.style.backgroundColor = '#C4A678';
-                e.target.style.transform = 'translateY(-2px)';
-                e.target.style.boxShadow = '0 6px 20px rgba(197, 90, 71, 0.4)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.backgroundColor = '#FF5500';
-                e.target.style.transform = 'translateY(0)';
-                e.target.style.boxShadow = '0 4px 12px rgba(197, 90, 71, 0.3)';
-              }}
-            >
-            
-              Follow Shannon's Journey
-            </a>
-          </div>
+        {/* Eyebrow */}
+        <div className="mission-fade" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', marginBottom: '1.75rem' }}>
+          <div style={{ width: 28, height: 1, background: MUTE, flexShrink: 0 }} />
+          <span style={{
+            fontFamily: "'Inter', sans-serif",
+            fontSize: '0.68rem',
+            fontWeight: 700,
+            letterSpacing: '0.22em',
+            textTransform: 'uppercase',
+            color: MUTE,
+          }}>The Mission &middot; GIRLFLIESWORLD 2026</span>
+          <div style={{ width: 28, height: 1, background: MUTE, flexShrink: 0 }} />
         </div>
-        
-        <div style={imageContainerStyle}>
-          <img 
-            src="/side.png" 
-            alt="Shannon in aircraft cockpit"
-            style={roundImageStyle}
-            onMouseEnter={(e) => {
-              e.target.style.transform = 'rotate(15deg) scale(1.05)';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.transform = 'rotate(5deg) scale(1)';
-            }}
-          />
+
+        <h2 className="mission-fade" style={{
+          fontFamily: "'Lora', Georgia, serif",
+          fontSize: isMobile ? '2rem' : '2.6rem',
+          fontWeight: 600,
+          color: INK,
+          margin: '0 0 2.5rem 0',
+          lineHeight: 1.15,
+        }}>
+          Engines on. We have liftoff.
+        </h2>
+
+        {/* Paragraphs \u2014 left-aligned text inside a centered narrow column,
+            drop cap on the first, matching the YC reference exactly */}
+        <div style={{ textAlign: 'left' }}>
+          {PARAGRAPHS.map((p, i) => (
+            <p key={i} className="mission-fade" style={{
+              fontFamily: "'Lora', Georgia, serif",
+              fontSize: isMobile ? '1.05rem' : '1.2rem',
+              lineHeight: 1.75,
+              color: INK,
+              margin: '0 0 1.6rem 0',
+            }}>
+              {p.dropCap && (
+                <span style={{
+                  float: 'left',
+                  fontFamily: "'Lora', Georgia, serif",
+                  fontSize: isMobile ? '3.2rem' : '3.8rem',
+                  lineHeight: 0.8,
+                  fontWeight: 600,
+                  padding: '0.1rem 0.15rem 0 0',
+                  color: INK,
+                }}>
+                  {p.text.charAt(0)}
+                </span>
+              )}
+              {p.dropCap ? p.text.slice(1) : p.text}
+            </p>
+          ))}
+        </div>
+
+        {/* Portrait, centered below the text */}
+        <img
+          src="/side.png"
+          alt="Shannon in aircraft cockpit"
+          className="mission-fade mission-img"
+          style={{
+            width: isMobile ? '220px' : '300px',
+            height: isMobile ? '220px' : '300px',
+            objectFit: 'cover',
+            border: '1px solid rgba(17,17,17,0.15)',
+            borderRadius: '6px',
+            margin: '1rem auto 0',
+            display: 'block',
+            transition: 'transform 0.5s cubic-bezier(0.4,0,0.2,1)',
+          }}
+        />
+
+        <div className="mission-fade" style={{ marginTop: '2rem' }}>
+          <a href="/journey" className="mission-btn" style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            padding: isMobile ? '0.85rem 1.9rem' : '1rem 2.3rem',
+            color: INK,
+            background: 'transparent',
+            textDecoration: 'none',
+            fontWeight: 600,
+            fontSize: isMobile ? '0.85rem' : '0.9rem',
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+            borderRadius: '999px',
+            border: `1px solid ${INK}`,
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            fontFamily: "'Inter', sans-serif",
+          }}>
+            Follow Shannon&rsquo;s Journey
+          </a>
         </div>
       </div>
     </section>

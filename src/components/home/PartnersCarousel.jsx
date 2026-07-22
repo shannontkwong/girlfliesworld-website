@@ -1,17 +1,62 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+
+/**
+ * PartnersCarousel — two logo columns flanking a centered serif stat.
+ * Now 8 logos total (4 left / 4 right, evenly split — no empty cell).
+ *
+ * CHANGES THIS PASS:
+ *  - Logo grid block explicitly centered (justifyItems + justifySelf on
+ *    every cell, not just the outer maxWidth/margin auto).
+ *  - Significance strip explicitly centered as a single group; the small
+ *    vertical divider lines between stats are removed (they read like
+ *    stray hyphens) in favor of plain gap spacing.
+ */
+
+const INK = '#111111';
+const PAPER = '#F5F2EB';
+const MUTE = '#5b5748';
 
 const partnerLogos = [
-  { name: 'AG-NAV',                        src: '/agnav.png' },
-  { name: 'Platinum Jets International',   src: '/plaj.png' },
-  { name: 'Estes Rockets',                 src: '/estes.png' },
-  { name: 'Reach The World',                 src: '/rtw.png' },
-  { name: 'Emergent Ventures',             src: '/ge.png' },
-  { name: 'James Caird Society',           src: '/jc.png' },
-  { name: 'Dick Smith AC',                 src: '/dsc.png' },
+  { name: 'AG-NAV', src: '/agnav.png' },
+  { name: 'Platinum Jets International', src: '/pj.png' },
+  { name: 'Estes Rockets', src: '/estes.png' },
+  { name: 'Reach The World', src: '/rrr.png' },
+  { name: 'Emergent Ventures', src: '/ge.png' },
+  { name: 'James Caird Society', src: '/jss.png' },
+  { name: 'Dick Smith AC', src: '/dss.png' },
+  { name: 'CReSIS', src: '/crr.png' },
 ];
+
+const SIGNIFICANCE = [
+  { num: '100M+', label: 'Projected audience reach' },
+  { num: '7', label: 'Continents' },
+  { num: '40,000+', label: 'Nautical miles' },
+  { num: '50+', label: 'Schools reached worldwide' },
+  { num: '2', label: 'Educational partners' },
+];
+
+const LEFT_LOGOS = partnerLogos.slice(0, 4);
+const RIGHT_LOGOS = partnerLogos.slice(4);
+
+const LogoCell = ({ logo, imgErrors, markError, size }) =>
+  !imgErrors[logo.name] ? (
+    <div className="pc-logo-cell" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: size + 20 }}>
+      <img
+        src={logo.src}
+        alt={logo.name}
+        style={{ height: size, width: 'auto', maxWidth: size * 3.2, objectFit: 'contain', display: 'block' }}
+        onError={() => markError(logo.name)}
+      />
+    </div>
+  ) : (
+    <div style={{ height: size + 20 }} />
+  );
 
 const PartnersCarousel = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [imgErrors, setImgErrors] = useState({});
+  const sectionRef = useRef(null);
 
   useEffect(() => {
     const handle = () => setIsMobile(window.innerWidth <= 768);
@@ -20,203 +65,227 @@ const PartnersCarousel = () => {
     return () => window.removeEventListener('resize', handle);
   }, []);
 
-  const doubled = [...partnerLogos, ...partnerLogos];
-  const gold = '#D4AF37';
-  const outfit = "'Outfit', sans-serif";
+  useEffect(() => {
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+    return () => document.head.removeChild(link);
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.15 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const markError = (name) => setImgErrors((p) => ({ ...p, [name]: true }));
 
   return (
-    <section style={{
-      padding: isMobile ? '1.75rem 0 0' : '2.5rem 0 0',
-      background: '#fff',
-      borderTop: '1px solid rgba(0,0,0,0.06)',
-      overflow: 'hidden',
-    }}>
+    <section
+      ref={sectionRef}
+      className={visible ? 'pc-visible' : ''}
+      style={{
+        background: PAPER,
+        padding: isMobile ? '3.5rem 1.5rem' : '6rem 3rem',
+        borderTop: '1px solid rgba(17,17,17,0.1)',
+        borderBottom: '1px solid rgba(17,17,17,0.1)',
+      }}
+    >
       <style>{`
-        @keyframes gfw-marquee {
-          0%   { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .gfw-partners-track {
-          display: flex;
+        .pc-fade { opacity: 0; transform: translateY(20px); transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1); }
+        .pc-visible .pc-fade { opacity: 1; transform: translateY(0); }
+        .pc-visible .pc-fade:nth-child(1) { transition-delay: 0.05s; }
+        .pc-visible .pc-fade:nth-child(2) { transition-delay: 0.15s; }
+        .pc-visible .pc-fade:nth-child(3) { transition-delay: 0.25s; }
+
+        .pc-logo-cell { transition: transform 0.3s ease; }
+        .pc-logo-cell:hover { transform: translateY(-3px); }
+
+        .pc-all-link {
+          font-family: 'Lora', Georgia, serif;
+          font-style: italic;
+          font-size: 1.05rem;
+          color: ${INK};
+          text-decoration: underline;
+          text-underline-offset: 4px;
+          display: inline-flex;
           align-items: center;
-          width: max-content;
-          animation: gfw-marquee 36s linear infinite;
-          will-change: transform;
+          gap: 0.4rem;
         }
-        .gfw-partners-track:hover {
-          animation-play-state: paused;
-        }
-        .gfw-see-all-btn {
-          display: inline-block;
-          background-color: #D4AF37;
-          color: #000;
-          font-family: 'Arial', sans-serif;
-          font-weight: bold;
-          font-size: 0.85rem;
-          padding: 0.6rem 1.8rem;
-          border-radius: 999px;
-          text-decoration: none;
+
+        .pc-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0.85rem 2rem;
+          font-family: 'Inter', sans-serif;
+          font-weight: 600;
+          font-size: 0.82rem;
           letter-spacing: 0.08em;
           text-transform: uppercase;
-          transition: background-color 0.3s ease;
-        }
-        .gfw-see-all-btn:hover {
-          background-color: #b7972a;
-        }
-        .gfw-become-btn {
-          display: inline-block;
-          background-color: transparent;
-          color: #000;
-          font-family: 'Arial', sans-serif;
-          font-weight: bold;
-          font-size: 0.85rem;
-          padding: 0.6rem 1.8rem;
-          border-radius: 999px;
-          border: 1.5px solid #000;
           text-decoration: none;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
+          border-radius: 999px;
           transition: all 0.3s ease;
+          cursor: pointer;
         }
-        .gfw-become-btn:hover {
-          background-color: #000;
-          color: #fff;
-        }
+        .pc-btn--fill { background: ${INK}; color: ${PAPER}; border: 1px solid ${INK}; }
+        .pc-btn--fill:hover { background: transparent; color: ${INK}; }
+        .pc-btn--outline { background: transparent; color: ${INK}; border: 1px solid ${INK}; }
+        .pc-btn--outline:hover { background: ${INK}; color: ${PAPER}; }
       `}</style>
 
-      {/* Eyebrow */}
-      <p style={{
+      <p className="pc-fade" style={{
         textAlign: 'center',
-        fontFamily: "'Georgia', serif",
+        fontFamily: "'Inter', sans-serif",
         fontSize: '0.68rem',
-        letterSpacing: '0.22em',
+        letterSpacing: '0.24em',
         textTransform: 'uppercase',
-        color: 'rgba(0,0,0,0.3)',
-        margin: isMobile ? '0 0 1.25rem' : '0 0 1.75rem',
+        color: MUTE,
+        fontWeight: 700,
+        margin: isMobile ? '0 0 2.5rem' : '0 0 4rem',
       }}>
         Our Partners
       </p>
 
-      {/* Marquee */}
-      <div style={{ overflow: 'hidden', width: '100%' }}>
-        <div className="gfw-partners-track">
-          {doubled.map((p, i) => (
-            <div key={i} style={{
-              flexShrink: 0,
-              padding: isMobile ? '0 2rem' : '0 3.5rem',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+      {/* ── Logo grid, explicitly centered as one block ── */}
+      {!isMobile ? (
+        <div className="pc-fade" style={{
+          maxWidth: '1300px',
+          margin: '0 auto',
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr auto 1fr 1fr',
+          alignItems: 'center',
+          justifyItems: 'center',
+          columnGap: '2.5rem',
+          marginBottom: '3.5rem',
+        }}>
+          {LEFT_LOGOS.map((logo, i) => (
+            <div key={logo.name} style={{ gridColumn: (i % 2) + 1, gridRow: Math.floor(i / 2) + 1, justifySelf: 'center' }}>
+              <LogoCell logo={logo} imgErrors={imgErrors} markError={markError} size={52} />
+            </div>
+          ))}
+
+          <div style={{
+            gridColumn: 3,
+            gridRow: '1 / 3',
+            textAlign: 'center',
+            padding: '0 1.5rem',
+            minWidth: '220px',
+          }}>
+            <div style={{
+              fontFamily: "'Lora', Georgia, serif",
+              fontWeight: 700,
+              fontSize: 'clamp(2.4rem, 4vw, 3.2rem)',
+              color: INK,
+              lineHeight: 1,
             }}>
-              <img
-                src={p.src}
-                alt={p.name}
-                style={{
-                  height: isMobile ? 60 : 90,
-                  width: 'auto',
-                  maxWidth: isMobile ? 160 : 220,
-                  objectFit: 'contain',
-                  display: 'block',
-                }}
-                onError={e => { e.currentTarget.parentElement.style.display = 'none'; }}
-              />
+              100M+
+            </div>
+            <p style={{
+              fontFamily: "'Lora', Georgia, serif",
+              fontStyle: 'italic',
+              fontSize: '1rem',
+              color: MUTE,
+              margin: '0.6rem 0 1.5rem',
+            }}>
+              in projected media reach
+            </p>
+            <a href="/partners" className="pc-all-link">
+              All Partners <span>&rsaquo;</span>
+            </a>
+          </div>
+
+          {RIGHT_LOGOS.map((logo, i) => (
+            <div key={logo.name} style={{ gridColumn: 4 + (i % 2), gridRow: Math.floor(i / 2) + 1, justifySelf: 'center' }}>
+              <LogoCell logo={logo} imgErrors={imgErrors} markError={markError} size={52} />
             </div>
           ))}
         </div>
-      </div>
+      ) : (
+        <div className="pc-fade" style={{ marginBottom: '2.5rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <div style={{
+              fontFamily: "'Lora', Georgia, serif",
+              fontWeight: 700,
+              fontSize: '2.4rem',
+              color: INK,
+              lineHeight: 1,
+            }}>
+              100M+
+            </div>
+            <p style={{
+              fontFamily: "'Lora', Georgia, serif",
+              fontStyle: 'italic',
+              fontSize: '0.95rem',
+              color: MUTE,
+              margin: '0.5rem 0 1rem',
+            }}>
+              in projected media reach
+            </p>
+            <a href="/partners" className="pc-all-link" style={{ fontSize: '0.95rem' }}>
+              All Partners <span>&rsaquo;</span>
+            </a>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem 1rem', justifyItems: 'center' }}>
+            {partnerLogos.map((logo) => (
+              <LogoCell key={logo.name} logo={logo} imgErrors={imgErrors} markError={markError} size={40} />
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Buttons */}
-      <div style={{
+      <div className="pc-fade" style={{
         textAlign: 'center',
-        marginTop: isMobile ? '1.5rem' : '2rem',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '0.75rem',
+        gap: '1rem',
         flexWrap: 'wrap',
+        marginBottom: isMobile ? '2.5rem' : '3.5rem',
       }}>
-        <a href="/partners" className="gfw-see-all-btn">See All Partners</a>
-        <a href="/partners" className="gfw-become-btn">Become a Partner</a>
+        <a href="/partners" className="pc-btn pc-btn--fill">See All Partners</a>
+        <a href="/partners" className="pc-btn pc-btn--outline">Become a Partner</a>
       </div>
 
-      {/* Significance strip */}
-      <div style={{
-        marginTop: isMobile ? '1.75rem' : '2.5rem',
-        borderTop: '1px solid #f0f0f0',
-        background: '#fafafa',
-        padding: isMobile ? '1rem 1.25rem' : '1rem 4rem',
+      {/* ── Significance strip — centered as one group, no divider lines ── */}
+      <div className="pc-fade" style={{
+        maxWidth: '1100px',
+        margin: '0 auto',
+        borderTop: '1px solid rgba(17,17,17,0.1)',
+        paddingTop: isMobile ? '1.75rem' : '2.25rem',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: isMobile ? '1rem' : '2.5rem',
+        gap: isMobile ? '1.75rem' : '3.5rem',
         flexWrap: 'wrap',
+        textAlign: 'center',
       }}>
-        {[
-     { num: '100M+', label: 'Projected audience reach' },
-     { num: '7', label: 'Continents' },
-     { num: '40,000+', label: 'Nautical miles' },
-     { num: '50+', label: 'Schools reached worldwide' },
-     { num: '2', label: 'Educational partners' },
-     { num: 'BBC · Netflix · CNN', label: 'Media in discussion' },
-        ].map((s, i) => (
-          <div key={i} style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: isMobile ? '0.5rem' : '0.75rem',
-            flexShrink: 0,
-          }}>
-            {i > 0 && !isMobile && (
-              <div style={{ width: 1, height: 24, background: '#e0e0e0' }} />
-            )}
-            <div>
-              <div style={{
-                fontFamily: "'Impact', 'Arial Black', sans-serif",
-                fontSize: isMobile ? '1rem' : '1.1rem',
-                fontWeight: 900,
-                color: '#000',
-                lineHeight: 1,
-              }}>{s.num}</div>
-              <div style={{
-                fontFamily: outfit,
-                fontSize: '0.6rem',
-                color: '#999',
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-                fontWeight: 600,
-                marginTop: '2px',
-              }}>{s.label}</div>
-            </div>
+        {SIGNIFICANCE.map((s, i) => (
+          <div key={i} style={{ textAlign: 'center' }}>
+            <div style={{
+              fontFamily: "'Lora', Georgia, serif",
+              fontSize: isMobile ? '1.05rem' : '1.2rem',
+              fontWeight: 700,
+              color: INK,
+              lineHeight: 1,
+            }}>{s.num}</div>
+            <div style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '0.62rem',
+              color: MUTE,
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              fontWeight: 600,
+              marginTop: '3px',
+            }}>{s.label}</div>
           </div>
         ))}
-
-        {/* Contact nudge */}
-        <div style={{
-          marginLeft: isMobile ? '0' : 'auto',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          flexShrink: 0,
-        }}>
-          <div style={{ width: 16, height: 2, background: gold, flexShrink: 0 }} />
-          <a
-            href="mailto:contact@girlfliesworld.com"
-            style={{
-              fontFamily: outfit,
-              fontSize: '1.4rem',
-              color: '#666',
-              textDecoration: 'none',
-              letterSpacing: '0.05em',
-              fontWeight: 600,
-              transition: 'color 0.2s ease',
-            }}
-            onMouseEnter={e => e.currentTarget.style.color = gold}
-            onMouseLeave={e => e.currentTarget.style.color = '#666'}
-          >
-            contact@girlfliesworld.com
-          </a>
-        </div>
       </div>
-
     </section>
   );
 };

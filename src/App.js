@@ -12,6 +12,7 @@ import PartnersPage from './pages/PartnersPage';
 
 // Layout components
 import Navigation from './components/layout/Navigation';
+import Footer from './components/layout/Footer';
 import LoadingScreen from './components/layout/LoadingScreen';
 import HomePage from './pages/HomePage';
 import NewsVideosPage from './pages/NewsVideosPage';
@@ -24,7 +25,6 @@ function App() {
   return (
     <Router>
       <div className="App">
-  
         <Navigation />
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -41,6 +41,7 @@ function App() {
           <Route path="/partners" element={<PartnersPage />} />
           <Route path="/donate" element={<DonatePage />} />
         </Routes>
+   
       </div>
     </Router>
   );

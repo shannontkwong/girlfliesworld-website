@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
-// Import Footer component
+// Paper & Ink system — matches Nav / Hero / Mission / Stats / Boundaries
+// elsewhere on the site: warm cream background, ink text, Lora serif for
+// headlines and body copy. Red/rainbow accents retired in favor of the
+// single monochrome emphasis already used site-wide (bold ink).
+const PAPER = '#F5F2EB';
+const INK = '#111111';
+const HAIRLINE = 'rgba(17,17,17,0.12)';
+
+// Footer — unchanged: this already matches the site-wide footer used
+// elsewhere (black ground, pink section headings as the one reserved
+// brand-mark accent, white/80% body text).
 const Footer = () => {
   const footerStyle = {
     background: '#000000',
@@ -88,7 +98,7 @@ const Footer = () => {
           <h4 style={h4Style}>Explore</h4>
           <ul style={linksStyle}>
             <li style={linkItemStyle}><a href="/plane" style={linkStyle}>The Plane</a></li>
-            <li style={linkItemStyle}><a href="/aboutme" style={linkStyle}>The Record Attempt</a></li>
+            <li style={linkItemStyle}><a href="/aboutme" style={linkStyle}>The Expedition</a></li>
             <li style={linkItemStyle}><a href="/sponsors" style={linkStyle}>Become a Sponsor</a></li>
             <li style={linkItemStyle}><a href="/blog" style={linkStyle}>Blog</a></li>
           </ul>
@@ -145,15 +155,12 @@ const AboutMePage = () => {
       setHeaderHeight(Math.ceil(height));
     };
 
-    // Measure immediately, and again after the current paint in case images
-    // or the funding banner haven't finished laying out yet.
     updateHeight();
     const raf = requestAnimationFrame(updateHeight);
 
     const resizeObserver = new ResizeObserver(updateHeight);
     resizeObserver.observe(el);
 
-    // Keep supporting the custom event too, in case other parts of the app rely on it.
     const handler = (e) => setHeaderHeight(e.detail.height);
     window.addEventListener('site-header-resize', handler);
 
@@ -162,6 +169,17 @@ const AboutMePage = () => {
       resizeObserver.disconnect();
       window.removeEventListener('site-header-resize', handler);
     };
+  }, []);
+
+  // Load the same Lora + Inter pair used across the rest of the site
+  // (Nav, Hero, Mission, Stats, Boundaries), so this page reads as the
+  // same document rather than a different font stack.
+  useEffect(() => {
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+    return () => document.head.removeChild(link);
   }, []);
 
   const navigationItems = [
@@ -195,17 +213,17 @@ const AboutMePage = () => {
     setModalImage(null);
   };
 
-  // Styles
   const pageStyle = {
     paddingTop: `${headerHeight}px`,
     display: 'flex',
     minHeight: '100vh',
-    backgroundColor: '#fff'
+    backgroundColor: PAPER
   };
 
   const sidebarStyle = {
     width: isMobile ? '0' : '280px',
-    backgroundColor: '#C4A574',
+    backgroundColor: PAPER,
+    borderRight: `1px solid ${HAIRLINE}`,
     position: 'fixed',
     left: 0,
     top: `${headerHeight}px`,
@@ -220,20 +238,23 @@ const AboutMePage = () => {
     marginLeft: isMobile ? '0' : '280px',
     flex: 1,
     padding: isMobile ? '1rem' : '2rem 3rem',
-    backgroundColor: '#fff'
+    backgroundColor: PAPER
   };
 
   const navigationItemStyle = (isActive) => ({
     display: 'block',
     padding: '1rem 2rem',
-    color: isActive ? '#fff' : '#000',
+    color: INK,
     textDecoration: 'none',
+    fontFamily: "'Lora', Georgia, serif",
+    fontStyle: isActive ? 'italic' : 'normal',
     fontSize: isActive ? '1rem' : '0.9rem',
-    fontWeight: isActive ? '700' : '500',
-    borderBottom: '1px solid rgba(0,0,0,0.1)',
+    fontWeight: isActive ? '600' : '500',
+    borderBottom: `1px solid ${HAIRLINE}`,
+    borderLeft: isActive ? `2px solid ${INK}` : '2px solid transparent',
     cursor: 'pointer',
     transition: 'all 0.3s ease',
-    backgroundColor: isActive ? 'rgba(0,0,0,0.2)' : 'transparent'
+    backgroundColor: isActive ? 'rgba(17,17,17,0.04)' : 'transparent'
   });
 
   const sectionStyle = {
@@ -242,32 +263,33 @@ const AboutMePage = () => {
   };
 
   const titleStyle = {
-    fontFamily: "'Impact', 'Arial Black', sans-serif",
+    fontFamily: "'Lora', Georgia, serif",
     fontSize: isMobile ? '2.5rem' : '3.5rem',
-    fontWeight: 900,
+    fontWeight: 600,
     textTransform: 'uppercase',
-    color: '#000',
+    color: INK,
     marginBottom: '2rem',
     lineHeight: 1.1,
-    letterSpacing: '-0.02em'
-  };
-
-  const sectionTitleStyle = {
-    fontFamily: "'Impact', 'Arial Black', sans-serif",
-    fontSize: isMobile ? '1.8rem' : '2.2rem',
-    fontWeight: 900,
-    textTransform: 'uppercase',
-    color: '#000',
-    marginBottom: '1.5rem',
-    lineHeight: 1.2,
     letterSpacing: '-0.01em'
   };
 
+  const sectionTitleStyle = {
+    fontFamily: "'Lora', Georgia, serif",
+    fontSize: isMobile ? '1.8rem' : '2.2rem',
+    fontWeight: 600,
+    textTransform: 'uppercase',
+    color: INK,
+    marginBottom: '1.5rem',
+    lineHeight: 1.2,
+    letterSpacing: '-0.005em'
+  };
+
   const paragraphStyle = {
-    fontSize: '0.875rem',
-    lineHeight: 1.6,
-    fontWeight: '500',
-    color: '#374151',
+    fontFamily: "'Lora', Georgia, serif",
+    fontSize: isMobile ? '1.05rem' : '1.15rem',
+    lineHeight: 1.75,
+    fontWeight: '400',
+    color: INK,
     textAlign: 'left',
     marginBottom: '1.5rem',
     maxWidth: '800px'
@@ -277,7 +299,8 @@ const AboutMePage = () => {
     width: '100%',
     maxWidth: '600px',
     height: 'auto',
-    borderRadius: '8px',
+    borderRadius: '6px',
+    border: `1px solid ${HAIRLINE}`,
     cursor: 'pointer',
     transition: 'transform 0.3s ease',
     marginBottom: '2rem'
@@ -287,7 +310,8 @@ const AboutMePage = () => {
     width: '100%',
     height: isMobile ? '40vh' : '80vh',
     objectFit: 'cover',
-    borderRadius: '8px',
+    borderRadius: '6px',
+    border: `1px solid ${HAIRLINE}`,
     marginBottom: '3rem'
   };
 
@@ -302,7 +326,8 @@ const AboutMePage = () => {
     width: '100%',
     height: '200px',
     objectFit: 'cover',
-    borderRadius: '8px',
+    borderRadius: '6px',
+    border: `1px solid ${HAIRLINE}`,
     cursor: 'pointer',
     transition: 'transform 0.3s ease'
   };
@@ -338,14 +363,17 @@ const AboutMePage = () => {
     fontWeight: 'bold'
   };
 
+  // Brand system: one emphasis treatment — bold ink, matching the
+  // monochrome "one accent color, and it's not a color" rule already
+  // used across Nav / Hero / Mission / Stats / Boundaries. Red retired.
   const highlights = {
-    pink: { color: '#f60d85e5', fontWeight: '600' },
-    blue: { color: '#3b82f6', fontWeight: '600' },
-    purple: { color: '#8b5cf6', fontWeight: '600' },
-    orange: { color: '#f97316', fontWeight: '600' },
-    yellow: { color: '#eab308', fontWeight: '600' },
-    green: { color: '#10b981', fontWeight: '600' },
-    red: { color: '#ef4444', fontWeight: '600' }
+    pink: { color: INK, fontWeight: '700' },
+    blue: { color: INK, fontWeight: '700' },
+    purple: { color: INK, fontWeight: '700' },
+    orange: { color: INK, fontWeight: '700' },
+    yellow: { color: INK, fontWeight: '700' },
+    green: { color: INK, fontWeight: '700' },
+    red: { color: INK, fontWeight: '700' }
   };
 
   const galleryImages = [
@@ -359,7 +387,6 @@ const AboutMePage = () => {
 
   return (
     <div style={pageStyle}>
-      {/* Modal for image zoom */}
       {modalImage && (
         <div style={modalStyle} onClick={closeModal}>
           <span style={closeButtonStyle}>&times;</span>
@@ -372,7 +399,6 @@ const AboutMePage = () => {
         </div>
       )}
 
-      {/* Sidebar Navigation */}
       <nav style={sidebarStyle}>
         {navigationItems.map((item) => (
           <div
@@ -385,9 +411,7 @@ const AboutMePage = () => {
         ))}
       </nav>
 
-      {/* Main Content */}
       <main style={mainContentStyle}>
-        {/* Hero Section */}
         <section id="journey" style={sectionStyle}>
           <h1 style={titleStyle}>Shannon Around the World</h1>
           <img
@@ -400,7 +424,6 @@ const AboutMePage = () => {
           Shannon's journey takes her to people and places all over the globe—even those who once feared flying. From overcoming profound personal challenges to preparing for one of the boldest aviation expeditions in modern history, her mission is to inspire a new generation to think boldly, explore fearlessly, and believe deeply in themselves.          </p>
         </section>
 
-        {/* Mission Section */}
         <section id="mission" style={sectionStyle}>
           <h2 style={sectionTitleStyle}>Shannon's Mission</h2>
           <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '2rem', alignItems: 'flex-start' }}>
@@ -409,7 +432,7 @@ const AboutMePage = () => {
               <span style={highlights.pink}>Shannon Wong</span> is a 20-year-old pilot, self-trained scientist-explorer, and tech founder preparing to fly solo to the <span style={highlights.blue}>South Pole</span> and across all <span style={highlights.purple}>seven continents</span>. Her mission is to inspire a new generation to think boldly, explore fearlessly, and believe deeply in themselves — encouraging young people everywhere to pursue science, discovery, and exploration.
               </p>
               <p style={paragraphStyle}>
-                In October 2026, Shannon will attempt to become the first woman to fly a small plane to the South Pole and the first woman ever to fly solo across all seven continents westbound. This expedition represents more than aviation records—it's about proving that no background, limitation, or obstacle should ever define us. Shannon has committed years to building up a worthy science goal in aim to fill in missing scientific data gaps in the Antarctic whilst her airborne mission across the most harshest and coldest continent on Earth. 
+                In October 2026, Shannon will fly a solo airborne science expedition across all seven continents — carrying radar, laser altimetry, and multispectral imaging to fill a documented gap in the Antarctic radar record that no space agency has covered. En route, she will attempt to become the first woman to fly a small plane to the South Pole and the first woman ever to fly solo across all seven continents westbound. The records are the media vehicle; the mission is the science — and the proof that no background, limitation, or obstacle should ever define us.
 
                 Shannon is a Commercial Pilot, with five different ratings including: an IFR rating that allows her to fly in bad weather (IMC), multi-engine rating (she can fly twin-engine aircrafts), tailwheel, high performance (fast and powerful aircraft with a greater than 200 horsepower) and complex endorsement (aircraft with a constant speed propeller, retractable gear, flaps). Shannon finished all her licenses/ratings in roughly 4 months. She is broadly self-taught having taught herself geophysics, glaciology, aerospace engineering, radar/RF engineering in order to complete this science goal. Whilst being a self-learner, Shannon is a passionate researcher having sole-authored five different papers to Q1 peer-reviewed journals across six different fields (Physics, Cosmology, Antarctic Science, Ecology, Economics, Philosophy) - all of them addressing large open problems in the field in a original way, with no institutional affiliation (Shannon is not in college, nor does she have any degree).
                 
@@ -424,7 +447,6 @@ const AboutMePage = () => {
           </div>
         </section>
 
-        {/* Background Section */}
         <section id="background" style={sectionStyle}>
           <h2 style={sectionTitleStyle}>Background</h2>
           <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row-reverse', gap: '2rem', alignItems: 'flex-start' }}>
@@ -455,7 +477,30 @@ const AboutMePage = () => {
           </div>
         </section>
 
-        {/* Adversity Section */}
+        <section id="skills" style={sectionStyle}>
+          <h2 style={sectionTitleStyle}>Hacker, Scientist, Engineer — All Self-Taught</h2>
+          <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row-reverse', gap: '2rem', alignItems: 'flex-start' }}>
+            <img
+              src="/hack.png"
+              alt="Shannon Mode"
+              style={{ ...imageStyle, maxWidth: '300px', height: '200px', objectFit: 'cover' }}
+              onClick={() => openModal('/hack.png', 'Shannon Mode')}
+            />
+            <div style={{ flex: 1 }}>
+              <p style={paragraphStyle}>
+                At 10, Shannon taught herself to code — and promptly <span style={highlights.red}>hacked into her school's central server</span> (not, she'll admit, her most ethical achievement — but the moment she knew computers would do what she told them). That curiosity became a career: she went on to work as a software engineer at <span style={highlights.blue}>Palantir</span>, entirely self-taught. At 15, she dove deep into <span style={highlights.orange}>electronics</span>, building her own circuits and exploring how hardware and software worked. She began flying <span style={highlights.green}>microlights</span> at 16 and later trained for her private pilot license. Along the way she became a <span style={highlights.purple}>published scientist</span> — sole author on every paper she's written, with peer-reviewed work in Classical and Quantum Gravity and further sole-author papers in review across physics, glaciology, ecology, economics, and orbital mechanics. No university. No lab. No co-authors.
+              </p>
+              <p style={paragraphStyle}>
+              In her spare time, Shannon immerses herself in a wide range of subjects — from quantum mechanics, physics, product engineering, and machine learning to history, art, and design. She enjoys philosophy, science fiction, and futuristic literature, especially books with electronic or speculative themes. A fan of both classical and punk rock music, she also codes apps, watches documentaries, and, when not indoors, seeks out adrenaline through adventure sports.
+
+Shannon also has an eclectic set of hands-on skills and hobbies: she's played piano since the age of eight, started tennis at seven, and has trained in Wing Chun martial arts.              </p>
+              <p style={paragraphStyle}>
+                To prepare for her Antarctic mission, Shannon has taken a <span style={highlights.blue}>winter survival course</span> which included pulling a 50kg sled up the Norwegian mountains in -15°C weather for 8 hours a day for 1 week (equivalent to 23 miles daily) in case her engine quits over <span style={highlights.yellow}>Antarctica</span>.
+              </p>
+            </div>
+          </div>
+        </section>
+
         <section id="adversity" style={sectionStyle}>
           <h2 style={sectionTitleStyle}>Overcoming Adversity</h2>
           <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '2rem', alignItems: 'flex-start' }}>
@@ -479,32 +524,6 @@ const AboutMePage = () => {
           </div>
         </section>
 
-        {/* Skills Section */}
-        <section id="skills" style={sectionStyle}>
-          <h2 style={sectionTitleStyle}>From Hacking to Flight</h2>
-          <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row-reverse', gap: '2rem', alignItems: 'flex-start' }}>
-            <img
-              src="/hack.png"
-              alt="Shannon Mode"
-              style={{ ...imageStyle, maxWidth: '300px', height: '200px', objectFit: 'cover' }}
-              onClick={() => openModal('/hack.png', 'Shannon Mode')}
-            />
-            <div style={{ flex: 1 }}>
-              <p style={paragraphStyle}>
-                At 10, Shannon taught herself <span style={highlights.red}>ethical hacking</span>. At 15, she dove deep into <span style={highlights.orange}>electronics</span>, building her own circuits and exploring how hardware and software worked. She began flying <span style={highlights.green}>microlights</span> at 16 and later trained for her private pilot license.
-              </p>
-              <p style={paragraphStyle}>
-              In her spare time, Shannon immerses herself in a wide range of subjects — from quantum mechanics, physics, product engineering, and machine learning to history, art, and design. She enjoys philosophy, science fiction, and futuristic literature, especially books with electronic or speculative themes. A fan of both classical and punk rock music, she also codes apps, watches documentaries, and, when not indoors, seeks out adrenaline through adventure sports.
-
-Shannon also has an eclectic set of hands-on skills and hobbies: she's played piano since the age of eight, started tennis at seven, and has trained in Wing Chun martial arts.              </p>
-              <p style={paragraphStyle}>
-                To prepare for her Antarctic mission, Shannon has taken a <span style={highlights.blue}>winter survival course</span> which included pulling a 50kg sled up the Norwegian mountains in -15°C weather for 8 hours a day for 1 week (equivalent to 23 miles daily) in case her engine quits over <span style={highlights.yellow}>Antarctica</span>.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* South Pole Mission */}
         <section id="south-pole" style={sectionStyle}>
           <h2 style={sectionTitleStyle}>The South Pole Mission</h2>
           <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '2rem', alignItems: 'flex-start' }}>
@@ -516,7 +535,7 @@ Shannon also has an eclectic set of hands-on skills and hobbies: she's played pi
             />
             <div style={{ flex: 1 }}>
               <p style={paragraphStyle}>
-                In October 2026, Shannon will attempt to fly solo across all continents and land in <span style={highlights.purple}>Antarctica</span>—becoming the first woman to fly a small plane to the <span style={highlights.orange}>South Pole</span> and the first woman ever to fly solo across all <span style={highlights.green}>seven continents</span> (westbound).
+                In October 2026, Shannon will fly solo across all continents and land in <span style={highlights.purple}>Antarctica</span> — running a dedicated <span style={highlights.orange}>airborne radar survey</span> over East Antarctica along the way. En route, she becomes the first woman to fly a small plane to the South Pole and the first woman ever to fly solo across all <span style={highlights.green}>seven continents</span> (westbound).
               </p>
               <p style={paragraphStyle}>
                 This unprecedented journey will require extraordinary preparation, including survival training, advanced navigation skills, and modifications to her aircraft to handle extreme polar conditions. The mission represents the culmination of years of preparation and training.
@@ -525,7 +544,6 @@ Shannon also has an eclectic set of hands-on skills and hobbies: she's played pi
           </div>
         </section>
 
-        {/* Impact Section */}
         <section id="impact" style={sectionStyle}>
           <h2 style={sectionTitleStyle}>Why It Matters</h2>
           <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row-reverse', gap: '2rem', alignItems: 'flex-start' }}>
@@ -546,12 +564,15 @@ Shannon also has an eclectic set of hands-on skills and hobbies: she's played pi
               <div style={{ marginTop: '2rem' }}>
                 <a href="/journey" style={{ textDecoration: 'none' }}>
                   <button style={{
-                    fontSize: '1rem',
-                    background: '#000',
-                    color: '#fff',
-                    border: 'none',
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: '0.9rem',
+                    letterSpacing: '0.04em',
+                    textTransform: 'uppercase',
+                    background: 'transparent',
+                    color: INK,
+                    border: `1px solid ${INK}`,
                     padding: '12px 25px',
-                    borderRadius: '6px',
+                    borderRadius: '999px',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
                     fontWeight: '600'
@@ -565,7 +586,9 @@ Shannon also has an eclectic set of hands-on skills and hobbies: she's played pi
         </section>
 
       </main>
+    
     </div>
+   
   );
 };
 

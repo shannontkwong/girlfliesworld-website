@@ -1,0 +1,192 @@
+/* =============================================================
+   GFW BRAND SYSTEM — brand.css
+   Import once in index.js:  import './brand.css';
+   Three colors, three jobs. Orange is retired everywhere.
+   ============================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root {
+  /* ---- Color: three colors, three jobs ---- */
+  --gfw-ink: #0D0D0D;        /* base dark */
+  --gfw-white: #FFFFFF;      /* base light */
+  --gfw-red: #D0021B;        /* ACTION + EMPHASIS: CTAs, stats, live numbers */
+  --gfw-pink: #FF1493;       /* BRAND MARK + one kicker per page. Nothing else. */
+  --gfw-gray: #6B6B6B;       /* muted text on light */
+  --gfw-gray-inv: rgba(255,255,255,0.65); /* muted text on dark */
+  --gfw-panel: #1B1B1B;      /* cards on dark */
+  --gfw-panel-light: #F2F2F2;/* cards on light */
+
+  /* ---- Type: three roles ---- */
+  --font-display: 'Impact', 'Arial Black', sans-serif;  /* headlines only */
+  --font-body: 'Space Grotesk', sans-serif;             /* everything readable */
+  --font-data: 'IBM Plex Mono', ui-monospace, monospace;/* telemetry: numbers,
+                                                           coordinates, dates,
+                                                           funding %, NM counts */
+
+  /* ---- Spacing / radius ---- */
+  --radius-btn: 4px;   /* was 50px pills — squared = instrument, not app */
+  --radius-card: 4px;
+  --space-section: clamp(4rem, 8vw, 7rem);
+}
+
+/* ---- Base ---- */
+body {
+  font-family: var(--font-body);
+  color: var(--gfw-ink);
+  background: var(--gfw-white);
+}
+
+/* ---- Type roles ---- */
+.gfw-display {
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+
+.gfw-kicker {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gfw-pink); /* the ONE pink text element per page */
+}
+
+.gfw-label {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gfw-gray);
+}
+
+/* Telemetry: any number that is a reading, not a sentence.
+   "15% FUNDED" · "90.0000° S, 0.0000° E" · "36,000 NM" · "OCT 2026" */
+.gfw-data {
+  font-family: var(--font-data);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+.gfw-data--red { color: var(--gfw-red); }
+
+/* ---- Buttons: exactly two kinds ---- */
+.gfw-btn {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  padding: 0.95rem 2.2rem;
+  border-radius: var(--radius-btn);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  text-align: center;
+  user-select: none;
+}
+.gfw-btn:focus-visible { outline: 3px solid var(--gfw-pink); outline-offset: 2px; }
+
+.gfw-btn--primary {
+  background: var(--gfw-red);
+  color: var(--gfw-white);
+  border: 2px solid var(--gfw-red);
+}
+.gfw-btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(208, 2, 27, 0.45);
+}
+
+.gfw-btn--ghost {
+  background: transparent;
+  color: var(--gfw-white);
+  border: 2px solid rgba(255, 255, 255, 0.55);
+}
+.gfw-btn--ghost:hover { background: var(--gfw-white); color: var(--gfw-ink); }
+
+/* Ghost variant for light backgrounds */
+.gfw-btn--ghost-dark {
+  background: transparent;
+  color: var(--gfw-ink);
+  border: 2px solid var(--gfw-ink);
+}
+.gfw-btn--ghost-dark:hover { background: var(--gfw-ink); color: var(--gfw-white); }
+
+/* ---- Top funding bar (replaces orange bar) ---- */
+.gfw-fundbar {
+  background: var(--gfw-ink);
+  color: var(--gfw-white);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.55rem 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.gfw-fundbar .gfw-data--red { font-size: 0.85rem; }
+.gfw-fundbar__cta {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--gfw-white);
+  background: var(--gfw-red);
+  padding: 0.4rem 1.1rem;
+  border-radius: var(--radius-btn);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.gfw-fundbar__cta:hover { filter: brightness(1.1); }
+
+/* ---- Nav "Help Fund" pill (replaces orange gradient pill) ---- */
+.gfw-nav-fund {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--gfw-white);
+  background: var(--gfw-red);
+  padding: 0.6rem 1.4rem;
+  border-radius: var(--radius-btn);
+  text-decoration: none;
+}
+.gfw-nav-fund:hover { filter: brightness(1.1); }
+
+/* ---- Toast (replaces orange toast) ---- */
+.gfw-toast {
+  background: var(--gfw-ink);
+  color: var(--gfw-white);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-left: 4px solid var(--gfw-red);
+  border-radius: var(--radius-card);
+  padding: 1rem 1.25rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+  max-width: 340px;
+}
+.gfw-toast__title { font-weight: 700; margin: 0 0 0.2rem 0; }
+.gfw-toast__body { color: var(--gfw-gray-inv); margin: 0; }
+.gfw-toast__close {
+  background: none; border: none; color: var(--gfw-gray-inv);
+  cursor: pointer; font-size: 1rem; padding: 0.25rem;
+}
+.gfw-toast__close:hover { color: var(--gfw-white); }
+
+/* ---- Cards ---- */
+.gfw-card {
+  background: var(--gfw-panel);
+  border-radius: var(--radius-card);
+  padding: 2rem;
+}
+.gfw-card--light { background: var(--gfw-panel-light); }
+
+/* ---- Motion discipline ---- */
+@media (prefers-reduced-motion: reduce) {
+  .gfw-btn, .gfw-btn:hover { transition: none; transform: none; }
+}

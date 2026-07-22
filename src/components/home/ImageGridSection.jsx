@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import PressLogoBar from './PressLogoBar';
-import PartnersCarousel from './PartnersCarousel';
-import ScienceTeaserSection from './Scienceteasersection';
-import CredentialsStrip from './BeyondFlight';
+
+// FLAT STRUCTURE: this section renders ONLY itself.
+// PressLogoBar, PartnersCarousel, ScienceTeaserSection, and CredentialsStrip
+// are ordered by HomePage.jsx — do not re-import them here.
 
 const quoteLines = [
   "I got intercepted by two F-18 Hornets over the Indian Ocean — during the Iran–US war — approaching a Lincoln carrier strike group. I escaped Oman two hours after it got bombed. I went viral.",
-  "I am the youngest person in history to publish as sole author across physics, cosmology, and Antarctic science — all in Q1 peer-reviewed journals.",
-  "I am an author of political philosophy book.",
+  "I publish as sole author across physics, cosmology, and Antarctic science — peer-reviewed, self-taught, no institution behind me.",
+  "I am an author of a political philosophy book.",
   "Three transatlantic crossings as captain. Three seas. Two oceans.",
   "Florida to India in a PA28 — 13,000km — no autopilot.",
   "I just turned 20 years old.",
@@ -101,9 +101,6 @@ const ImageGridSection = () => {
         }
       `}</style>
 
-<PressLogoBar />
-<PartnersCarousel />
-<ScienceTeaserSection />
       {/* ══════════════════════════════════════
           1. CARD SLIDER
       ══════════════════════════════════════ */}
@@ -247,7 +244,6 @@ const ImageGridSection = () => {
         </div>
       </section>
 
-      <CredentialsStrip />
       {/* ══════════════════════════════════════
           2. CREDENTIALS QUOTE
       ══════════════════════════════════════ */}
