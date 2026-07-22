@@ -3,17 +3,31 @@ import AntarcticaMap from './AntarcticaMap';
 
 // FLAT STRUCTURE: this section renders ONLY itself.
 //
-// THIS PASS: mobile compatibility fixes. The layout skeleton (grid
-// collapsing to one column, responsive heading/paragraph sizes) was
-// already mobile-aware, but the two credibility badges (SCAR RINGS,
-// CReSIS) had a real bug: they were `display: inline-flex` with no width
-// constraint, so on a narrow phone the logo + two-line text combination
-// could force the row wider than the viewport instead of wrapping,
-// causing horizontal scroll on the whole page. Fixed by giving them
-// `width: 100%` + `box-sizing: border-box` on mobile and `minWidth: 0`
-// on the text so it wraps normally instead of pushing the row wider.
-// The map wrapper also now explicitly constrains to 100% width so it
-// can't do the same thing regardless of AntarcticaMap's own internals.
+// THIS PASS: fixed the "only shows up when I hover over it" bug. The
+// reveal animation depends entirely on the IntersectionObserver firing
+// once and flipping `visible` to true — if it never fires (there are a
+// few real ways this can happen: the observer attaching a beat after the
+// section is already in view, the ref not being attached yet on first
+// paint, or just an edge case in how a given browser schedules the
+// callback), every .sci-item stays stuck at `opacity: 0` permanently.
+// What then looks like "hovering makes it appear" is actually the
+// content having been there the whole time, un-painted, until something
+// (a hover, a resize, anything that forces a style recalculation) makes
+// the browser repaint and reveal what was already sitting at opacity 1
+// in the DOM, OR the observer genuinely never ran and the content really
+// was invisible. Either way, the fix is the same: don't depend on the
+// observer as the ONLY path to visible=true. A short safety-net timeout
+// forces visible=true regardless, so content can never get permanently
+// stuck invisible even if the observer misfires.
+//
+// Also: mobile overflow hardening carried over from last pass (the
+// credibility badges wrapping properly, the map wrapper constrained to
+// 100% width) is unchanged. NOTE ON THE MAP SPECIFICALLY: if the layout
+// still looks wrong on mobile after this, the most likely remaining
+// cause is inside AntarcticaMap.jsx itself (e.g. a hardcoded pixel width
+// on its own canvas/container that doesn't shrink to fit) — that file
+// wasn't shared this pass, so its internals couldn't be checked or fixed
+// here. Worth pasting that file next if the map is still the problem.
 
 const INK = '#111111';
 const PAPER = '#F5F2EB';
@@ -40,12 +54,23 @@ const ScienceTeaserSection = () => {
   }, []);
 
   useEffect(() => {
+    // Primary path: reveal when the section actually scrolls into view.
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) setVisible(true); },
       { threshold: 0.1 }
     );
     if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+
+    // Safety-net path: if the observer hasn't fired within 1.2s of mount
+    // for ANY reason, reveal anyway. This is what actually fixes "stuck
+    // invisible until I hover" — content can no longer be permanently
+    // stuck at opacity 0 no matter what the observer does or doesn't do.
+    const fallback = setTimeout(() => setVisible(true), 1200);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(fallback);
+    };
   }, []);
 
   const stats = [
@@ -116,7 +141,8 @@ const ScienceTeaserSection = () => {
           <div>
 
             <div className="sci-item" style={{
-              display: 'inline-flex',
+              display: 'flex',
+              flexWrap: 'wrap',
               alignItems: 'center',
               gap: '0.6rem',
               marginBottom: '1.25rem',
@@ -191,16 +217,10 @@ const ScienceTeaserSection = () => {
               ))}
             </div>
 
-            {/* Credibility badges — FIX: was `display: inline-flex` with
-                no width constraint, so on a narrow phone the logo + long
-                two-line text could force this row wider than the
-                viewport instead of wrapping, causing horizontal scroll
-                on the whole page. Now `display: flex` + explicit
-                `width: 100%` on mobile, and `minWidth: 0` on the text so
-                it wraps within the row instead of pushing it wider. */}
             <div className="sci-item" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '2rem' }}>
               <div style={{
                 display: 'flex',
+                flexWrap: 'wrap',
                 alignItems: 'center',
                 gap: '0.75rem',
                 padding: '0.6rem 1rem',
@@ -213,7 +233,7 @@ const ScienceTeaserSection = () => {
                 <img
                   src="/rings.png"
                   alt="SCAR RINGS"
-                  style={{ height: '48px', width: 'auto', objectFit: 'contain', flexShrink: 0 }}
+                  style={{ height: '48px', width: 'auto', maxWidth: '100%', objectFit: 'contain', flexShrink: 0 }}
                   onError={e => { e.currentTarget.style.display = 'none'; }}
                 />
                 <span style={{
@@ -231,6 +251,7 @@ const ScienceTeaserSection = () => {
 
               <div style={{
                 display: 'flex',
+                flexWrap: 'wrap',
                 alignItems: 'center',
                 gap: '0.75rem',
                 padding: '0.6rem 1rem',
@@ -261,10 +282,13 @@ const ScienceTeaserSection = () => {
             </div>
           </div>
 
-          {/* ── RIGHT: map — width now explicitly constrained to 100% so
-              it can't force horizontal overflow regardless of whatever
-              fixed dimensions AntarcticaMap might set internally ── */}
-          <div className="sci-item" style={{ position: 'relative', width: '100%', maxWidth: '100%' }}>
+          {/* ── RIGHT: map — wrapper constrained to 100% width. If the
+              map still overflows or looks broken on mobile after this,
+              the cause is very likely inside AntarcticaMap.jsx's own
+              markup (e.g. a hardcoded pixel width on its canvas/root
+              element that ignores this wrapper) — that file hasn't been
+              shared, so it couldn't be checked or fixed here. ── */}
+          <div className="sci-item" style={{ position: 'relative', width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
             <AntarcticaMap />
           </div>
 

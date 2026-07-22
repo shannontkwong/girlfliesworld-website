@@ -13,22 +13,13 @@ import React, { useState, useEffect, useRef } from 'react';
  * moving" rather than one shape blinking. Respects prefers-reduced-motion
  * (the animation is skipped entirely, same as the rest of this hero).
  *
- * PRESS BADGE: bottom-right, using REAL logo marks via Google's favicon
- * service (https://www.google.com/s2/favicons?domain={domain}&sz=128) — a
- * free, no-signup public endpoint that serves a site's actual favicon.
- * NOTE: this used to run on the Clearbit Logo API, which was permanently
- * shut down December 8, 2025 (Clearbit was acquired by HubSpot, which then
- * sunset the free endpoint) — logo.clearbit.com no longer resolves at all,
- * which is why it was swapped for Google's favicon service here instead.
- * Trade-off worth knowing: favicons are small/simplified compared to a full
- * logo mark, so a text-heavy wordmark (like a newspaper's) may render as
- * just an icon rather than the full brand name. For higher-fidelity full
- * logos, the official Clearbit successor is logo.dev — same domain-based
- * lookup, but it requires a free account for an API key rather than being
- * a bare URL like this one. Logos render monochrome white by default
- * (filter: brightness(0) invert(1)) to sit cleanly on the dark video, and
- * reveal their true colors on hover. If a given outlet's favicon fails to
- * resolve, it falls back to a plain text label rather than a broken image.
+ * PRESS BADGE: bottom-right, plain text labels (CNN, AOPA, Times Now,
+ * Hampshire Chronicle) rather than logo images — the logo-loading chain
+ * (self-hosted file -> Google favicon -> text) kept failing before any
+ * local logo files were actually in place, so this drops the image
+ * attempts entirely in favor of just showing the outlet name as text,
+ * which always renders correctly with no dependency on any asset or
+ * third-party service.
  *
  * Sits ABOVE the existing bottom hairline meta row and sound toggle,
  * stacked so nothing overlaps: press badge > meta row > sound button,
@@ -47,10 +38,10 @@ import React, { useState, useEffect, useRef } from 'react';
 const GOLD = '#C9A227';
 
 const PRESS_ITEMS = [
-  { name: 'CNN', domain: 'cnn.com', href: 'https://www.cnn.com/2026/04/12/middleeast/us-iran-war-propellor-plane-intl-hnk-ml-dst' },
-  { name: 'AOPA', domain: 'aopa.org', href: 'https://www.aopa.org/news-and-media/all-news/2026/march/26/archer-intercepted-by-us-navy-super-hornets-near-iran' },
-  { name: 'Times Now', domain: 'timesnownews.com', href: 'https://www.timesnownews.com/india/its-us-dont-shoot-us-ferry-pilot-recalls-mid-air-interception-of-newly-procured-indian-trainer-aircraft-by-us-fighter-jet-article-154077628' },
-  { name: 'Hampshire Chronicle', domain: 'hampshirechronicle.co.uk', href: 'https://www.hampshirechronicle.co.uk/news/26057137.hampshire-airfield-welcomes-international-pilot-five-day-flight/' },
+  { name: 'CNN', href: 'https://www.cnn.com/2026/04/12/middleeast/us-iran-war-propellor-plane-intl-hnk-ml-dst' },
+  { name: 'AOPA', href: 'https://www.aopa.org/news-and-media/all-news/2026/march/26/archer-intercepted-by-us-navy-super-hornets-near-iran' },
+  { name: 'Times Now', href: 'https://www.timesnownews.com/india/its-us-dont-shoot-us-ferry-pilot-recalls-mid-air-interception-of-newly-procured-indian-trainer-aircraft-by-us-fighter-jet-article-154077628' },
+  { name: 'Hampshire Chronicle', href: 'https://www.hampshirechronicle.co.uk/news/26057137.hampshire-airfield-welcomes-international-pilot-five-day-flight/' },
 ];
 
 // ---- Custom sound icon: equalizer bars, pulsing while unmuted, frozen
@@ -92,7 +83,6 @@ const HeroSection = () => {
   const [loaded, setLoaded] = useState(false);
   const [reduced, setReduced] = useState(false);
   const [soundOn, setSoundOn] = useState(false);
-  const [logoError, setLogoError] = useState({});
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -261,25 +251,12 @@ const HeroSection = () => {
         .gfw-eq-bar-3 { animation-delay: 0.45s; }
         .gfw-eq-bar-4 { animation-delay: 0.6s; }
 
-        .gfw-press-logo {
-          height: 34px;
-          width: auto;
-          max-width: 110px;
-          object-fit: contain;
-          filter: brightness(0) invert(1);
-          opacity: 0.65;
-          transition: opacity 0.3s ease, filter 0.3s ease;
-        }
-        .gfw-press-link:hover .gfw-press-logo {
-          opacity: 1;
-          filter: none;
-        }
         .gfw-press-fallback {
           font-family: 'Space Grotesk', sans-serif;
           font-size: 1.05rem;
           font-weight: 700;
           letter-spacing: 0.01em;
-          color: rgba(245,242,235,0.65);
+          color: rgba(245,242,235,0.9);
           white-space: nowrap;
           transition: color 0.3s ease;
         }
@@ -436,17 +413,7 @@ const HeroSection = () => {
                   title={`Read the ${item.name} article`}
                   className="gfw-press-link"
                 >
-                  {!logoError[item.name] ? (
-                    <img
-                      src={`https://www.google.com/s2/favicons?domain=${item.domain}&sz=128`}
-                      alt={item.name}
-                      className="gfw-press-logo"
-                      style={{ height: '26px', maxWidth: '84px' }}
-                      onError={() => setLogoError((p) => ({ ...p, [item.name]: true }))}
-                    />
-                  ) : (
-                    <span className="gfw-press-fallback" style={{ fontSize: '0.85rem' }}>{item.name}</span>
-                  )}
+                  <span className="gfw-press-fallback" style={{ fontSize: '0.85rem' }}>{item.name}</span>
                 </a>
               ))}
             </div>
@@ -486,16 +453,7 @@ const HeroSection = () => {
                 title={`Read the ${item.name} article`}
                 className="gfw-press-link"
               >
-                {!logoError[item.name] ? (
-                  <img
-                    src={`https://www.google.com/s2/favicons?domain=${item.domain}&sz=128`}
-                    alt={item.name}
-                    className="gfw-press-logo"
-                    onError={() => setLogoError((p) => ({ ...p, [item.name]: true }))}
-                  />
-                ) : (
-                  <span className="gfw-press-fallback">{item.name}</span>
-                )}
+                <span className="gfw-press-fallback">{item.name}</span>
               </a>
             ))}
           </div>

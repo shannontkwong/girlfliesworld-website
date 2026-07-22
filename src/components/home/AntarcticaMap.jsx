@@ -2,25 +2,35 @@ import React, { useEffect, useRef, useState } from 'react';
 import { feature } from 'topojson-client';
 
 /**
- * AntarcticaMap — animated polar-projection map of the EARS route,
- * matching the reference screenshot's style (radial graticule from the
- * South Pole, concentric latitude circles, arrows connecting labeled
- * stops) but continuously animated instead of a static image.
+ * AntarcticaMap — animated polar-projection map of the EARS route.
  *
- * THIS PASS: added a science-labels line under the map, same pattern as
- * the route "From -> To" label — a small tracked-caps telemetry line
- * listing the survey's target features (tabular icebergs, blue ice
- * areas, megadune regions), with whichever one the marker is currently
- * flying past shown bold/ink while the others stay faint, mirroring how
- * waypoints on the map itself go bold once visited.
+ * THIS PASS: mobile fixes, two real ones.
  *
- * PROJECTION: polar azimuthal-equidistant, centered on the South Pole —
- * the standard way real Antarctic maps are drawn (your reference
- * screenshot IS this projection). A slight vertical squash + slow
- * auto-rotation give it the same "tilted disc" 3D feel as RouteGlobe.
+ *  1. No responsive logic existed at all — fixed padding regardless of
+ *     screen size. Added isMobile state and scaled padding/font-sizes
+ *     down for narrow viewports.
  *
- * COASTLINE DATA: same source/dependency as RouteGlobe (skip the install
- * if already added for that component):
+ *  2. Bigger issue: this component was wrapping itself in its own
+ *     <section> with its own background, padding, AND its own heading
+ *     ("The Antarctic Survey") — but it's actually rendered EMBEDDED
+ *     inside ScienceTeaserSection's grid column, which already has its
+ *     own heading ("The EARS Program") and its own padding. That's a
+ *     section nested inside a section nested inside a section, which is
+ *     exactly what this codebase's own flat-structure rule says not to
+ *     do (see the comment at the top of HomePage.jsx). On desktop this
+ *     mostly wasted space; on mobile, where the two stack vertically
+ *     instead of sitting side-by-side, it meant two full sets of heavy
+ *     padding and two competing headings before the map even appears.
+ *     Fixed by stripping the outer <section>/heading/background — this
+ *     is now a bare widget (canvas + loading state + the two label
+ *     lines), matching how it's actually used.
+ *
+ * PROJECTION: polar azimuthal-equidistant, centered on the South Pole.
+ * The canvas itself already resized correctly before this pass (it uses
+ * a ResizeObserver on its actual container width, not a hardcoded pixel
+ * size) — that part didn't need fixing.
+ *
+ * COASTLINE DATA: same source/dependency as RouteGlobe:
  *   https://unpkg.com/world-atlas@2.0.2/land-110m.json
  *   npm install topojson-client
  *
@@ -29,7 +39,6 @@ import { feature } from 'topojson-client';
  */
 
 const INK = '#111111';
-const PAPER = '#F5F2EB';
 const MUTE = '#5b5748';
 
 const WORLD_TOPOJSON_URL = 'https://unpkg.com/world-atlas@2.0.2/land-110m.json';
@@ -68,8 +77,16 @@ const AntarcticaMap = () => {
   const [landRings, setLandRings] = useState(null);
   const [loadError, setLoadError] = useState(false);
   const [reduced, setReduced] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [currentLabel, setCurrentLabel] = useState({ from: ROUTE[0][1], to: ROUTE[1][1] });
   const [activeAnnotation, setActiveAnnotation] = useState(0);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -230,7 +247,7 @@ const AntarcticaMap = () => {
         ctx.fillStyle = visited ? INK : 'rgba(17,17,17,0.3)';
         ctx.fill();
 
-        ctx.font = `${visited ? '700' : '500'} 12px 'Lora', Georgia, serif`;
+        ctx.font = `${visited ? '700' : '500'} ${isMobile ? '10px' : '12px'} 'Lora', Georgia, serif`;
         ctx.fillStyle = visited ? INK : 'rgba(17,17,17,0.4)';
         ctx.textAlign = p.x > cx ? 'left' : 'right';
         ctx.fillText(label, p.x + (p.x > cx ? 8 : -8), p.y - 6);
@@ -239,7 +256,7 @@ const AntarcticaMap = () => {
       ANNOTATIONS.forEach((a, ai) => {
         const p = project(a.lat, a.lon, rot);
         const isActive = ai === ACTIVE_ANNOTATION_BY_LEG[currentLeg];
-        ctx.font = `italic ${isActive ? '600' : '400'} 11px 'Lora', Georgia, serif`;
+        ctx.font = `italic ${isActive ? '600' : '400'} ${isMobile ? '9px' : '11px'} 'Lora', Georgia, serif`;
         ctx.fillStyle = isActive ? INK : MUTE;
         ctx.textAlign = 'center';
         ctx.fillText(a.text, p.x, p.y);
@@ -268,20 +285,16 @@ const AntarcticaMap = () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       startRef.current = null;
     };
-  }, [size, landRings, reduced]);
+  }, [size, landRings, reduced, isMobile]);
 
+  // Bare embeddable widget — no outer <section>, no background, no own
+  // heading. This is rendered inside ScienceTeaserSection's grid column,
+  // which already provides the section chrome and heading; wrapping it
+  // in another full section here was the actual layout bug.
   return (
-    <section style={{ background: PAPER, padding: '6rem 1.5rem' }}>
-      <p style={{
-        fontFamily: "'Inter', sans-serif", fontSize: '0.7rem', fontWeight: 700,
-        letterSpacing: '0.26em', textTransform: 'uppercase', color: MUTE,
-        textAlign: 'center', margin: '0 0 2.5rem 0',
-      }}>
-        The Antarctic Survey
-      </p>
-
-      <div ref={containerRef} style={{ maxWidth: '560px', margin: '0 auto', position: 'relative' }}>
-        <canvas ref={canvasRef} style={{ display: 'block', margin: '0 auto' }} />
+    <div style={{ width: '100%' }}>
+      <div ref={containerRef} style={{ width: '100%', maxWidth: isMobile ? '340px' : '560px', margin: '0 auto', position: 'relative' }}>
+        <canvas ref={canvasRef} style={{ display: 'block', margin: '0 auto', maxWidth: '100%' }} />
         {!landRings && !loadError && (
           <p style={{
             position: 'absolute', bottom: 8, left: 0, right: 0, textAlign: 'center',
@@ -292,10 +305,10 @@ const AntarcticaMap = () => {
         )}
       </div>
 
-      <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+      <div style={{ textAlign: 'center', marginTop: isMobile ? '1rem' : '1.5rem' }}>
         <p style={{
           fontFamily: "'Lora', Georgia, serif", fontStyle: 'italic',
-          fontSize: '1rem', color: INK, margin: '0 0 0.75rem 0',
+          fontSize: isMobile ? '0.9rem' : '1rem', color: INK, margin: '0 0 0.75rem 0',
         }}>
           {currentLabel.from} &rarr; {currentLabel.to}
         </p>
@@ -305,10 +318,10 @@ const AntarcticaMap = () => {
             flying through shown in ink and the others muted. */}
         <p style={{
           fontFamily: "'IBM Plex Mono', ui-monospace, monospace",
-          fontSize: '0.68rem',
-          letterSpacing: '0.14em',
+          fontSize: isMobile ? '0.6rem' : '0.68rem',
+          letterSpacing: isMobile ? '0.08em' : '0.14em',
           textTransform: 'uppercase',
-          margin: 30,
+          margin: 0,
         }}>
           {ANNOTATIONS.map((a, i) => (
             <React.Fragment key={a.text}>
@@ -320,7 +333,7 @@ const AntarcticaMap = () => {
           ))}
         </p>
       </div>
-    </section>
+    </div>
   );
 };
 
