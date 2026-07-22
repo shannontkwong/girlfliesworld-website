@@ -3,20 +3,36 @@ import React, { useState, useEffect, useRef } from 'react';
 /**
  * HeroSection — "Polar Gold" cinematic hero with local video.mp4.
  *
- * PRESS BADGE: bottom-right, using REAL logo marks via the Clearbit Logo
- * API (https://logo.clearbit.com/{domain}) — a free, widely-used public
- * service that serves a company's actual logo straight from their domain.
- * This is the standard technique behind most "as featured in" bars; no
- * scraping, no manually hosted trademarked assets. Logos render monochrome
- * white by default (filter: brightness(0) invert(1)) to sit cleanly on the
- * dark video, and reveal their true colors on hover as a small interactive
- * touch. If a given outlet's logo fails to resolve (Clearbit's coverage of
- * small regional papers like Hampshire Chronicle is inconsistent), it falls
- * back to a plain text label rather than showing a broken image.
+ * THIS PASS: the sound toggle button no longer uses the 🔊/🔇 emoji.
+ * It's now a custom SVG icon matching the reference exactly — five thin
+ * vertical bars (not a speaker shape at all), which pulse like a real
+ * audio equalizer while sound is on, and freeze in place with a diagonal
+ * slash drawn across them when muted. Each bar animates via CSS
+ * transform: scaleY with its own animation-delay, staggered so they
+ * don't all pulse in lockstep — that's what actually reads as "sound
+ * moving" rather than one shape blinking. Respects prefers-reduced-motion
+ * (the animation is skipped entirely, same as the rest of this hero).
+ *
+ * PRESS BADGE: bottom-right, using REAL logo marks via Google's favicon
+ * service (https://www.google.com/s2/favicons?domain={domain}&sz=128) — a
+ * free, no-signup public endpoint that serves a site's actual favicon.
+ * NOTE: this used to run on the Clearbit Logo API, which was permanently
+ * shut down December 8, 2025 (Clearbit was acquired by HubSpot, which then
+ * sunset the free endpoint) — logo.clearbit.com no longer resolves at all,
+ * which is why it was swapped for Google's favicon service here instead.
+ * Trade-off worth knowing: favicons are small/simplified compared to a full
+ * logo mark, so a text-heavy wordmark (like a newspaper's) may render as
+ * just an icon rather than the full brand name. For higher-fidelity full
+ * logos, the official Clearbit successor is logo.dev — same domain-based
+ * lookup, but it requires a free account for an API key rather than being
+ * a bare URL like this one. Logos render monochrome white by default
+ * (filter: brightness(0) invert(1)) to sit cleanly on the dark video, and
+ * reveal their true colors on hover. If a given outlet's favicon fails to
+ * resolve, it falls back to a plain text label rather than a broken image.
  *
  * Sits ABOVE the existing bottom hairline meta row and sound toggle,
  * stacked so nothing overlaps: press badge > meta row > sound button,
- * bottom to top... actually top to bottom in that order down the corner.
+ * top to bottom down the corner.
  *
  * ASSET NEEDED: /public/video.mp4 (and optionally /public/hero.jpg as a
  * poster/fallback frame for mobile + before the video loads).
@@ -36,6 +52,39 @@ const PRESS_ITEMS = [
   { name: 'Times Now', domain: 'timesnownews.com', href: 'https://www.timesnownews.com/india/its-us-dont-shoot-us-ferry-pilot-recalls-mid-air-interception-of-newly-procured-indian-trainer-aircraft-by-us-fighter-jet-article-154077628' },
   { name: 'Hampshire Chronicle', domain: 'hampshirechronicle.co.uk', href: 'https://www.hampshirechronicle.co.uk/news/26057137.hampshire-airfield-welcomes-international-pilot-five-day-flight/' },
 ];
+
+// ---- Custom sound icon: equalizer bars, pulsing while unmuted, frozen
+//      with a diagonal slash when muted — matching the reference glyph,
+//      not a speaker shape ----
+const SoundIcon = ({ active, reduced }) => {
+  const bars = [
+    { x: 3,  h: 8  },
+    { x: 6,  h: 13 },
+    { x: 9,  h: 6  },
+    { x: 12, h: 13 },
+    { x: 15, h: 9  },
+  ];
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      {bars.map((b, i) => (
+        <rect
+          key={b.x}
+          x={b.x - 0.75}
+          y={(20 - b.h) / 2}
+          width="1.5"
+          height={b.h}
+          rx="0.75"
+          fill={GOLD}
+          className={active && !reduced ? `gfw-eq-bar gfw-eq-bar-${i}` : ''}
+          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
+        />
+      ))}
+      {!active && (
+        <line x1="2" y1="17" x2="18" y2="3" stroke={GOLD} strokeWidth="1.5" strokeLinecap="round" />
+      )}
+    </svg>
+  );
+};
 
 const HeroSection = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -83,7 +132,7 @@ const HeroSection = () => {
   }, []);
 
   useEffect(() => {
-    if (isMobile || reduced) return;
+    if (reduced) return;
     const unlock = () => {
       const v = videoRef.current;
       if (v) {
@@ -106,7 +155,7 @@ const HeroSection = () => {
       window.removeEventListener('scroll', unlock);
       window.removeEventListener('keydown', unlock);
     };
-  }, [isMobile, reduced]);
+  }, [reduced]);
 
   const toggleSound = (e) => {
     e.stopPropagation();
@@ -193,22 +242,34 @@ const HeroSection = () => {
           border: 1px solid rgba(245,242,235,0.35);
           background: rgba(11,11,12,0.55);
           color: #F5F2EB;
-          font-size: 0.85rem;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
           transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
         }
-        .gfw-sound-btn:hover { border-color: ${GOLD}; color: ${GOLD}; }
+        .gfw-sound-btn:hover { border-color: ${GOLD}; background: rgba(201,162,39,0.12); }
+
+        /* Equalizer bars — staggered pulse, not lockstep, so it reads as
+           moving sound rather than one shape blinking */
+        @keyframes gfw-eq {
+          0%, 100% { transform: scaleY(0.4); }
+          50% { transform: scaleY(1); }
+        }
+        .gfw-eq-bar { animation: gfw-eq 0.9s ease-in-out infinite; }
+        .gfw-eq-bar-0 { animation-delay: 0s; }
+        .gfw-eq-bar-1 { animation-delay: 0.15s; }
+        .gfw-eq-bar-2 { animation-delay: 0.3s; }
+        .gfw-eq-bar-3 { animation-delay: 0.45s; }
+        .gfw-eq-bar-4 { animation-delay: 0.6s; }
 
         .gfw-press-logo {
-          height: 22px;
+          height: 34px;
           width: auto;
-          max-width: 72px;
+          max-width: 110px;
           object-fit: contain;
           filter: brightness(0) invert(1);
-          opacity: 0.6;
+          opacity: 0.65;
           transition: opacity 0.3s ease, filter 0.3s ease;
         }
         .gfw-press-link:hover .gfw-press-logo {
@@ -217,9 +278,10 @@ const HeroSection = () => {
         }
         .gfw-press-fallback {
           font-family: 'Space Grotesk', sans-serif;
-          font-size: 0.72rem;
-          font-weight: 600;
-          color: rgba(245,242,235,0.55);
+          font-size: 1.05rem;
+          font-weight: 700;
+          letter-spacing: 0.01em;
+          color: rgba(245,242,235,0.65);
           white-space: nowrap;
           transition: color 0.3s ease;
         }
@@ -232,10 +294,11 @@ const HeroSection = () => {
         }
         @media (prefers-reduced-motion: reduce) {
           .gfw-hero-video { animation: none; }
+          .gfw-eq-bar { animation: none; }
         }
       `}</style>
 
-      {!isMobile && !reduced ? (
+      {!reduced ? (
         <video
           ref={videoRef}
           className="gfw-hero-video"
@@ -384,7 +447,7 @@ const HeroSection = () => {
               >
                 {!logoError[item.name] ? (
                   <img
-                    src={`https://logo.clearbit.com/${item.domain}`}
+                    src={`https://www.google.com/s2/favicons?domain=${item.domain}&sz=128`}
                     alt={item.name}
                     className="gfw-press-logo"
                     onError={() => setLogoError((p) => ({ ...p, [item.name]: true }))}
@@ -430,13 +493,13 @@ const HeroSection = () => {
         </div>
       )}
 
-      {!isMobile && !reduced && (
+      {!reduced && (
         <button
           className="gfw-sound-btn"
           onClick={toggleSound}
           aria-label={soundOn ? 'Mute video' : 'Unmute video'}
         >
-          {soundOn ? '🔊' : '🔇'}
+          <SoundIcon active={soundOn} reduced={reduced} />
         </button>
       )}
     </section>

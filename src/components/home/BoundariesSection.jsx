@@ -3,21 +3,26 @@ import React, { useEffect, useRef, useState } from 'react';
 /**
  * BoundariesSection — "Paper & Ink" register, narrow centered layout.
  *
- * THIS PASS: the Alexandra Shackleton patron credit is now a real
- * feature, not a single small italic aside — a larger serif name line
- * in Cormorant Garamond (the same elegant display serif used for
- * headline moments elsewhere on the site, matching the weight/family in
- * the reference image) plus one short description line underneath in
- * Lora, matching the reference's short-paragraph proportions rather than
- * a long biography.
+ * THIS PASS: two additions.
+ *  1. A gold credential display sits above the banner now — three big
+ *     lines (Ex-Palantir Software Engineer / 3x Sole-Author Published
+ *     Scientist / Author of a Non-Fiction Book), rendered with the same
+ *     Cinzel gold chrome-gradient treatment used on the real Hero
+ *     ("Breaking The Limits"), not a new gold style invented for this
+ *     section — that's what "gold like the hero" means literally here.
+ *  2. A new "Stories" section below the photo row: a square-tile grid,
+ *     one row on desktop, each tile's caption sitting ABOVE its image
+ *     (not overlaid on top of it), scroll-revealed with a stagger so
+ *     tiles animate in one after another rather than all at once.
  *
- * Everything else — the lead banner, the manifesto paragraphs, the
- * clickable photo row — is unchanged from the previous pass.
+ * Everything else — the banner, the manifesto paragraphs, the patron
+ * feature, the clickable identity photo row — is unchanged.
  *
  * ASSETS NEEDED in /public:
- *   /banner.png (lead banner)
+ *   /vogue.png (lead banner)
  *   /zz.png (Pilot)  /ss.png (Scientist)  /pp.png (Programmer)
  *   /yy.png (Engineer)  /ii.png (Author)
+ *   /story-f18.png  /story-atlantic.png  /story-pa28.png  /story-skis.png
  */
 
 const INK = '#111111';
@@ -61,7 +66,7 @@ const PARAGRAPHS = [
   {
     anchor: 'pilot',
     dropCap: true,
-    text: "My name is Shannon. I am a 20-year-old British-Hong Kong commercial pilot and scientist. My goal is to advance the frontiers of aviation and science through the audacity of the human spirit. My mission is to build the largest solo, pilot-conducted scientific airborne expedition ever undertaken in human history. I want to push the boundaries of aviation by flying a light twin-engine aircraft solo across all seven continents \u2014 including a sixteen-to-twenty-hour nonstop crossing of the Antarctic interior to the South Pole, at the edge of what an aircraft like this has ever been asked to do.",
+    text: "My name is Shannon. I am a 20-year-old British-Hong Kong commercial pilot, engineer and scientist. I am not yet in college because for the past years I have been single handedly trying to build this mission from the groun-up. My goal is to advance the frontiers of aviation and science. To reach that goal, I am building the largest solo, pilot-conducted scientific airborne expedition ever undertaken in human history. I want to push the boundaries of aviation by flying a light twin-engine aircraft solo across all seven continents \u2014 including a sixteen-to-twenty-hour nonstop crossing of the Antarctic interior to the South Pole, at the edge of what an aircraft like this has ever been asked to do.",
   },
   {
     anchor: 'scientist',
@@ -72,6 +77,81 @@ const PARAGRAPHS = [
     text: "As a result, my third goal is to inspire the next generation of scientists, explorers, and young curious minds to challenge the status quo, to do big things, and to toss their hat across the wall. Records will fall along the way: the first woman to fly solo to all seven continents and to the South Pole, the first twin-engine propeller aircraft to fly across the entire Antarctic continent. But the mission was never about the records \u2014 it was about moving entire fields forward and advancing humanity, no matter how hard the challenges.",
   },
 ];
+
+const CREDENTIALS = [
+  'Shannon Wong:',
+  'Ex-Palantir Coder',
+  '3x Sole-Author in Q1 journals',
+  '3x Transatlantic Crossings',
+  'Author of a Non-Fiction Book',
+];
+
+const STORIES = [
+  { key: 'f18', caption: "Intercepted by F-18s over Indian Ocean during the US-Iran war. Departed Oman just two hours before it got bombed", image: '/ca.png' },
+  { key: 'atlantic', caption: 'Three transatlantic crossings as captain in a single-propeller aircraft', image: '/q.png' },
+  { key: 'pa28', caption: 'Florida to India \u2014 13,000km, no autopilot, in a PA28 that cruises at 87 kts', image: '/fi.png' },
+  { key: 'skis', caption: 'Landing in the snowy mountains of the French Alps on skis', image: '/ki.png' },
+];
+
+// ---- One square story tile — reveals on scroll, staggered by index ----
+const StoryTile = ({ story, index, isMobile }) => {
+  const [visible, setVisible] = useState(false);
+  const [imgError, setImgError] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true); }, { threshold: 0.2 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? 'translateY(0)' : 'translateY(28px)',
+        transition: `opacity 0.7s cubic-bezier(0.22,1,0.36,1) ${index * 0.1}s, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${index * 0.1}s`,
+      }}
+    >
+      <p style={{
+        fontFamily: "'Lora', Georgia, serif",
+        fontSize: isMobile ? '0.85rem' : '0.92rem',
+        fontStyle: 'italic',
+        color: INK,
+        lineHeight: 1.4,
+        margin: '0 0 0.85rem 0',
+        minHeight: isMobile ? 'auto' : '2.6rem',
+      }}>
+        {story.caption}
+      </p>
+      <div style={{
+        aspectRatio: '1 / 1',
+        borderRadius: '8px',
+        overflow: 'hidden',
+        border: '1px solid rgba(17,17,17,0.1)',
+        background: '#e9e5d9',
+      }}>
+        {!imgError ? (
+          <img
+            src={story.image}
+            alt={story.caption}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(15%) contrast(1.05)' }}
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <div style={{
+            width: '100%', height: '100%',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontFamily: "'Lora', serif", fontSize: '0.85rem', color: MUTE, textAlign: 'center', padding: '1rem',
+          }}>
+            {story.caption}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 const BoundariesSection = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -89,7 +169,7 @@ const BoundariesSection = () => {
 
   useEffect(() => {
     const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap';
+    link.href = 'https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap';
     link.rel = 'stylesheet';
     document.head.appendChild(link);
     return () => document.head.removeChild(link);
@@ -148,7 +228,46 @@ const BoundariesSection = () => {
           display: block;
           min-height: 1.9rem;
         }
+        @keyframes bd-gold-shine {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        .bd-credential {
+          font-family: 'Cinzel', serif;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+          line-height: 1.35;
+          background: linear-gradient(135deg, #5C4A2F 0%, #8B7355 15%, #C9A96E 30%, #F1E2C0 50%, #C9A96E 70%, #8B7355 85%, #5C4A2F 100%);
+          background-size: 250% 250%;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          color: transparent;
+          animation: bd-gold-shine 6s ease-in-out infinite;
+          margin: 0;
+        }
+        .bd-stories-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+        }
+        @media (max-width: 900px) {
+          .bd-stories-grid { grid-template-columns: repeat(2, 1fr); }
+        }
       `}</style>
+
+      {/* ── Gold credential display — above the banner ── */}
+      <div style={{ maxWidth: '900px', margin: isMobile ? '0 auto 2.5rem' : '0 auto 3rem', textAlign: 'center' }}>
+        {CREDENTIALS.map((c, i) => (
+          <p
+            key={i}
+            className="bd-credential"
+            style={{ fontSize: isMobile ? 'clamp(1.4rem, 6vw, 1.8rem)' : 'clamp(1.9rem, 3.4vw, 2.6rem)', marginBottom: i < CREDENTIALS.length - 1 ? '0.3rem' : 0 }}
+          >
+            {c}
+          </p>
+        ))}
+      </div>
 
       {/* ── Lead banner ── */}
       <div style={{
@@ -233,14 +352,11 @@ const BoundariesSection = () => {
             fontStyle: 'italic',
             color: MUTE,
           }}>
-            Shannon Wong, Mission Commander 
+            Shannon Wong, Mission Commander
           </span>
           <div style={{ width: 36, height: 1, background: 'rgba(17,17,17,0.3)' }} />
         </div>
 
-        {/* Patron feature — now a real feature: a larger Cormorant
-            Garamond name line (matching the reference's serif family),
-            plus one short description line, not a small aside. */}
         <div style={{ marginTop: '2.25rem', textAlign: 'center' }}>
           <p style={{
             fontFamily: "'Cormorant Garamond', Georgia, serif",
@@ -338,6 +454,27 @@ const BoundariesSection = () => {
             </button>
           );
         })}
+      </div>
+
+      {/* ── Stories — square grid, one row on desktop, caption above each image ── */}
+      <div style={{ maxWidth: '1280px', margin: '5rem auto 0' }}>
+        <p style={{
+          fontFamily: "'Inter', sans-serif",
+          fontSize: '0.72rem',
+          fontWeight: 700,
+          letterSpacing: '0.28em',
+          textTransform: 'uppercase',
+          color: MUTE,
+          textAlign: 'center',
+          margin: '0 0 2.5rem 0',
+        }}>
+          Stories
+        </p>
+        <div className="bd-stories-grid" style={{ gap: isMobile ? '1.75rem' : '1.5rem' }}>
+          {STORIES.map((story, i) => (
+            <StoryTile key={story.key} story={story} index={i} isMobile={isMobile} />
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -3,11 +3,17 @@ import AntarcticaMap from './AntarcticaMap';
 
 // FLAT STRUCTURE: this section renders ONLY itself.
 //
-// THIS PASS: back to a two-column layout — text left, AntarcticaMap
-// right — instead of the single centered column. Text is left-aligned
-// again to match. Font-family/size/line-height on the body paragraph
-// (Lora, Georgia, serif — matching BoundariesSection) are unchanged from
-// last pass.
+// THIS PASS: mobile compatibility fixes. The layout skeleton (grid
+// collapsing to one column, responsive heading/paragraph sizes) was
+// already mobile-aware, but the two credibility badges (SCAR RINGS,
+// CReSIS) had a real bug: they were `display: inline-flex` with no width
+// constraint, so on a narrow phone the logo + two-line text combination
+// could force the row wider than the viewport instead of wrapping,
+// causing horizontal scroll on the whole page. Fixed by giving them
+// `width: 100%` + `box-sizing: border-box` on mobile and `minWidth: 0`
+// on the text so it wraps normally instead of pushing the row wider.
+// The map wrapper also now explicitly constrains to 100% width so it
+// can't do the same thing regardless of AntarcticaMap's own internals.
 
 const INK = '#111111';
 const PAPER = '#F5F2EB';
@@ -114,6 +120,7 @@ const ScienceTeaserSection = () => {
               alignItems: 'center',
               gap: '0.6rem',
               marginBottom: '1.25rem',
+              maxWidth: '100%',
             }}>
               <div style={{ width: 28, height: 1, background: MUTE, flexShrink: 0 }} />
               <span style={{
@@ -147,7 +154,7 @@ const ScienceTeaserSection = () => {
               fontWeight: 400,
               color: MUTE,
               marginBottom: '2rem',
-              maxWidth: '480px',
+              maxWidth: isMobile ? '100%' : '480px',
             }}>
               EARS is an independant science program created by Shannon. It will aim to collect airborne science data across East Antarctica (Queen Maud Land specifically). 
               Shannon will use a snow radar that was integrated within same lineage NASA flew on Operation IceBridge (the largest airborne polar survey in history) &mdash; into a
@@ -184,20 +191,29 @@ const ScienceTeaserSection = () => {
               ))}
             </div>
 
+            {/* Credibility badges — FIX: was `display: inline-flex` with
+                no width constraint, so on a narrow phone the logo + long
+                two-line text could force this row wider than the
+                viewport instead of wrapping, causing horizontal scroll
+                on the whole page. Now `display: flex` + explicit
+                `width: 100%` on mobile, and `minWidth: 0` on the text so
+                it wraps within the row instead of pushing it wider. */}
             <div className="sci-item" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '2rem' }}>
               <div style={{
-                display: 'inline-flex',
+                display: 'flex',
                 alignItems: 'center',
                 gap: '0.75rem',
                 padding: '0.6rem 1rem',
                 border: '1px solid rgba(17,17,17,0.12)',
                 borderRadius: '8px',
                 background: '#fff',
+                width: isMobile ? '100%' : 'auto',
+                boxSizing: 'border-box',
               }}>
                 <img
                   src="/rings.png"
                   alt="SCAR RINGS"
-                  style={{ height: '48px', width: 'auto', objectFit: 'contain' }}
+                  style={{ height: '48px', width: 'auto', objectFit: 'contain', flexShrink: 0 }}
                   onError={e => { e.currentTarget.style.display = 'none'; }}
                 />
                 <span style={{
@@ -206,6 +222,7 @@ const ScienceTeaserSection = () => {
                   color: MUTE,
                   fontWeight: 600,
                   lineHeight: 1.4,
+                  minWidth: 0,
                 }}>
                   Sole outside presenter,<br />
                   <span style={{ color: INK }}>SCAR RINGS DML/EL Meeting</span>
@@ -213,13 +230,15 @@ const ScienceTeaserSection = () => {
               </div>
 
               <div style={{
-                display: 'inline-flex',
+                display: 'flex',
                 alignItems: 'center',
                 gap: '0.75rem',
                 padding: '0.6rem 1rem',
                 border: '1px solid rgba(17,17,17,0.12)',
                 borderRadius: '8px',
                 background: '#fff',
+                width: isMobile ? '100%' : 'auto',
+                boxSizing: 'border-box',
               }}>
                 <span style={{
                   fontFamily: "'Inter', sans-serif",
@@ -227,6 +246,7 @@ const ScienceTeaserSection = () => {
                   color: MUTE,
                   fontWeight: 600,
                   lineHeight: 1.4,
+                  minWidth: 0,
                 }}>
                   In formal collaboration with<br />
                   <span style={{ color: INK }}>CReSIS, University of Kansas</span>
@@ -241,8 +261,10 @@ const ScienceTeaserSection = () => {
             </div>
           </div>
 
-          {/* ── RIGHT: map ── */}
-          <div className="sci-item" style={{ position: 'relative' }}>
+          {/* ── RIGHT: map — width now explicitly constrained to 100% so
+              it can't force horizontal overflow regardless of whatever
+              fixed dimensions AntarcticaMap might set internally ── */}
+          <div className="sci-item" style={{ position: 'relative', width: '100%', maxWidth: '100%' }}>
             <AntarcticaMap />
           </div>
 
