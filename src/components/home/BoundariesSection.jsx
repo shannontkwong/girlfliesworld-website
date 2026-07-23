@@ -66,7 +66,7 @@ const PARAGRAPHS = [
   {
     anchor: 'pilot',
     dropCap: true,
-    text: "My name is Shannon. I am a 20-year-old British-Hong Kong commercial pilot, engineer and scientist. I am not yet in college because for the past years I have been single handedly trying to build this mission from the groun-up. My goal is to advance the frontiers of aviation and science. To reach that goal, I am building the largest solo, pilot-conducted scientific airborne expedition ever undertaken in human history. I want to push the boundaries of aviation by flying a light twin-engine aircraft solo across all seven continents \u2014 including a sixteen-to-twenty-hour nonstop crossing of the Antarctic interior to the South Pole, at the edge of what an aircraft like this has ever been asked to do.",
+    text: "My name is Shannon. I am a 20-year-old British-Hong Kong commercial pilot, engineer and scientist. I am not yet in college because for the past years I have been single handedly trying to build this mission from the groun-up. My goal is to advance the frontiers of aviation and science. To reach that goal, I am building the largest solo, pilot-conducted scientific airborne expedition ever undertaken in human history. I want to push the boundaries of aviation and science by flying a light twin-engine aircraft solo across all seven continents \u2014 including a sixteen-to-twenty-hour nonstop crossing of the Antarctic interior to the South Pole, at the edge of what an aircraft like this has ever been asked to do.",
   },
   {
     anchor: 'scientist',

@@ -82,44 +82,7 @@ const Footer = () => {
     opacity: 0.7
   };
 
-  return (
-    <footer style={footerStyle}>
-      <div style={footerRowStyle}>
-        <div style={footerColStyle}>
-          <h4 style={h4Style}>Info</h4>
-          <ul style={linksStyle}>
-            <li style={linkItemStyle}><a href="/aboutme" style={linkStyle}>About Me</a></li>
-            <li style={linkItemStyle}><a href="/journey" style={linkStyle}>My Journey</a></li>
-            <li style={linkItemStyle}><a href="/team" style={linkStyle}>Team</a></li>
-            <li style={linkItemStyle}><a href="/contact" style={linkStyle}>Contact</a></li>
-          </ul>
-        </div>
-        <div style={footerColStyle}>
-          <h4 style={h4Style}>Explore</h4>
-          <ul style={linksStyle}>
-            <li style={linkItemStyle}><a href="/plane" style={linkStyle}>The Plane</a></li>
-            <li style={linkItemStyle}><a href="/aboutme" style={linkStyle}>The Expedition</a></li>
-            <li style={linkItemStyle}><a href="/sponsors" style={linkStyle}>Become a Sponsor</a></li>
-            <li style={linkItemStyle}><a href="/blog" style={linkStyle}>Blog</a></li>
-          </ul>
-        </div>
-        <div style={logoColStyle}>
-          <img
-            src='/si.png'
-            alt="GIRLFLIESWORLD Logo"
-            style={logoStyle}
-          />
-          <p style={missionTextStyle}>
-            First woman to fly solo to all 7 continents and the South Pole.
-            Inspiring the next generation of aviators and explorers.
-          </p>
-        </div>
-      </div>
-      <div style={footerBottomStyle}>
-        <p>&copy; 2025 GIRLFLIESWORLD. All rights reserved.</p>
-      </div>
-    </footer>
-  );
+ 
 };
 
 const AboutMePage = () => {

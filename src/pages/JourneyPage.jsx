@@ -120,42 +120,7 @@ const PlaneIcon = ({ size = 22, color = GOLD, style = {} }) => (
   </svg>
 );
 
-const Footer = () => (
-  <footer style={{ background: NAVY_DEEP, color: CREAM, padding: '4rem 2rem 2rem', borderTop: `1px solid ${HAIRLINE}` }}>
-    <style>{`
-      .jf-footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; align-items: start; }
-      @media (max-width: 768px) { .jf-footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; } .jf-footer-logo-col { grid-column: 1 / -1; align-items: center !important; } }
-      @media (max-width: 480px) { .jf-footer-grid { grid-template-columns: 1fr; } }
-    `}</style>
-    <div className="jf-footer-grid">
-      <div>
-        <h4 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: '1.2rem', fontWeight: 600, marginBottom: '1.25rem', color: 'rgb(255, 30, 154)' }}>Info</h4>
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-          {[['About Me', '/aboutme'], ['The Science', '/science'], ['Contact', '/contact']].map(([label, href]) => (
-            <li key={href} style={{ marginBottom: '0.75rem' }}><a href={href} style={{ color: CREAM_MUTE, textDecoration: 'none', fontSize: '0.95rem', fontFamily: "'Lora', Georgia, serif" }}>{label}</a></li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <h4 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: '1.2rem', fontWeight: 600, marginBottom: '1.25rem', color: 'rgb(255, 30, 154)' }}>Explore</h4>
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-          {[['The Journey', '/journey'], ['Become a Sponsor', '/sponsors'], ['Blog', '/blog']].map(([label, href]) => (
-            <li key={href} style={{ marginBottom: '0.75rem' }}><a href={href} style={{ color: CREAM_MUTE, textDecoration: 'none', fontSize: '0.95rem', fontFamily: "'Lora', Georgia, serif" }}>{label}</a></li>
-          ))}
-        </ul>
-      </div>
-      <div className="jf-footer-logo-col" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'left' }}>
-        <img src='/si.png' alt="GIRLFLIESWORLD Logo" style={{ maxWidth: '180px', height: 'auto', marginBottom: '1rem' }} />
-        <p style={{ color: CREAM_MUTE, fontFamily: "'Lora', Georgia, serif", fontSize: '0.9rem', lineHeight: '1.6', margin: 0, maxWidth: '280px' }}>
-          First woman to fly solo to all 7 continents and the South Pole.
-        </p>
-      </div>
-    </div>
-    <div style={{ textAlign: 'center', paddingTop: '2rem', marginTop: '2rem', borderTop: `1px solid ${HAIRLINE}`, opacity: 0.5, fontSize: '0.85rem', fontFamily: "'Lora', Georgia, serif" }}>
-      <p style={{ margin: 0 }}>&copy; 2025 GIRLFLIESWORLD. All rights reserved.</p>
-    </div>
-  </footer>
-);
+
 
 const Reveal = ({ children, className = '', style = {} }) => {
   const [visible, setVisible] = useState(false);
@@ -553,7 +518,7 @@ const JourneyPage = () => {
           <a href="/donate" className="jf-cta-btn">Back The Mission</a>
         </Reveal>
 
-        <Footer />
+
       </div>
     </>
   );
