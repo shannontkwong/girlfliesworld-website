@@ -4,21 +4,17 @@ import AntarcticaMap from '../components/home/AntarcticaMap';
 /**
  * SciencePage — timeline expanded.
  *
- * THIS PASS: the survey targets Shannon actually presented to RINGS
- * included more than the radar/megadunes/blue-ice/Tambora set already
- * on the page — tabular icebergs (Weddell Sea passes) were part of that
- * same presentation. And the timeline was listing INSTRUMENTS/TARGETS
- * but never the actual scientific OUTCOMES those targets feed into —
- * ice sheet mass balance, sea-level projections, and the broader climate
- * research this contributes to. Both are added now, so the timeline
- * reads: the gap -> the instrument -> every target actually surveyed
- * (icebergs, megadunes, blue ice, the Tambora tie-point) -> what that
- * data actually produces (mass balance, sea-level forecasts, climate
- * research) -> delivery. The origin paragraph now names the targets
- * explicitly as what was presented to RINGS, tying the two together.
+ * THIS PASS: the embedded AntarcticaMap was rendering near-invisible —
+ * it hardcoded near-black colors (INK #111111, MUTE #5b5748) meant for
+ * a light cream background, but this page sits on a dark teal chapter
+ * background. Every line, dot, and label was dark-on-dark. Fixed by
+ * passing the new `dark` prop AntarcticaMap now supports, which switches
+ * its whole palette to light-on-dark. See AntarcticaMap.jsx for the
+ * palette details.
  *
- * Everything else (structure, typed hero line, embedded AntarcticaMap,
- * centered layout) is unchanged from the prior rebuild.
+ * Everything else (structure, typed hero line, centered layout, the
+ * expanded timeline covering targets + outcomes) is unchanged from the
+ * prior rebuild.
  *
  * ASSETS NEEDED in /public for the timeline (falls back to a labeled
  * placeholder tile if missing):
@@ -98,8 +94,6 @@ const TIMELINE = [
 ];
 
 const TYPED_LINE = 'One pilot. One radar. A gap in the map no one else has closed.';
-
-
 
 const Reveal = ({ children, className = '', style = {} }) => {
   const [visible, setVisible] = useState(false);
@@ -308,7 +302,12 @@ const SciencePage = () => {
             {typed.length < TYPED_LINE.length && typedStarted && <span className="sp-cursor">&nbsp;</span>}
           </div>
         </div>
-<AntarcticaMap />
+
+        {/* dark: AntarcticaMap defaults to a dark-ink-on-light palette;
+            this page's background is dark teal, so it needs the light
+            palette instead — see AntarcticaMap.jsx for what this does. */}
+        <AntarcticaMap dark />
+
         <Reveal className="sp-section" style={{ borderBottom: `1px solid ${HAIRLINE}`, maxWidth: '720px' }}>
           <div className="sp-stats-row">
             {[

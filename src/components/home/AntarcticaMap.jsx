@@ -4,31 +4,23 @@ import { feature } from 'topojson-client';
 /**
  * AntarcticaMap — animated polar-projection map of the EARS route.
  *
- * THIS PASS: mobile fixes, two real ones.
+ * THIS PASS: real contrast bug fixed. INK (#111111) and MUTE (#5b5748)
+ * are near-black colors, chosen so the map would read clearly against
+ * the light cream Paper & Ink background it was originally built for
+ * (where it's embedded inside ScienceTeaserSection). But this same
+ * component is ALSO embedded directly inside SciencePage, which sits on
+ * a dark teal chapter background — so every line, dot, and label was
+ * rendering dark-on-dark, essentially invisible (exactly what the
+ * screenshot showed).
  *
- *  1. No responsive logic existed at all — fixed padding regardless of
- *     screen size. Added isMobile state and scaled padding/font-sizes
- *     down for narrow viewports.
- *
- *  2. Bigger issue: this component was wrapping itself in its own
- *     <section> with its own background, padding, AND its own heading
- *     ("The Antarctic Survey") — but it's actually rendered EMBEDDED
- *     inside ScienceTeaserSection's grid column, which already has its
- *     own heading ("The EARS Program") and its own padding. That's a
- *     section nested inside a section nested inside a section, which is
- *     exactly what this codebase's own flat-structure rule says not to
- *     do (see the comment at the top of HomePage.jsx). On desktop this
- *     mostly wasted space; on mobile, where the two stack vertically
- *     instead of sitting side-by-side, it meant two full sets of heavy
- *     padding and two competing headings before the map even appears.
- *     Fixed by stripping the outer <section>/heading/background — this
- *     is now a bare widget (canvas + loading state + the two label
- *     lines), matching how it's actually used.
+ * Fixed with a `dark` prop: pass <AntarcticaMap dark /> when embedding
+ * on a dark background (SciencePage) to switch the whole palette to
+ * light-on-dark; omit it (default) for the original light-background
+ * usage (ScienceTeaserSection) — behavior there is unchanged.
  *
  * PROJECTION: polar azimuthal-equidistant, centered on the South Pole.
- * The canvas itself already resized correctly before this pass (it uses
- * a ResizeObserver on its actual container width, not a hardcoded pixel
- * size) — that part didn't need fixing.
+ * The canvas itself resizes correctly via a ResizeObserver on its actual
+ * container width, not a hardcoded pixel size — unchanged from before.
  *
  * COASTLINE DATA: same source/dependency as RouteGlobe:
  *   https://unpkg.com/world-atlas@2.0.2/land-110m.json
@@ -37,9 +29,6 @@ import { feature } from 'topojson-client';
  * Coordinates are approximate (base/station level) — fine for this
  * decorative animation, not for flight planning.
  */
-
-const INK = '#111111';
-const MUTE = '#5b5748';
 
 const WORLD_TOPOJSON_URL = 'https://unpkg.com/world-atlas@2.0.2/land-110m.json';
 
@@ -68,7 +57,7 @@ const MAX_COLAT = 42;
 
 const toRad = (d) => (d * Math.PI) / 180;
 
-const AntarcticaMap = () => {
+const AntarcticaMap = ({ dark = false }) => {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const rafRef = useRef(null);
@@ -80,6 +69,18 @@ const AntarcticaMap = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [currentLabel, setCurrentLabel] = useState({ from: ROUTE[0][1], to: ROUTE[1][1] });
   const [activeAnnotation, setActiveAnnotation] = useState(0);
+
+  // ---- Palette: light-on-dark when `dark`, dark-on-light otherwise ----
+  const INK = dark ? '#E9EBE6' : '#111111';
+  const MUTE = dark ? 'rgba(233,235,230,0.7)' : '#5b5748';
+  const RING_STRONG = dark ? 'rgba(233,235,230,0.32)' : 'rgba(17,17,17,0.25)';
+  const RING_FAINT = dark ? 'rgba(233,235,230,0.14)' : 'rgba(17,17,17,0.1)';
+  const SPOKE = dark ? 'rgba(233,235,230,0.12)' : 'rgba(17,17,17,0.08)';
+  const LAND_FILL = dark ? 'rgba(233,235,230,0.06)' : 'rgba(17,17,17,0.05)';
+  const LAND_STROKE = dark ? 'rgba(233,235,230,0.4)' : 'rgba(17,17,17,0.35)';
+  const ROUTE_FADED = dark ? 'rgba(233,235,230,0.28)' : 'rgba(17,17,17,0.2)';
+  const DOT_FADED = dark ? 'rgba(233,235,230,0.4)' : 'rgba(17,17,17,0.3)';
+  const LABEL_FADED = dark ? 'rgba(233,235,230,0.5)' : 'rgba(17,17,17,0.4)';
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -174,7 +175,7 @@ const AntarcticaMap = () => {
         const rr = (c / MAX_COLAT) * R;
         ctx.beginPath();
         ctx.ellipse(cx, cy, rr, rr * squash, 0, 0, Math.PI * 2);
-        ctx.strokeStyle = c === MAX_COLAT ? 'rgba(17,17,17,0.25)' : 'rgba(17,17,17,0.1)';
+        ctx.strokeStyle = c === MAX_COLAT ? RING_STRONG : RING_FAINT;
         ctx.lineWidth = 1;
         ctx.stroke();
       }
@@ -184,7 +185,7 @@ const AntarcticaMap = () => {
         ctx.beginPath();
         ctx.moveTo(cx, cy);
         ctx.lineTo(cx + R * Math.sin(theta), cy - R * Math.cos(theta) * squash);
-        ctx.strokeStyle = 'rgba(17,17,17,0.08)';
+        ctx.strokeStyle = SPOKE;
         ctx.lineWidth = 1;
         ctx.stroke();
       }
@@ -199,9 +200,9 @@ const AntarcticaMap = () => {
             else ctx.lineTo(p.x, p.y);
           });
           ctx.closePath();
-          ctx.fillStyle = 'rgba(17,17,17,0.05)';
+          ctx.fillStyle = LAND_FILL;
           ctx.fill();
-          ctx.strokeStyle = 'rgba(17,17,17,0.35)';
+          ctx.strokeStyle = LAND_STROKE;
           ctx.lineWidth = 1;
           ctx.stroke();
         });
@@ -222,7 +223,7 @@ const AntarcticaMap = () => {
         ctx.beginPath();
         ctx.moveTo(pA.x, pA.y);
         ctx.lineTo(pB.x, pB.y);
-        ctx.strokeStyle = i <= currentLeg ? INK : 'rgba(17,17,17,0.2)';
+        ctx.strokeStyle = i <= currentLeg ? INK : ROUTE_FADED;
         ctx.lineWidth = i <= currentLeg ? 2.2 : 1.2;
         ctx.stroke();
 
@@ -244,11 +245,11 @@ const AntarcticaMap = () => {
         const visited = i <= currentLeg;
         ctx.beginPath();
         ctx.arc(p.x, p.y, visited ? 3.2 : 2, 0, Math.PI * 2);
-        ctx.fillStyle = visited ? INK : 'rgba(17,17,17,0.3)';
+        ctx.fillStyle = visited ? INK : DOT_FADED;
         ctx.fill();
 
         ctx.font = `${visited ? '700' : '500'} ${isMobile ? '10px' : '12px'} 'Lora', Georgia, serif`;
-        ctx.fillStyle = visited ? INK : 'rgba(17,17,17,0.4)';
+        ctx.fillStyle = visited ? INK : LABEL_FADED;
         ctx.textAlign = p.x > cx ? 'left' : 'right';
         ctx.fillText(label, p.x + (p.x > cx ? 8 : -8), p.y - 6);
       });
@@ -285,12 +286,8 @@ const AntarcticaMap = () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       startRef.current = null;
     };
-  }, [size, landRings, reduced, isMobile]);
+  }, [size, landRings, reduced, isMobile, dark]);
 
-  // Bare embeddable widget — no outer <section>, no background, no own
-  // heading. This is rendered inside ScienceTeaserSection's grid column,
-  // which already provides the section chrome and heading; wrapping it
-  // in another full section here was the actual layout bug.
   return (
     <div style={{ width: '100%' }}>
       <div ref={containerRef} style={{ width: '100%', maxWidth: isMobile ? '340px' : '560px', margin: '0 auto', position: 'relative' }}>
