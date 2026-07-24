@@ -22,6 +22,11 @@ const MANUAL_DONATIONS = [
 const NAME_KEYS = ['full_name', 'public_display_name', 'name'];
 const MESSAGE_KEYS = ['message', 'your_message', 'note'];
 
+// Tag stamped on every session created by /api/create-checkout-session.
+// This — not the presence of a name — is how we identify "is this one of
+// our donation sessions," so anonymous donors still get counted.
+const DONATION_SOURCE_TAG = 'girlfliesworld_donate_page';
+
 function readCustomField(session, candidateKeys) {
   if (!session.custom_fields) return null;
   for (const key of candidateKeys) {
@@ -47,6 +52,7 @@ async function fetchDonationSummary() {
   const sessions = [];
   let starting_after;
 
+  // Payment Link donations (older flow).
   do {
     const page = await stripe.checkout.sessions.list({
       payment_link: process.env.STRIPE_PAYMENT_LINK_ID,
@@ -59,16 +65,28 @@ async function fetchDonationSummary() {
 
   // Embedded Checkout sessions (created via /api/create-checkout-session)
   // aren't tied to a payment_link, so they don't show up in the list above —
-  // pull recent sessions generally and merge in any paid ones not already
-  // included, de-duplicated by session ID.
-  const generalPage = await stripe.checkout.sessions.list({ limit: 100 });
+  // pull recent sessions generally and merge in any belonging to our
+  // donation flow that aren't already included, de-duplicated by session ID.
+  // Paginated the same way as the payment_link list above so donations
+  // don't silently roll off as volume grows past 100 sessions.
   const seenIds = new Set(sessions.map((s) => s.id));
-  for (const s of generalPage.data) {
-    if (!seenIds.has(s.id) && s.metadata?.public_display_name !== undefined) {
-      sessions.push(s);
-      seenIds.add(s.id);
+  let generalStartingAfter;
+
+  do {
+    const generalPage = await stripe.checkout.sessions.list({
+      limit: 100,
+      starting_after: generalStartingAfter,
+    });
+
+    for (const s of generalPage.data) {
+      if (!seenIds.has(s.id) && s.metadata?.donation_source === DONATION_SOURCE_TAG) {
+        sessions.push(s);
+        seenIds.add(s.id);
+      }
     }
-  }
+
+    generalStartingAfter = generalPage.has_more ? generalPage.data.at(-1).id : undefined;
+  } while (generalStartingAfter);
 
   const paid = sessions.filter((s) => s.payment_status === 'paid');
 
