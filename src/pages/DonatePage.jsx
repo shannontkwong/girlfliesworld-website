@@ -9,7 +9,7 @@ const GOAL_CENTS = 60000000; // $600,000 — real fundraising target
 // for Richard Stiennon's donation (Stripe Dashboard → Payments → click the
 // payment → the ID starts with "cs_...") and paste it in below.
 const DONOR_OVERRIDES = {
-  // 'cs_REPLACE_WITH_REAL_SESSION_ID': { name: 'Richard Stiennon', message: 'Good luck!' },
+  'cs_live_a1uKVnr066kvXzopQMTKBxFISsFitJdA3qN9Ef3cv0tRJ4QtMDkgIeqXJo': { name: 'Richard Stiennon', message: 'Good luck!' },
 };
 
 /**

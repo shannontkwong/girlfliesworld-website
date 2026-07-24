@@ -18,6 +18,13 @@ const MANUAL_DONATIONS = [
   },
 ];
 
+// Sessions that were completed but lack the donation_source metadata tag
+// (e.g. made before the tag was added, or via a legacy flow). Listed by
+// payment intent ID so we can look up the real session and avoid double-counting.
+const KNOWN_MISSED_PAYMENT_INTENTS = [
+  'pi_3TwjakS65vWrYbfQ1n7hXmBP', // Chad Wahlquist — $1,000
+];
+
 // Custom-field key fallbacks for donations made via the old Buy Button flow.
 const NAME_KEYS = ['full_name', 'public_display_name', 'name'];
 const MESSAGE_KEYS = ['message', 'your_message', 'note'];
@@ -87,6 +94,17 @@ async function fetchDonationSummary() {
 
     generalStartingAfter = generalPage.has_more ? generalPage.data.at(-1).id : undefined;
   } while (generalStartingAfter);
+
+  // Fetch any sessions that slipped through both loops above (no metadata tag,
+  // no payment link) by looking them up directly via payment intent ID.
+  for (const piId of KNOWN_MISSED_PAYMENT_INTENTS) {
+    const result = await stripe.checkout.sessions.list({ payment_intent: piId, limit: 1 });
+    const s = result.data[0];
+    if (s && !seenIds.has(s.id)) {
+      sessions.push(s);
+      seenIds.add(s.id);
+    }
+  }
 
   const paid = sessions.filter((s) => s.payment_status === 'paid');
 
