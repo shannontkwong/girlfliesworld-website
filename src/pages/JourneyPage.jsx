@@ -413,10 +413,10 @@ const JourneyPage = () => {
           <p className="jf-label">Why This Route</p>
           <h2 className="jf-title">Every Continent, Alone</h2>
           <p className="jf-para">
-            Three solo transatlantic crossings as captain. A 13,000km Florida-to-India ferry flight,
+            Three transatlantic crossings as captain. A 13,000km Florida-to-India ferry flight,
             no autopilot. This route is the sum of that experience, extended into the one crossing
-            no aircraft like this has been asked to make before: an unsupported flight to the South
-            Pole, threaded into a full westbound circumnavigation of all seven continents.
+            no aircraft like this has been asked to make before: an solo flight to the South
+            Pole, threaded into a full westbound flight to all seven continents.
           </p>
         </Reveal>
 

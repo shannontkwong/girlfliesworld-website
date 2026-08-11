@@ -97,7 +97,7 @@ const ContactPage = () => {
         lineHeight: 1.7,
         color: MUTE,
       }}>
-        The expedition is currently 15% funded. Every contribution — big or small —
+        This is a public fundraiser. Every contribution — big or small —
         goes directly toward the aircraft, permits, insurance, and radar integration
         that make this flight possible.
       </p>

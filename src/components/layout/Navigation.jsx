@@ -325,7 +325,7 @@ const Navigation = () => {
         <div style={announceBarStyle}>
           <div style={announceInnerStyle}>
             <div style={announceLabelStyle}>
-              GIRLFLIESWORLD is <span style={announceBoldStyle}>{SPONSOR_PERCENT}% funded</span> and actively seeking mission sponsors.
+              Contribute to the GIRLFLIESWORLD <span style={announceBoldStyle}> public fundraiser</span>. We are actively seeking mission partners.
             </div>
             <a href="/donate" className="sponsor-cta-btn" style={announceCtaStyle}>
               Fund the flight &rarr;

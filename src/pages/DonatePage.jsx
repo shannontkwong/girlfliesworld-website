@@ -206,7 +206,7 @@ const DonatePage = () => {
               survey ever attempted across all seven continents, including Antarctica —
               collecting data scientists need for ice-sheet research, contributing to work
               behind NASA and ESA satellite missions, and closing a data gap that's remained
-              unresolved for years. Currently 15% funded.
+              unresolved for years. 
             </p>
             <DonateCTAButton onClick={() => setModalOpen(true)} />
           </div>

@@ -64,8 +64,6 @@ body {
   color: var(--gfw-gray);
 }
 
-/* Telemetry: any number that is a reading, not a sentence.
-   "15% FUNDED" · "90.0000° S, 0.0000° E" · "36,000 NM" · "OCT 2026" */
 .gfw-data {
   font-family: var(--font-data);
   font-weight: 600;
