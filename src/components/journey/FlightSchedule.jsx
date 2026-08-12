@@ -22,7 +22,7 @@ const icaoToName = {
   SCEL: 'Santiago (SCEL)',
   SAWH: 'Ushuaia (SAWH)',
   SAWB: 'Stanley (SAWB)',
-  'WFR / NOVO': 'Wolf\'s Fang / Novo Runway',
+ 
   FACT: 'Cape Town (FACT)',
   FMMI: 'Antananarivo (FMMI)',
   VRMG: 'Malé (VRMG)',
@@ -73,9 +73,6 @@ const rawLegs = [
   { date: 46327, dep: 'SGAS',       arr: 'SCEL',        dist: 850,  notes: '' },
   { date: 46328, dep: 'SCEL',       arr: 'SAWH',        dist: 1520, notes: 'Pat. Fields' },
   { date: 46329, dep: 'SAWH',       arr: 'SAWB',        dist: 666,  notes: '' },
-  { date: 46357, dep: 'SAWB',       arr: 'WFR / NOVO',  dist: 1470, notes: '' },
-  { date: 46360, dep: 'WFR / NOVO', arr: 'WFR / NOVO',  dist: 2240, notes: 'SP transit' },
-  { date: 46363, dep: 'WFR / NOVO', arr: 'FACT',        dist: 2280, notes: '' },
   { date: 46367, dep: 'FACT',       arr: 'FMMI',        dist: 1791, notes: '' },
   { date: 46370, dep: 'FMMI',       arr: 'VRMG',        dist: 1861, notes: '' },
   { date: 46373, dep: 'VRMG',       arr: 'YPCC',        dist: 1570, notes: '' },
